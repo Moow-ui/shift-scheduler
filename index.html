@@ -1,0 +1,2796 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>알바 근무표 자동 생성기</title>
+  <style>
+    :root {
+      --primary: #2563eb;
+      --primary-hover: #1d4ed8;
+      --primary-light: #eff6ff;
+      --primary-border: #bfdbfe;
+      --success: #10b981;
+      --success-light: #ecfdf5;
+      --danger: #ef4444;
+      --danger-light: #fef2f2;
+      --warning: #f59e0b;
+      --warning-light: #fffbeb;
+      --gray-50: #f8fafc;
+      --gray-100: #f1f5f9;
+      --gray-200: #e2e8f0;
+      --gray-300: #cbd5e1;
+      --gray-400: #94a3b8;
+      --gray-500: #64748b;
+      --gray-600: #475569;
+      --gray-700: #334155;
+      --gray-800: #1e293b;
+      --gray-900: #0f172a;
+      --radius-sm: 6px;
+      --radius-md: 10px;
+      --radius-lg: 16px;
+      --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+      --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Pretendard", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background-color: #f8fafc;
+      color: var(--gray-800);
+      line-height: 1.5;
+      padding: 16px;
+      padding-bottom: 80px;
+    }
+
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+    }
+
+    /* Common Card Styles */
+    .card {
+      background: white;
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      margin-bottom: 20px;
+      box-shadow: var(--shadow-sm);
+      border: 1px solid var(--gray-200);
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .card-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--gray-900);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .card-desc {
+      font-size: 13px;
+      color: var(--gray-500);
+      margin-top: 2px;
+    }
+
+    /* Step Navigation Stepper */
+    .step-nav {
+      display: flex;
+      background: white;
+      border-radius: var(--radius-lg);
+      padding: 6px;
+      margin-bottom: 20px;
+      box-shadow: var(--shadow-sm);
+      border: 1px solid var(--gray-200);
+      overflow-x: auto;
+      gap: 4px;
+      scrollbar-width: none;
+    }
+    .step-nav::-webkit-scrollbar {
+      display: none;
+    }
+
+    .step-btn {
+      flex: 1;
+      min-width: 100px;
+      padding: 10px 8px;
+      border: none;
+      background: transparent;
+      border-radius: var(--radius-md);
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--gray-500);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+    }
+
+    .step-btn.active {
+      background: var(--primary);
+      color: white;
+      box-shadow: 0 2px 4px rgba(37, 99, 235, 0.3);
+    }
+
+    .step-btn .step-num {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: rgba(0,0,0,0.06);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .step-btn.active .step-num {
+      background: rgba(255,255,255,0.25);
+      color: white;
+    }
+
+    /* ==========================================================================
+       START / HOME SCREEN (Section B)
+       ========================================================================== */
+    .home-hero {
+      text-align: center;
+      padding: 36px 20px;
+    }
+
+    .home-badge {
+      display: inline-block;
+      background: var(--primary-light);
+      color: var(--primary);
+      font-size: 12px;
+      font-weight: 700;
+      padding: 4px 14px;
+      border-radius: 20px;
+      margin-bottom: 12px;
+      letter-spacing: 0.5px;
+    }
+
+    .home-hero h1 {
+      font-size: 28px;
+      font-weight: 800;
+      color: var(--gray-900);
+      margin-bottom: 8px;
+    }
+
+    .home-hero p {
+      font-size: 15px;
+      color: var(--gray-600);
+      max-width: 500px;
+      margin: 0 auto 28px auto;
+    }
+
+    .home-main-actions {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      max-width: 420px;
+      margin: 0 auto 32px auto;
+    }
+
+    .btn-resume {
+      width: 100%;
+      padding: 16px 24px;
+      font-size: 16px;
+      font-weight: 700;
+      background: #1e40af;
+      color: white;
+      border-radius: var(--radius-lg);
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      box-shadow: 0 4px 12px rgba(30, 64, 175, 0.35);
+      transition: all 0.2s;
+    }
+    .btn-resume:hover {
+      background: #1d4ed8;
+      transform: translateY(-1px);
+    }
+
+    .btn-start-new {
+      width: 100%;
+      padding: 14px 24px;
+      font-size: 15px;
+      font-weight: 700;
+      background: var(--primary);
+      color: white;
+      border-radius: var(--radius-lg);
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      box-shadow: 0 4px 10px rgba(37, 99, 235, 0.25);
+      transition: all 0.2s;
+    }
+    .btn-start-new:hover {
+      background: var(--primary-hover);
+    }
+
+    .home-presets {
+      border-top: 1px solid var(--gray-200);
+      padding-top: 24px;
+      margin-top: 10px;
+    }
+
+    .home-presets-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--gray-500);
+      margin-bottom: 12px;
+    }
+
+    .home-preset-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 10px;
+      max-width: 680px;
+      margin: 0 auto;
+    }
+
+    .preset-card {
+      background: var(--gray-50);
+      border: 1.5px solid var(--gray-200);
+      border-radius: var(--radius-md);
+      padding: 14px;
+      text-align: left;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .preset-card:hover {
+      background: var(--primary-light);
+      border-color: var(--primary);
+      transform: translateY(-2px);
+    }
+    .preset-card-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--gray-800);
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .preset-card-desc {
+      font-size: 12px;
+      color: var(--gray-500);
+    }
+
+    .home-footer-links {
+      margin-top: 24px;
+      font-size: 13px;
+      color: var(--gray-500);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .home-footer-link {
+      color: var(--primary);
+      text-decoration: none;
+      cursor: pointer;
+      font-weight: 600;
+    }
+    .home-footer-link:hover {
+      text-decoration: underline;
+    }
+
+    /* ==========================================================================
+       STEP 1: Store & Shifts (Section A & E)
+       ========================================================================== */
+    .day-group-card {
+      background: var(--gray-50);
+      border: 1.5px solid var(--gray-200);
+      border-radius: var(--radius-md);
+      padding: 16px;
+      margin-bottom: 16px;
+    }
+
+    .day-group-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .day-group-name-input {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--gray-900);
+      background: white;
+      border: 1px solid var(--gray-300);
+      border-radius: var(--radius-sm);
+      padding: 6px 10px;
+      width: 180px;
+    }
+
+    /* Day toggle chips */
+    .day-buttons-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 14px;
+    }
+
+    .day-toggle-btn {
+      padding: 8px 12px;
+      border-radius: var(--radius-md);
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      user-select: none;
+      background: white;
+      color: var(--gray-600);
+      border: 1.5px solid var(--gray-300);
+    }
+    .day-toggle-btn:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+    .day-toggle-btn.selected {
+      background: var(--primary) !important;
+      color: white !important;
+      border-color: var(--primary-hover) !important;
+      font-weight: 700;
+      box-shadow: 0 2px 4px rgba(37, 99, 235, 0.25);
+    }
+    .day-toggle-btn.other-group {
+      opacity: 0.45;
+      background: var(--gray-100);
+      border-color: var(--gray-200);
+      color: var(--gray-400);
+    }
+
+    /* Shift Row & Time Picker (Section A) */
+    .group-shift-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .group-shift-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: white;
+      padding: 10px 12px;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--gray-200);
+      flex-wrap: wrap;
+    }
+
+    .shift-input-name {
+      flex: 2;
+      min-width: 110px;
+    }
+
+    /* Formatted Time Selectors */
+    .time-selector-box {
+      flex: 3;
+      min-width: 230px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .time-select {
+      padding: 6px 8px;
+      font-size: 13px;
+      font-weight: 600;
+      border: 1.5px solid var(--gray-300);
+      border-radius: var(--radius-sm);
+      background: white;
+      color: var(--gray-800);
+      outline: none;
+      cursor: pointer;
+    }
+    .time-select:focus {
+      border-color: var(--primary);
+    }
+
+    .shift-duration-badge {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--gray-500);
+      white-space: nowrap;
+      background: var(--gray-100);
+      padding: 4px 8px;
+      border-radius: var(--radius-sm);
+    }
+
+    .shift-input-count {
+      width: 50px;
+      text-align: center;
+      padding: 6px 4px;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    /* Closed Days Status Box (Bug 2) */
+    .closed-days-box {
+      padding: 12px 16px;
+      border-radius: var(--radius-md);
+      margin-top: 14px;
+      margin-bottom: 8px;
+      transition: all 0.2s ease;
+    }
+    .closed-days-box.no-closed {
+      background: #ecfdf5;
+      border: 1.5px solid #a7f3d0;
+    }
+    .closed-days-box.has-closed {
+      background: #fff7ed;
+      border: 1.5px solid #fed7aa;
+    }
+
+    /* ==========================================================================
+       STEP 2: Worker Registration
+       ========================================================================== */
+    .worker-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      min-height: 48px;
+      padding: 12px;
+      background: var(--gray-50);
+      border-radius: var(--radius-md);
+      border: 1px dashed var(--gray-300);
+    }
+
+    .worker-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: white;
+      padding: 6px 14px;
+      border-radius: 20px;
+      border: 1px solid var(--gray-200);
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--gray-800);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .worker-tag-del {
+      cursor: pointer;
+      color: var(--gray-400);
+      font-size: 16px;
+      border: none;
+      background: none;
+      display: flex;
+      align-items: center;
+    }
+    .worker-tag-del:hover {
+      color: var(--danger);
+    }
+
+    /* ==========================================================================
+       STEP 3: Availability Grid
+       ========================================================================== */
+    .worker-tab-bar {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 10px;
+      margin-bottom: 16px;
+      scrollbar-width: thin;
+    }
+
+    .worker-tab {
+      padding: 8px 16px;
+      border: 1.5px solid var(--gray-200);
+      background: white;
+      border-radius: 20px;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--gray-700);
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s;
+    }
+    .worker-tab.active {
+      background: var(--gray-900);
+      color: white;
+      border-color: var(--gray-900);
+    }
+
+    .quick-toggle-bar {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-bottom: 14px;
+      background: var(--gray-50);
+      padding: 10px 14px;
+      border-radius: var(--radius-md);
+      align-items: center;
+    }
+    .quick-toggle-bar span {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--gray-600);
+      margin-right: 4px;
+    }
+
+    .avail-days-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(125px, 1fr));
+      gap: 10px;
+    }
+
+    .avail-day-col {
+      background: white;
+      border: 1px solid var(--gray-200);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+    }
+
+    .avail-day-header {
+      background: var(--gray-100);
+      padding: 8px;
+      font-size: 13px;
+      font-weight: 700;
+      text-align: center;
+      color: var(--gray-800);
+      border-bottom: 1px solid var(--gray-200);
+    }
+    .avail-day-header.weekend {
+      background: #fef2f2;
+      color: #dc2626;
+    }
+
+    .avail-shift-cell {
+      padding: 10px 6px;
+      border-bottom: 1px solid var(--gray-100);
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.15s;
+      user-select: none;
+    }
+    .avail-shift-cell:last-child {
+      border-bottom: none;
+    }
+    .avail-shift-cell.available {
+      background: var(--success-light);
+      color: #065f46;
+    }
+    .avail-shift-cell.unavailable {
+      background: var(--gray-100);
+      color: var(--gray-400);
+    }
+    .avail-shift-cell:hover {
+      filter: brightness(0.96);
+    }
+
+    .avail-shift-name {
+      font-size: 13px;
+      font-weight: 700;
+      display: block;
+    }
+    .avail-shift-time {
+      font-size: 11px;
+      color: inherit;
+      opacity: 0.8;
+      display: block;
+      margin-top: 1px;
+    }
+    .avail-shift-status {
+      font-size: 11px;
+      font-weight: 700;
+      margin-top: 4px;
+      display: inline-block;
+      padding: 2px 6px;
+      border-radius: 4px;
+      background: rgba(255,255,255,0.6);
+    }
+
+    /* ==========================================================================
+       STEP 4: Smart Scheduling Rules (Folded by Default - Section C)
+       ========================================================================== */
+    .rules-summary-box {
+      background: #f0fdf4;
+      border: 1.5px solid #bbf7d0;
+      border-radius: var(--radius-lg);
+      padding: 20px;
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .rules-summary-text {
+      font-size: 14px;
+      color: #166534;
+      line-height: 1.6;
+    }
+    .rules-summary-text strong {
+      font-size: 15px;
+      color: #14532d;
+      display: block;
+      margin-bottom: 2px;
+    }
+
+    .rules-collapsible {
+      display: none;
+      background: white;
+      border: 1.5px solid var(--gray-200);
+      border-radius: var(--radius-lg);
+      padding: 20px;
+      margin-bottom: 20px;
+      animation: fadeIn 0.2s ease;
+    }
+
+    .rule-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--gray-100);
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .rule-item:last-child {
+      border-bottom: none;
+    }
+
+    .rule-info {
+      flex: 1;
+      min-width: 240px;
+    }
+    .rule-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--gray-800);
+    }
+    .rule-desc {
+      font-size: 12px;
+      color: var(--gray-500);
+      margin-top: 2px;
+    }
+
+    .rule-controls {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* Switch */
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 44px;
+      height: 24px;
+    }
+    .switch input { opacity: 0; width: 0; height: 0; }
+    .slider {
+      position: absolute; cursor: pointer;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-color: var(--gray-300);
+      transition: .2s;
+      border-radius: 24px;
+    }
+    .slider:before {
+      position: absolute; content: "";
+      height: 18px; width: 18px;
+      left: 3px; bottom: 3px;
+      background-color: white;
+      transition: .2s;
+      border-radius: 50%;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+    }
+    input:checked + .slider { background-color: var(--primary); }
+    input:checked + .slider:before { transform: translateX(20px); }
+
+    /* ==========================================================================
+       STEP 5: Result Screen & Storage Tools (Section D)
+       ========================================================================== */
+    .table-container {
+      overflow-x: auto;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--gray-200);
+      background: white;
+    }
+
+    .schedule-table {
+      width: 100%;
+      border-collapse: collapse;
+      table-layout: fixed;
+      font-size: 13px;
+    }
+    .schedule-table th, .schedule-table td {
+      border: 1px solid var(--gray-200);
+      padding: 10px 8px;
+      vertical-align: top;
+    }
+    .schedule-table th {
+      background: var(--gray-800);
+      color: white;
+      font-weight: 700;
+      text-align: center;
+      padding: 12px 6px;
+    }
+    .schedule-table th.weekend-col {
+      background: #334155;
+    }
+
+    .assigned-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 6px 10px;
+      background: var(--primary-light);
+      color: var(--primary-hover);
+      border: 1px solid var(--primary-border);
+      border-radius: var(--radius-sm);
+      font-weight: 700;
+      font-size: 13px;
+      margin-bottom: 4px;
+    }
+
+    /* Diagnostics Tooltip */
+    .badge-shortage {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      padding: 6px 10px;
+      background: var(--danger-light);
+      color: var(--danger);
+      border: 1.5px solid #fca5a5;
+      border-radius: var(--radius-sm);
+      font-weight: 700;
+      font-size: 12px;
+      cursor: help;
+    }
+    .badge-shortage .tooltip-box {
+      visibility: hidden; opacity: 0;
+      position: absolute; bottom: 125%; left: 50%;
+      transform: translateX(-50%);
+      background: var(--gray-900);
+      color: white;
+      text-align: left;
+      padding: 10px 14px;
+      border-radius: var(--radius-md);
+      font-size: 12px; font-weight: 400;
+      white-space: normal; width: 250px;
+      box-shadow: var(--shadow-lg);
+      z-index: 1000;
+      transition: opacity 0.2s, visibility 0.2s;
+      pointer-events: none;
+      line-height: 1.4;
+    }
+    .badge-shortage .tooltip-box::after {
+      content: ""; position: absolute;
+      top: 100%; left: 50%; margin-left: -6px;
+      border-width: 6px; border-style: solid;
+      border-color: var(--gray-900) transparent transparent transparent;
+    }
+    .badge-shortage:hover .tooltip-box {
+      visibility: visible; opacity: 1;
+    }
+
+    /* Stats Grid */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .stat-card {
+      background: var(--gray-50);
+      border: 1px solid var(--gray-200);
+      border-radius: var(--radius-md);
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .stat-header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .stat-name {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--gray-800);
+    }
+    .badge-holiday-pay {
+      background: #e2e8f0;
+      color: #475569;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+    .stat-metrics {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      font-size: 13px;
+      color: var(--gray-600);
+    }
+    .stat-highlight {
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--primary);
+    }
+
+    /* Save & Export Section at Step 5 Bottom (Section D) */
+    .result-save-box {
+      background: var(--gray-50);
+      border: 1px solid var(--gray-200);
+      border-radius: var(--radius-lg);
+      padding: 16px 20px;
+      margin-top: 28px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    /* Buttons & Inputs */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 10px 18px;
+      font-size: 14px;
+      font-weight: 600;
+      border-radius: var(--radius-md);
+      border: none;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      text-decoration: none;
+    }
+    .btn-primary { background: var(--primary); color: white; }
+    .btn-primary:hover { background: var(--primary-hover); box-shadow: 0 4px 10px rgba(37, 99, 235, 0.3); }
+
+    .btn-secondary { background: var(--gray-100); color: var(--gray-700); border: 1px solid var(--gray-200); }
+    .btn-secondary:hover { background: var(--gray-200); }
+
+    .btn-success { background: var(--success); color: white; }
+    .btn-success:hover { background: #059669; box-shadow: 0 4px 10px rgba(16, 185, 129, 0.3); }
+
+    .btn-outline-primary { background: white; color: var(--primary); border: 1.5px solid var(--primary); }
+    .btn-outline-primary:hover { background: var(--primary-light); }
+
+    .btn-danger-outline { background: white; color: var(--danger); border: 1px solid #fecaca; }
+    .btn-danger-outline:hover { background: var(--danger-light); }
+
+    .btn-large { padding: 14px 28px; font-size: 16px; font-weight: 700; border-radius: var(--radius-lg); }
+    .btn-sm { padding: 6px 10px; font-size: 12px; border-radius: var(--radius-sm); }
+
+    .input-text {
+      padding: 8px 12px;
+      border: 1px solid var(--gray-300);
+      border-radius: var(--radius-md);
+      font-size: 14px;
+      outline: none;
+    }
+    .input-text:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15); }
+
+    .select-box {
+      padding: 6px 10px;
+      border: 1px solid var(--gray-300);
+      border-radius: var(--radius-md);
+      font-size: 13px;
+      background: white;
+      outline: none;
+    }
+
+    .action-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-top: 24px;
+      padding-top: 16px;
+      border-top: 1px solid var(--gray-200);
+      flex-wrap: wrap;
+    }
+
+    .page-footer {
+      margin-top: 40px;
+      text-align: center;
+      font-size: 12px;
+      color: var(--gray-500);
+      line-height: 1.6;
+      border-top: 1px solid var(--gray-200);
+      padding-top: 20px;
+    }
+
+    .callout {
+      background: #f0f9ff;
+      border-left: 4px solid var(--primary);
+      padding: 12px 16px;
+      border-radius: 0 var(--radius-md) var(--radius-md) 0;
+      font-size: 13px;
+      color: #0369a1;
+      margin-bottom: 16px;
+    }
+
+    .callout-warning {
+      background: #fffbeb;
+      border-left-color: var(--warning);
+      color: #b45309;
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 24px; left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: var(--gray-900);
+      color: white;
+      padding: 12px 24px;
+      border-radius: 30px;
+      font-size: 14px; font-weight: 600;
+      box-shadow: var(--shadow-lg);
+      transition: transform 0.3s ease, opacity 0.3s ease;
+      opacity: 0; z-index: 9999;
+      pointer-events: none;
+    }
+    .toast.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media print {
+      body { background: white; padding: 0; }
+      .container { max-width: 100%; }
+      #homeScreen, .step-nav, .action-footer, .btn, .card-header .btn, #step1, #step2, #step3, #step4, .result-save-box {
+        display: none !important;
+      }
+      #step5 { display: block !important; border: none; box-shadow: none; padding: 0; }
+      .schedule-table th { background: #333 !important; color: white !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .assigned-badge { background: #f3f4f6 !important; color: #000 !important; border: 1px solid #ccc !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .badge-shortage { background: #fee2e2 !important; color: #b91c1c !important; border: 1px solid #f87171 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .page-footer { margin-top: 20px; font-size: 11px; }
+    }
+
+    @media (max-width: 640px) {
+      body { padding: 10px; }
+      .card { padding: 16px; }
+      .group-shift-item { flex-direction: column; align-items: stretch; }
+      .time-selector-box { justify-content: space-between; }
+      .avail-days-container { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- =========================================================================
+       STEP NAVIGATION (Steps 1 to 5) - Visible once started
+       ========================================================================= -->
+  <nav class="step-nav" id="mainStepNav" style="display: none;">
+    <button class="step-btn" onclick="goToStep(1)" id="step-nav-1">
+      <span class="step-num">1</span> 매장 & 타임
+    </button>
+    <button class="step-btn" onclick="goToStep(2)" id="step-nav-2">
+      <span class="step-num">2</span> 근무자 등록
+    </button>
+    <button class="step-btn" onclick="goToStep(3)" id="step-nav-3">
+      <span class="step-num">3</span> 가능 시간
+    </button>
+    <button class="step-btn" onclick="goToStep(4)" id="step-nav-4">
+      <span class="step-num">4</span> 규칙 설정
+    </button>
+    <button class="step-btn" onclick="goToStep(5)" id="step-nav-5">
+      <span class="step-num">5</span> 근무표 결과
+    </button>
+  </nav>
+
+  <!-- =========================================================================
+       START / HOME SCREEN (Section B)
+       ========================================================================= -->
+  <section class="card home-hero" id="homeScreen">
+    <span class="home-badge">EASY & SMART SCHEDULER</span>
+    <h1>🏪 알바 근무표 자동 생성기</h1>
+    <p>조건을 입력하면 공평하고 빈틈없는 맞춤 근무표를 0.1초 만에 자동으로 만듭니다.</p>
+
+    <div class="home-main-actions">
+      <!-- Resume button (shown if saved state exists) -->
+      <button id="btnResume" class="btn-resume" style="display: none;" onclick="resumePreviousSession()">
+        ▶️ 지난번 이어서 하기
+      </button>
+
+      <!-- Main Start Button -->
+      <button class="btn-start-new" onclick="startNewSession()">
+        ✨ 근무표 만들기 시작 ➡️
+      </button>
+    </div>
+
+    <!-- Quick Industry Presets -->
+    <div class="home-presets">
+      <div class="home-presets-title">⚡ 빠른 시작 (업종 프리셋으로 시작하기)</div>
+      <div class="home-preset-grid">
+        <div class="preset-card" onclick="applyPresetAndStart('convenience')">
+          <div class="preset-card-title">🏪 편의점</div>
+          <div class="preset-card-desc">연중무휴 · 3교대(오전/오후/야간)</div>
+        </div>
+        <div class="preset-card" onclick="applyPresetAndStart('cafe')">
+          <div class="preset-card-title">☕ 카페</div>
+          <div class="preset-card-desc">평일/주말 분리 · 오픈/미들/마감</div>
+        </div>
+        <div class="preset-card" onclick="applyPresetAndStart('restaurant')">
+          <div class="preset-card-title">🍽️ 음식점</div>
+          <div class="preset-card-desc">런치·디너 피크 · 브레이크타임</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom Slot & Import Links (Section D) -->
+    <div class="home-footer-links">
+      <span>📂 다른 설정 불러오기:</span>
+      <select id="homeSlotSelect" class="select-box" onchange="handleHomeSlotSelect(this.value)">
+        <option value="">-- 저장된 매장 선택 --</option>
+      </select>
+      <span class="home-footer-link" onclick="document.getElementById('homeImportFileInput').click()">
+        📥 파일에서 불러오기 (.json)
+      </span>
+      <input type="file" id="homeImportFileInput" style="display: none;" accept=".json" onchange="importConfigFile(event)">
+    </div>
+  </section>
+
+  <!-- =========================================================================
+       STEP 1: Store & Shifts Configuration (Rules removed - Section B)
+       ========================================================================= -->
+  <section class="card" id="step1" style="display: none;">
+    <div class="card-header">
+      <div>
+        <h2 class="card-title">1단계: 요일 그룹 & 근무 타임 설정</h2>
+        <p class="card-desc">평일과 주말 등 요일별로 근무 시간과 필요 인원을 다르게 설정할 수 있습니다.</p>
+      </div>
+      <button class="btn btn-sm btn-outline-primary" onclick="addDayGroup()">+ 요일 그룹 추가</button>
+    </div>
+
+    <!-- Day Groups Container -->
+    <div id="dayGroupsContainer">
+      <!-- Rendered by JS -->
+    </div>
+
+    <!-- Closed Days Notice Box (Bug 2) -->
+    <div id="closedDaysStatusBox">
+      <!-- Rendered by JS -->
+    </div>
+
+    <div class="callout" style="margin-top: 10px;">
+      💡 <strong>요일 선택 안내:</strong> 파란색으로 채워진 요일이 해당 그룹에 배정된 요일입니다. 어떤 그룹에도 선택되지 않은 요일은 휴무일로 처리됩니다.
+    </div>
+
+    <div class="action-footer">
+      <button class="btn btn-secondary" onclick="goToHome()">🏠 처음으로</button>
+      <button class="btn btn-primary" onclick="goToStep(2)">다음: 근무자 등록 ➡️</button>
+    </div>
+  </section>
+
+  <!-- =========================================================================
+       STEP 2: Worker Registration
+       ========================================================================= -->
+  <section class="card" id="step2" style="display: none;">
+    <div class="card-header">
+      <div>
+        <h2 class="card-title">2단계: 알바 근무자 등록</h2>
+        <p class="card-desc">근무표에 들어갈 알바생 이름을 추가하세요.</p>
+      </div>
+      <span id="workerCountBadge" style="font-size: 13px; font-weight: 700; color: var(--gray-600); background: var(--gray-100); padding: 4px 10px; border-radius: 12px;">
+        총 0명 등록됨
+      </span>
+    </div>
+
+    <div style="display: flex; gap: 10px; margin-bottom: 16px;">
+      <input type="text" id="workerNameInput" class="input-text" style="flex: 1;" placeholder="근무자 이름 입력 (예: 김민수)" onkeydown="if(event.key === 'Enter') addWorker()">
+      <button class="btn btn-primary" onclick="addWorker()" style="white-space: nowrap;">+ 추가</button>
+    </div>
+
+    <div style="margin-bottom: 20px;">
+      <label style="font-size: 14px; font-weight: 600; color: var(--gray-700); margin-bottom: 8px; display: block;">등록된 근무자 목록</label>
+      <div class="worker-tags" id="workerTagsContainer">
+        <!-- Rendered by JS -->
+      </div>
+    </div>
+
+    <div class="callout">
+      💡 <strong>안내:</strong> 한 번 등록된 근무자 명단과 가능 시간표는 다음 주 근무표를 짤 때도 그대로 재사용됩니다.
+    </div>
+
+    <div class="action-footer">
+      <button class="btn btn-secondary" onclick="goToStep(1)">⬅️ 이전: 매장 설정</button>
+      <button class="btn btn-primary" onclick="goToStep(3)">다음: 가능 시간 체크 ➡️</button>
+    </div>
+  </section>
+
+  <!-- =========================================================================
+       STEP 3: Worker Availability Grid
+       ========================================================================= -->
+  <section class="card" id="step3" style="display: none;">
+    <div class="card-header">
+      <div>
+        <h2 class="card-title">3단계: 근무자별 가능 시간 체크</h2>
+        <p class="card-desc">근무자별로 일할 수 있는 요일/타임을 체크하세요. (칸 클릭 시 가능/불가 전환)</p>
+      </div>
+    </div>
+
+    <div id="noWorkersAlert" class="callout callout-warning" style="display: none;">
+      등록된 근무자가 없습니다. 2단계에서 근무자를 먼저 등록해 주세요.
+    </div>
+
+    <div id="availContent">
+      <!-- Worker Tabs -->
+      <div class="worker-tab-bar" id="workerTabsBar">
+        <!-- Rendered by JS -->
+      </div>
+
+      <!-- Quick Toggles -->
+      <div class="quick-toggle-bar">
+        <span>빠른 설정:</span>
+        <button class="btn btn-sm btn-secondary" onclick="setWorkerAllAvail(true)">전체 가능(O)</button>
+        <button class="btn btn-sm btn-secondary" onclick="setWorkerAllAvail(false)">전체 불가(X)</button>
+        <button class="btn btn-sm btn-secondary" onclick="setWorkerWeekdaysOnly()">평일만 가능</button>
+        <button class="btn btn-sm btn-secondary" onclick="setWorkerWeekendsOnly()">주말만 가능</button>
+      </div>
+
+      <!-- Dynamic Days Grid for Selected Worker -->
+      <div class="avail-days-container" id="availDaysContainer">
+        <!-- Rendered by JS -->
+      </div>
+    </div>
+
+    <div class="action-footer">
+      <button class="btn btn-secondary" onclick="goToStep(2)">⬅️ 이전: 근무자 등록</button>
+      <button class="btn btn-primary" onclick="goToStep(4)">다음: 규칙 설정 ➡️</button>
+    </div>
+  </section>
+
+  <!-- =========================================================================
+       STEP 4: Scheduling Rules (Folded by Default - Section B & C)
+       ========================================================================= -->
+  <section class="card" id="step4" style="display: none;">
+    <div class="card-header">
+      <div>
+        <h2 class="card-title">4단계: 스마트 배정 규칙 설정</h2>
+        <p class="card-desc">검증된 배정 규칙이 기본 적용되어 있어 바로 다음 단계로 넘어가셔도 좋습니다.</p>
+      </div>
+    </div>
+
+    <!-- Default 1-line Summary Box -->
+    <div class="rules-summary-box">
+      <div class="rules-summary-text">
+        <strong>✅ 기본 스마트 규칙이 적용되어 있습니다.</strong>
+        하루 최대 2타임 · 연속 근무 보장 · 클로픈(11h) 금지 · 연속 6일 상한 · 주 40시간 상한 · 주말 균등배분
+      </div>
+      <button class="btn btn-sm btn-outline-primary" id="btnToggleRules" onclick="toggleRulesDetail()">
+        ⚙️ 규칙 자세히 설정하기 🔽
+      </button>
+    </div>
+
+    <!-- Collapsible Detailed Rules Panel (Section C) -->
+    <div class="rules-collapsible" id="rulesDetailPanel">
+      <h3 style="font-size: 15px; font-weight: 700; color: var(--gray-800); margin-bottom: 12px;">
+        세부 규칙 맞춤 조절
+      </h3>
+
+      <!-- Rule 1 -->
+      <div class="rule-item">
+        <div class="rule-info">
+          <div class="rule-title">1. 하루 최대 타임 수 제한</div>
+          <div class="rule-desc">한 사람이 하루에 들어갈 수 있는 최대 근무 타임 수를 제한합니다.</div>
+        </div>
+        <div class="rule-controls">
+          <select id="rule_maxShiftsPerDay" class="select-box" onchange="updateRule('maxShiftsPerDay', parseInt(this.value))">
+            <option value="1">1타임</option>
+            <option value="2" selected>2타임 (기본)</option>
+            <option value="3">3타임</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Rule 2 -->
+      <div class="rule-item">
+        <div class="rule-info">
+          <div class="rule-title">2. 하루 두 번 출근 금지 (연속 근무 보장)</div>
+          <div class="rule-desc">하루 2타임 이상 일할 때 오픈+마감처럼 중간이 비는 배정을 차단합니다.</div>
+        </div>
+        <div class="rule-controls">
+          <label class="switch">
+            <input type="checkbox" id="rule_noSplitShift" checked onchange="updateRule('noSplitShift', this.checked)">
+            <span class="slider"></span>
+          </label>
+        </div>
+      </div>
+
+      <!-- Rule 3 -->
+      <div class="rule-item">
+        <div class="rule-info">
+          <div class="rule-title">3. 클로픈(마감 후 오픈) 금지</div>
+          <div class="rule-desc">마감 근무 다음 날 오픈 배정을 방지하고 최소 휴식 시간을 보장합니다.</div>
+        </div>
+        <div class="rule-controls">
+          <span style="font-size: 13px; color: var(--gray-600);">최소 휴식</span>
+          <input type="number" id="rule_minRestHours" class="input-text" style="width: 55px; text-align: center; padding: 4px;" value="11" min="6" max="24" onchange="updateRule('minRestHours', parseInt(this.value)||11)">
+          <span style="font-size: 13px; color: var(--gray-600);">시간</span>
+          <label class="switch" style="margin-left: 6px;">
+            <input type="checkbox" id="rule_noClopen" checked onchange="updateRule('noClopen', this.checked)">
+            <span class="slider"></span>
+          </label>
+        </div>
+      </div>
+
+      <!-- Rule 4 -->
+      <div class="rule-item">
+        <div class="rule-info">
+          <div class="rule-title">4. 연속 근무일 상한</div>
+          <div class="rule-desc">연속 근무 가능 일수를 제한하여 주중 최소 휴무를 보장합니다.</div>
+        </div>
+        <div class="rule-controls">
+          <span style="font-size: 13px; color: var(--gray-600);">최대</span>
+          <input type="number" id="rule_maxConsecutiveDays" class="input-text" style="width: 55px; text-align: center; padding: 4px;" value="6" min="2" max="7" onchange="updateRule('maxConsecutiveDays', parseInt(this.value)||6)">
+          <span style="font-size: 13px; color: var(--gray-600);">일 연속</span>
+          <label class="switch" style="margin-left: 6px;">
+            <input type="checkbox" id="rule_limitConsecutiveDays" checked onchange="updateRule('limitConsecutiveDays', this.checked)">
+            <span class="slider"></span>
+          </label>
+        </div>
+      </div>
+
+      <!-- Rule 5 -->
+      <div class="rule-item">
+        <div class="rule-info">
+          <div class="rule-title">5. 주간 최대 근무시간 상한</div>
+          <div class="rule-desc">1주일 총 근로시간이 설정한 시간을 넘지 않도록 제한합니다.</div>
+        </div>
+        <div class="rule-controls">
+          <span style="font-size: 13px; color: var(--gray-600);">주당 최대</span>
+          <input type="number" id="rule_maxWeeklyHours" class="input-text" style="width: 55px; text-align: center; padding: 4px;" value="40" min="10" max="60" onchange="updateRule('maxWeeklyHours', parseInt(this.value)||40)">
+          <span style="font-size: 13px; color: var(--gray-600);">시간</span>
+          <label class="switch" style="margin-left: 6px;">
+            <input type="checkbox" id="rule_limitWeeklyHours" checked onchange="updateRule('limitWeeklyHours', this.checked)">
+            <span class="slider"></span>
+          </label>
+        </div>
+      </div>
+
+      <!-- Rule 6 -->
+      <div class="rule-item">
+        <div class="rule-info">
+          <div class="rule-title">6. 주말 배정 균등화</div>
+          <div class="rule-desc">토요일/일요일 근무 횟수를 근무자들 사이에 최대한 공평하게 분배합니다.</div>
+        </div>
+        <div class="rule-controls">
+          <label class="switch">
+            <input type="checkbox" id="rule_balanceWeekends" checked onchange="updateRule('balanceWeekends', this.checked)">
+            <span class="slider"></span>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <div class="action-footer">
+      <button class="btn btn-secondary" onclick="goToStep(3)">⬅️ 이전: 가능 시간</button>
+      <button class="btn btn-success btn-large" onclick="generateScheduleAndShow()">✨ [근무표 만들기] ✨</button>
+    </div>
+  </section>
+
+  <!-- =========================================================================
+       STEP 5: Result Screen & Storage Tools (Section D)
+       ========================================================================= -->
+  <section class="card" id="step5" style="display: none;">
+    <div class="card-header">
+      <div>
+        <h2 class="card-title">🎉 5단계: 이번 주 알바 근무표</h2>
+        <p class="card-desc" id="resultGeneratedTime"></p>
+      </div>
+      <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+        <button class="btn btn-sm btn-primary" onclick="generateNextWeekSchedule()">🗓️ 다음 주 근무표 만들기</button>
+        <button class="btn btn-sm btn-secondary" onclick="generateScheduleAndShow()">🔄 다시 생성하기</button>
+        <button class="btn btn-sm btn-outline-primary" onclick="copyScheduleToClipboard()">📋 텍스트 복사</button>
+        <button class="btn btn-sm btn-secondary" onclick="window.print()">🖨️ 인쇄 / PDF</button>
+      </div>
+    </div>
+
+    <!-- Shortage Notice -->
+    <div id="shortageNotice" class="callout callout-warning" style="display: none;">
+      ⚠️ 일부 시간대에 지원자가 부족하거나 규칙에 의해 <strong style="color: var(--danger);">인원 부족</strong>으로 표시되었습니다. <strong>빨간색 뱃지에 마우스를 올리면 제외 사유</strong>를 확인할 수 있습니다.
+    </div>
+
+    <!-- Result Schedule Table -->
+    <div class="table-container">
+      <table class="schedule-table" id="scheduleResultTable">
+        <!-- Rendered by JS -->
+      </table>
+    </div>
+
+    <!-- Workload & Weekly Hours Summary with Holiday Pay -->
+    <div style="margin-top: 28px;">
+      <h3 style="font-size: 15px; font-weight: 700; color: var(--gray-800); margin-bottom: 8px;">
+        📊 근무자별 주간 근무시간 & 배정 통계
+      </h3>
+      <div class="stats-grid" id="statsContainer">
+        <!-- Rendered by JS -->
+      </div>
+    </div>
+
+    <!-- Save & Export Box at Step 5 Bottom (Section D) -->
+    <div class="result-save-box">
+      <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+        <strong>💾 현재 설정 저장:</strong>
+        <input type="text" id="slotSaveNameInput" class="input-text" style="width: 140px; padding: 6px 8px; font-size: 13px;" placeholder="매장 이름 (예: 강남점)">
+        <button class="btn btn-sm btn-secondary" onclick="saveSlotFromInput()">슬롯에 저장</button>
+      </div>
+      <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+        <button class="btn btn-sm btn-outline-primary" onclick="exportConfigFile()">📤 설정 파일 내보내기 (.json)</button>
+      </div>
+    </div>
+
+    <div class="action-footer">
+      <button class="btn btn-secondary" onclick="goToStep(4)">⬅️ 이전: 규칙 수정</button>
+      <button class="btn btn-success" onclick="copyScheduleToClipboard()">📋 카카오톡 공유용 복사</button>
+    </div>
+  </section>
+
+  <!-- Page Footer Notice (Section F & G) -->
+  <footer class="page-footer">
+    <p style="margin-bottom: 6px; color: var(--gray-600);">
+      ※ 브라우저 저장은 현재 사용 중인 기기(브라우저)에만 보관됩니다. 다른 기기로 옮기려면 <strong>[설정 내보내기]</strong>를 이용하세요.
+    </p>
+    <p style="font-size: 11px; color: var(--gray-400);">
+      본 도구는 근무표 작성을 돕는 참고용입니다. 실제 운영 전 근로시간·휴게시간·임금 기준은 별도로 확인하세요.
+    </p>
+  </footer>
+</div>
+
+<!-- Toast Notification -->
+<div id="toast" class="toast">메시지</div>
+
+<script>
+  /* ==========================================================================
+     CONSTANTS & MASTER DEFINITIONS
+     ========================================================================== */
+  const ALL_DAYS = [
+    { id: 'mon', name: '월', isWeekend: false },
+    { id: 'tue', name: '화', isWeekend: false },
+    { id: 'wed', name: '수', isWeekend: false },
+    { id: 'thu', name: '목', isWeekend: false },
+    { id: 'fri', name: '금', isWeekend: false },
+    { id: 'sat', name: '토', isWeekend: true },
+    { id: 'sun', name: '일', isWeekend: true }
+  ];
+
+  // Standard 30-min interval times from 00:00 to 24:00
+  const TIME_OPTIONS = [];
+  for (let h = 0; h <= 24; h++) {
+    const hh = String(h).padStart(2, '0');
+    TIME_OPTIONS.push(`${hh}:00`);
+    if (h < 24) TIME_OPTIONS.push(`${hh}:30`);
+  }
+
+  /* ==========================================================================
+     APPLICATION STATE
+     ========================================================================== */
+  let state = {
+    dayGroups: [
+      {
+        id: 'g_weekday',
+        name: '평일 그룹',
+        days: ['mon', 'tue', 'wed', 'thu', 'fri'],
+        shifts: [
+          { id: 's_wd_1', name: '오픈', start: '09:00', end: '15:00', required: 1 },
+          { id: 's_wd_2', name: '마감', start: '15:00', end: '22:00', required: 1 }
+        ]
+      },
+      {
+        id: 'g_weekend',
+        name: '주말 그룹',
+        days: ['sat', 'sun'],
+        shifts: [
+          { id: 's_we_1', name: '오픈', start: '10:00', end: '16:00', required: 1 },
+          { id: 's_we_2', name: '마감', start: '16:00', end: '21:00', required: 1 }
+        ]
+      }
+    ],
+    rules: {
+      maxShiftsPerDay: 2,
+      noSplitShift: true,
+      noClopen: true,
+      minRestHours: 11,
+      limitConsecutiveDays: true,
+      maxConsecutiveDays: 6,
+      limitWeeklyHours: true,
+      maxWeeklyHours: 40,
+      balanceWeekends: true
+    },
+    workers: [],
+    availability: {},
+    lastSchedule: null
+  };
+
+  let currentWorkerTabId = null;
+  let currentStep = 0; // 0 = Home, 1..5 = Steps
+
+  /* ==========================================================================
+     LOCAL STORAGE & CONFIG EXPORT/IMPORT
+     ========================================================================== */
+  const MAIN_STORAGE_KEY = 'ALBA_SCHEDULER_V3_MAIN';
+  const SLOTS_STORAGE_KEY = 'ALBA_SCHEDULER_V3_SLOTS';
+
+  function saveState() {
+    try {
+      localStorage.setItem(MAIN_STORAGE_KEY, JSON.stringify(state));
+    } catch (e) {
+      console.warn('Auto-save failed', e);
+    }
+  }
+
+  function loadState() {
+    try {
+      const saved = localStorage.getItem(MAIN_STORAGE_KEY);
+      if (saved) {
+        state = JSON.parse(saved);
+        if (!state.rules) {
+          state.rules = {
+            maxShiftsPerDay: 2, noSplitShift: true, noClopen: true, minRestHours: 11,
+            limitConsecutiveDays: true, maxConsecutiveDays: 6, limitWeeklyHours: true,
+            maxWeeklyHours: 40, balanceWeekends: true
+          };
+        }
+        return true;
+      }
+    } catch (e) {
+      console.warn('Auto-load failed', e);
+    }
+    return false;
+  }
+
+  function getSlots() {
+    try {
+      const saved = localStorage.getItem(SLOTS_STORAGE_KEY);
+      return saved ? JSON.parse(saved) : {};
+    } catch (e) {
+      return {};
+    }
+  }
+
+  function renderHomeSlotSelect() {
+    const select = document.getElementById('homeSlotSelect');
+    if (!select) return;
+    const slots = getSlots();
+    select.innerHTML = '<option value="">-- 저장된 매장 선택 --</option>';
+    Object.keys(slots).forEach(name => {
+      const opt = document.createElement('option');
+      opt.value = name;
+      opt.textContent = name;
+      select.appendChild(opt);
+    });
+  }
+
+  function handleHomeSlotSelect(slotName) {
+    if (!slotName) return;
+    const slots = getSlots();
+    if (slots[slotName]) {
+      state = JSON.parse(JSON.stringify(slots[slotName]));
+      syncAvailabilitySchema();
+      saveState();
+      renderAll();
+      showToast(`'${slotName}' 설정을 불러왔습니다.`);
+      goToStep(1);
+    }
+  }
+
+  function saveSlotFromInput() {
+    const input = document.getElementById('slotSaveNameInput');
+    const name = input.value.trim();
+    if (!name) {
+      showToast('저장할 매장 이름을 입력해 주세요.');
+      input.focus();
+      return;
+    }
+    const slots = getSlots();
+    slots[name] = JSON.parse(JSON.stringify(state));
+    localStorage.setItem(SLOTS_STORAGE_KEY, JSON.stringify(slots));
+    renderHomeSlotSelect();
+    showToast(`'${name}' 설정이 저장되었습니다.`);
+  }
+
+  function exportConfigFile() {
+    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(state, null, 2));
+    const downloadAnchor = document.createElement('a');
+    downloadAnchor.setAttribute("href", dataStr);
+    downloadAnchor.setAttribute("download", `alba_schedule_config_${new Date().toISOString().slice(0,10)}.json`);
+    document.body.appendChild(downloadAnchor);
+    downloadAnchor.click();
+    downloadAnchor.remove();
+    showToast('설정 파일이 다운로드되었습니다.');
+  }
+
+  function importConfigFile(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      try {
+        const loaded = JSON.parse(e.target.result);
+        if (loaded && loaded.dayGroups) {
+          state = loaded;
+          syncAvailabilitySchema();
+          saveState();
+          renderAll();
+          showToast('설정 파일을 성공적으로 불러왔습니다!');
+          goToStep(1);
+        } else {
+          alert('올바른 설정 파일 형식이 아닙니다.');
+        }
+      } catch (err) {
+        alert('파일을 읽는 중 오류가 발생했습니다.');
+      }
+      event.target.value = '';
+    };
+    reader.readAsText(file);
+  }
+
+  /* ==========================================================================
+     START / HOME FLOW & PRESETS
+     ========================================================================== */
+  function goToHome() {
+    currentStep = 0;
+    document.getElementById('homeScreen').style.display = 'block';
+    document.getElementById('mainStepNav').style.display = 'none';
+    for (let i = 1; i <= 5; i++) {
+      const sec = document.getElementById(`step${i}`);
+      if (sec) sec.style.display = 'none';
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function resumePreviousSession() {
+    showToast('지난번 작업 상태를 이어갑니다.');
+    if (state.lastSchedule) {
+      renderScheduleResult(state.lastSchedule);
+      goToStep(5);
+    } else {
+      goToStep(1);
+    }
+  }
+
+  function startNewSession() {
+    goToStep(1);
+  }
+
+  function applyPresetAndStart(presetType) {
+    applyPresetData(presetType);
+    goToStep(1);
+    showToast(`'${presetType === 'convenience' ? '편의점' : presetType === 'cafe' ? '카페' : '음식점'}' 프리셋이 세팅되었습니다.`);
+  }
+
+  function applyPresetData(presetType) {
+    if (presetType === 'convenience') {
+      state.dayGroups = [
+        {
+          id: 'g_all',
+          name: '연중무휴 (월~일)',
+          days: ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'],
+          shifts: [
+            { id: 's_cv_1', name: '오전', start: '07:00', end: '15:00', required: 1 },
+            { id: 's_cv_2', name: '오후', start: '15:00', end: '23:00', required: 1 },
+            { id: 's_cv_3', name: '야간', start: '23:00', end: '07:00', required: 1 }
+          ]
+        }
+      ];
+      state.rules = {
+        maxShiftsPerDay: 1, noSplitShift: true, noClopen: true, minRestHours: 11,
+        limitConsecutiveDays: true, maxConsecutiveDays: 6, limitWeeklyHours: true,
+        maxWeeklyHours: 40, balanceWeekends: true
+      };
+      if (state.workers.length === 0) {
+        state.workers = [
+          { id: 'w1', name: '김철수' }, { id: 'w2', name: '이영희' },
+          { id: 'w3', name: '박민수' }, { id: 'w4', name: '최지은' },
+          { id: 'w5', name: '정우성' }
+        ];
+      }
+    } else if (presetType === 'cafe') {
+      state.dayGroups = [
+        {
+          id: 'g_wd',
+          name: '평일 그룹',
+          days: ['mon', 'tue', 'wed', 'thu', 'fri'],
+          shifts: [
+            { id: 's_cf_1', name: '오픈', start: '08:00', end: '14:00', required: 2 },
+            { id: 's_cf_2', name: '미들', start: '12:00', end: '18:00', required: 1 },
+            { id: 's_cf_3', name: '마감', start: '17:00', end: '23:00', required: 2 }
+          ]
+        },
+        {
+          id: 'g_we',
+          name: '주말 그룹',
+          days: ['sat', 'sun'],
+          shifts: [
+            { id: 's_cf_4', name: '오픈', start: '09:00', end: '15:00', required: 2 },
+            { id: 's_cf_5', name: '마감', start: '15:00', end: '22:00', required: 2 }
+          ]
+        }
+      ];
+      state.rules = {
+        maxShiftsPerDay: 2, noSplitShift: true, noClopen: true, minRestHours: 11,
+        limitConsecutiveDays: true, maxConsecutiveDays: 6, limitWeeklyHours: true,
+        maxWeeklyHours: 40, balanceWeekends: true
+      };
+      if (state.workers.length === 0) {
+        state.workers = [
+          { id: 'w1', name: '김민수' }, { id: 'w2', name: '이지은' },
+          { id: 'w3', name: '박서준' }, { id: 'w4', name: '최유진' },
+          { id: 'w5', name: '정다운' }, { id: 'w6', name: '한소희' }
+        ];
+      }
+    } else if (presetType === 'restaurant') {
+      state.dayGroups = [
+        {
+          id: 'g_wd',
+          name: '평일 그룹',
+          days: ['mon', 'tue', 'wed', 'thu', 'fri'],
+          shifts: [
+            { id: 's_rs_1', name: '런치 피크', start: '10:00', end: '15:00', required: 2 },
+            { id: 's_rs_2', name: '디너 피크', start: '17:00', end: '22:00', required: 3 }
+          ]
+        },
+        {
+          id: 'g_we',
+          name: '주말 그룹',
+          days: ['sat', 'sun'],
+          shifts: [
+            { id: 's_rs_3', name: '주말 풀타임', start: '11:00', end: '22:00', required: 3 }
+          ]
+        }
+      ];
+      state.rules = {
+        maxShiftsPerDay: 2, noSplitShift: false, noClopen: true, minRestHours: 11,
+        limitConsecutiveDays: true, maxConsecutiveDays: 6, limitWeeklyHours: true,
+        maxWeeklyHours: 40, balanceWeekends: true
+      };
+      if (state.workers.length === 0) {
+        state.workers = [
+          { id: 'w1', name: '강호동' }, { id: 'w2', name: '유재석' },
+          { id: 'w3', name: '신동엽' }, { id: 'w4', name: '이수근' },
+          { id: 'w5', name: '하동훈' }, { id: 'w6', name: '김종국' }
+        ];
+      }
+    }
+
+    syncAvailabilitySchema();
+    if (state.workers.length > 0 && !currentWorkerTabId) {
+      currentWorkerTabId = state.workers[0].id;
+    }
+    saveState();
+    renderAll();
+  }
+
+  /* ==========================================================================
+     UI NAVIGATION
+     ========================================================================== */
+  function goToStep(stepNum) {
+    if (stepNum === 3 && state.workers.length === 0) {
+      showToast('⚠️ 근무자를 1명 이상 먼저 등록해 주세요.');
+      goToStep(2);
+      return;
+    }
+
+    currentStep = stepNum;
+    document.getElementById('homeScreen').style.display = 'none';
+    document.getElementById('mainStepNav').style.display = 'flex';
+
+    for (let i = 1; i <= 5; i++) {
+      const section = document.getElementById(`step${i}`);
+      const btn = document.getElementById(`step-nav-${i}`);
+      if (section) section.style.display = (i === stepNum) ? 'block' : 'none';
+      if (btn) {
+        if (i === stepNum) btn.classList.add('active');
+        else btn.classList.remove('active');
+      }
+    }
+
+    if (stepNum === 3) {
+      if (!currentWorkerTabId || !state.workers.some(w => w.id === currentWorkerTabId)) {
+        currentWorkerTabId = state.workers.length > 0 ? state.workers[0].id : null;
+      }
+      renderWorkerTabs();
+      renderAvailGrid();
+    } else if (stepNum === 4) {
+      renderRulesUI();
+    }
+
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  /* ==========================================================================
+     TIME & DURATION HELPERS (Section A)
+     ========================================================================== */
+  function parseTime(str) {
+    if (!str) return 0;
+    const parts = str.split(':');
+    return parseInt(parts[0]) + (parseInt(parts[1] || '0') / 60);
+  }
+
+  function getShiftDurationHours(startStr, endStr) {
+    const s = parseTime(startStr);
+    const e = parseTime(endStr);
+    if (e > s) {
+      return e - s;
+    } else {
+      return (24 - s) + e; // Overnight
+    }
+  }
+
+  function formatDurationText(duration) {
+    const formatted = (duration % 1 === 0) ? duration : duration.toFixed(1);
+    return `(${formatted}시간)`;
+  }
+
+  function renderTimeSelectOptions(selectedTime) {
+    return TIME_OPTIONS.map(t => `<option value="${t}" ${t === selectedTime ? 'selected' : ''}>${t}</option>`).join('');
+  }
+
+  /* ==========================================================================
+     AVAILABILITY & CLOSED DAYS HELPERS (Bug 1 & Bug 2)
+     ========================================================================== */
+  function isWorkerAvailable(workerId, dayId, shiftId) {
+    if (!state.availability || !state.availability[workerId]) return true;
+    if (!state.availability[workerId][dayId]) return true;
+    if (state.availability[workerId][dayId][shiftId] === undefined) return true;
+    return state.availability[workerId][dayId][shiftId] === true;
+  }
+
+  function getClosedDays() {
+    const assignedDayIds = new Set();
+    state.dayGroups.forEach(g => {
+      (g.days || []).forEach(dId => assignedDayIds.add(dId));
+    });
+    return ALL_DAYS.filter(d => !assignedDayIds.has(d.id));
+  }
+
+  function renderClosedDaysStatus() {
+    const statusBox = document.getElementById('closedDaysStatusBox');
+    if (!statusBox) return;
+
+    const closedDays = getClosedDays();
+    if (closedDays.length === 0) {
+      statusBox.className = 'closed-days-box no-closed';
+      statusBox.innerHTML = `
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <span style="font-size: 16px;">🗓️</span>
+          <div>
+            <strong style="color: #065f46; font-size: 14px;">휴무일: 없음 (월~일 전 요일 영업)</strong>
+            <div style="font-size: 12px; color: #047857; margin-top: 1px;">모든 요일에 근무 타임이 배정되어 있습니다.</div>
+          </div>
+        </div>
+      `;
+    } else {
+      const closedNames = closedDays.map(d => `${d.name}요일`).join(', ');
+      statusBox.className = 'closed-days-box has-closed';
+      statusBox.innerHTML = `
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <span style="font-size: 16px;">🏖️</span>
+          <div>
+            <strong style="color: #9a3412; font-size: 14px;">휴무일: ${closedNames}</strong>
+            <div style="font-size: 12px; color: #c2410c; margin-top: 1px;">어떤 그룹에도 선택되지 않은 요일은 매장 휴무일로 처리되어 근무표에서 제외됩니다.</div>
+          </div>
+        </div>
+      `;
+    }
+  }
+
+  /* ==========================================================================
+     RENDER FUNCTIONS
+     ========================================================================== */
+  function renderAll() {
+    renderDayGroups();
+    renderRulesUI();
+    renderWorkers();
+    renderWorkerTabs();
+    renderAvailGrid();
+    renderHomeSlotSelect();
+  }
+
+  /* Step 1: Day Groups & Shifts (Section A) */
+  function renderDayGroups() {
+    const container = document.getElementById('dayGroupsContainer');
+    if (!container) return;
+
+    container.innerHTML = state.dayGroups.map((group) => {
+      // Day buttons
+      const dayButtonsHtml = ALL_DAYS.map(day => {
+        const isAssignedToThis = group.days.includes(day.id);
+        const assignedGroup = state.dayGroups.find(g => g.days.includes(day.id));
+        const isAssignedOther = assignedGroup && assignedGroup.id !== group.id;
+
+        return `
+          <button type="button"
+                  class="day-toggle-btn ${isAssignedToThis ? 'selected' : ''} ${isAssignedOther ? 'other-group' : ''}"
+                  onclick="toggleDayInGroup('${group.id}', '${day.id}')"
+                  title="${isAssignedOther ? `${assignedGroup.name}에 배정됨 (클릭 시 이동)` : ''}">
+            ${day.name}요일
+          </button>
+        `;
+      }).join('');
+
+      // Shift items with explicit time dropdowns + duration
+      const shiftListHtml = group.shifts.map(shift => {
+        const duration = getShiftDurationHours(shift.start || '09:00', shift.end || '15:00');
+        return `
+          <div class="group-shift-item">
+            <div class="shift-input-name">
+              <input type="text" class="input-text" style="width: 100%;" value="${escapeHtml(shift.name)}" placeholder="타임 이름" onchange="updateGroupShift('${group.id}', '${shift.id}', 'name', this.value)">
+            </div>
+            <div class="time-selector-box">
+              <select class="time-select" onchange="updateGroupShift('${group.id}', '${shift.id}', 'start', this.value)">
+                ${renderTimeSelectOptions(shift.start || '09:00')}
+              </select>
+              <span style="color: var(--gray-400);">~</span>
+              <select class="time-select" onchange="updateGroupShift('${group.id}', '${shift.id}', 'end', this.value)">
+                ${renderTimeSelectOptions(shift.end || '15:00')}
+              </select>
+              <span class="shift-duration-badge">${formatDurationText(duration)}</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 4px;">
+              <span style="font-size: 12px; color: var(--gray-600);">인원:</span>
+              <input type="number" class="input-text shift-input-count" min="1" max="20" value="${shift.required || 1}" onchange="updateGroupShift('${group.id}', '${shift.id}', 'required', parseInt(this.value)||1)">
+              <span style="font-size: 12px; color: var(--gray-600);">명</span>
+            </div>
+            ${group.shifts.length > 1 ? `
+              <button class="btn btn-sm btn-danger-outline" style="margin-left: auto;" onclick="deleteGroupShift('${group.id}', '${shift.id}')">삭제</button>
+            ` : ''}
+          </div>
+        `;
+      }).join('');
+
+      return `
+        <div class="day-group-card">
+          <div class="day-group-header">
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <input type="text" class="day-group-name-input" value="${escapeHtml(group.name)}" onchange="updateGroupName('${group.id}', this.value)" placeholder="그룹 이름">
+              <span style="font-size: 12px; color: var(--gray-500);">${group.days.length}개 요일 배정됨</span>
+            </div>
+            <div style="display: flex; gap: 6px;">
+              <button class="btn btn-sm btn-secondary" onclick="addGroupShift('${group.id}')">+ 타임 추가</button>
+              ${state.dayGroups.length > 1 ? `
+                <button class="btn btn-sm btn-danger-outline" onclick="deleteDayGroup('${group.id}')">그룹 삭제</button>
+              ` : ''}
+            </div>
+          </div>
+
+          <div style="margin-bottom: 12px;">
+            <div style="font-size: 12px; font-weight: 700; color: var(--gray-600); margin-bottom: 6px;">배정할 요일 선택:</div>
+            <div class="day-buttons-row">
+              ${dayButtonsHtml}
+            </div>
+          </div>
+
+          <div>
+            <div style="font-size: 12px; font-weight: 700; color: var(--gray-600); margin-bottom: 6px;">근무 타임 및 필요 인원:</div>
+            <div class="group-shift-list">
+              ${shiftListHtml}
+            </div>
+          </div>
+        </div>
+      `;
+    }).join('');
+
+    renderClosedDaysStatus();
+  }
+
+  function addDayGroup() {
+    const newId = 'g_' + Date.now();
+    state.dayGroups.push({
+      id: newId,
+      name: `새 요일 그룹 ${state.dayGroups.length + 1}`,
+      days: [],
+      shifts: [
+        { id: 's_' + Date.now(), name: '근무타임 1', start: '10:00', end: '18:00', required: 1 }
+      ]
+    });
+    syncAvailabilitySchema();
+    saveState();
+    renderDayGroups();
+  }
+
+  function deleteDayGroup(groupId) {
+    if (state.dayGroups.length <= 1) {
+      showToast('최소 1개 이상의 요일 그룹이 필요합니다.');
+      return;
+    }
+    state.dayGroups = state.dayGroups.filter(g => g.id !== groupId);
+    syncAvailabilitySchema();
+    saveState();
+    renderDayGroups();
+  }
+
+  function updateGroupName(groupId, name) {
+    const g = state.dayGroups.find(item => item.id === groupId);
+    if (g) {
+      g.name = name;
+      saveState();
+    }
+  }
+
+  function toggleDayInGroup(groupId, dayId) {
+    const targetGroup = state.dayGroups.find(g => g.id === groupId);
+    if (!targetGroup) return;
+
+    if (targetGroup.days.includes(dayId)) {
+      targetGroup.days = targetGroup.days.filter(d => d !== dayId);
+    } else {
+      state.dayGroups.forEach(g => {
+        g.days = g.days.filter(d => d !== dayId);
+      });
+      targetGroup.days.push(dayId);
+      const order = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'];
+      targetGroup.days.sort((a, b) => order.indexOf(a) - order.indexOf(b));
+    }
+
+    syncAvailabilitySchema();
+    saveState();
+    renderDayGroups();
+  }
+
+  function addGroupShift(groupId) {
+    const group = state.dayGroups.find(g => g.id === groupId);
+    if (!group) return;
+    const newId = 's_' + Date.now();
+    group.shifts.push({
+      id: newId,
+      name: `근무타임 ${group.shifts.length + 1}`,
+      start: '12:00',
+      end: '18:00',
+      required: 1
+    });
+    syncAvailabilitySchema();
+    saveState();
+    renderDayGroups();
+  }
+
+  function updateGroupShift(groupId, shiftId, field, value) {
+    const group = state.dayGroups.find(g => g.id === groupId);
+    if (!group) return;
+    const shift = group.shifts.find(s => s.id === shiftId);
+    if (shift) {
+      shift[field] = value;
+      syncAvailabilitySchema();
+      saveState();
+      renderDayGroups();
+    }
+  }
+
+  function deleteGroupShift(groupId, shiftId) {
+    const group = state.dayGroups.find(g => g.id === groupId);
+    if (!group || group.shifts.length <= 1) {
+      showToast('그룹당 최소 1개 이상의 근무 타임이 필요합니다.');
+      return;
+    }
+    group.shifts = group.shifts.filter(s => s.id !== shiftId);
+    syncAvailabilitySchema();
+    saveState();
+    renderDayGroups();
+  }
+
+  /* Step 2: Workers */
+  function renderWorkers() {
+    const container = document.getElementById('workerTagsContainer');
+    const badge = document.getElementById('workerCountBadge');
+    if (badge) badge.textContent = `총 ${state.workers.length}명 등록됨`;
+
+    if (!container) return;
+
+    if (state.workers.length === 0) {
+      container.innerHTML = `<span style="color: var(--gray-400); font-size: 13px; margin: auto;">등록된 근무자가 없습니다. 이름을 추가해 주세요.</span>`;
+      return;
+    }
+
+    container.innerHTML = state.workers.map(w => `
+      <span class="worker-tag">
+        👤 ${escapeHtml(w.name)}
+        <button class="worker-tag-del" onclick="deleteWorker('${w.id}')" title="삭제">&times;</button>
+      </span>
+    `).join('');
+  }
+
+  function addWorker() {
+    const input = document.getElementById('workerNameInput');
+    const name = input.value.trim();
+    if (!name) {
+      showToast('근무자 이름을 입력해 주세요.');
+      input.focus();
+      return;
+    }
+
+    const newId = 'w_' + Date.now();
+    state.workers.push({ id: newId, name: name });
+    initWorkerAvailability(newId);
+
+    input.value = '';
+    saveState();
+    renderWorkers();
+    showToast(`'${name}' 님이 등록되었습니다.`);
+    input.focus();
+  }
+
+  function deleteWorker(workerId) {
+    const w = state.workers.find(item => item.id === workerId);
+    state.workers = state.workers.filter(item => item.id !== workerId);
+    delete state.availability[workerId];
+    if (currentWorkerTabId === workerId) {
+      currentWorkerTabId = state.workers.length > 0 ? state.workers[0].id : null;
+    }
+    saveState();
+    renderWorkers();
+    if (w) showToast(`'${w.name}' 님이 삭제되었습니다.`);
+  }
+
+  /* Step 3: Availability Grid */
+  function renderWorkerTabs() {
+    const bar = document.getElementById('workerTabsBar');
+    const noWorkersAlert = document.getElementById('noWorkersAlert');
+    const availContent = document.getElementById('availContent');
+
+    if (state.workers.length === 0) {
+      if (noWorkersAlert) noWorkersAlert.style.display = 'block';
+      if (availContent) availContent.style.display = 'none';
+      return;
+    }
+
+    if (noWorkersAlert) noWorkersAlert.style.display = 'none';
+    if (availContent) availContent.style.display = 'block';
+
+    if (!bar) return;
+
+    bar.innerHTML = state.workers.map(w => `
+      <button class="worker-tab ${w.id === currentWorkerTabId ? 'active' : ''}" onclick="selectWorkerTab('${w.id}')">
+        👤 ${escapeHtml(w.name)}
+      </button>
+    `).join('');
+  }
+
+  function selectWorkerTab(workerId) {
+    currentWorkerTabId = workerId;
+    renderWorkerTabs();
+    renderAvailGrid();
+  }
+
+  function renderAvailGrid() {
+    const container = document.getElementById('availDaysContainer');
+    if (!container || !currentWorkerTabId) return;
+
+    const activeDaysList = [];
+    ALL_DAYS.forEach(day => {
+      const grp = state.dayGroups.find(g => g.days.includes(day.id));
+      if (grp) activeDaysList.push({ day, group: grp });
+    });
+
+    if (activeDaysList.length === 0) {
+      container.innerHTML = `<div style="grid-column: 1/-1; text-align: center; color: var(--gray-400); padding: 20px;">1단계에서 배정된 영업 요일이 없습니다.</div>`;
+      return;
+    }
+
+    container.innerHTML = activeDaysList.map(({ day, group }) => {
+      const shiftCells = group.shifts.map(shift => {
+        const isAvail = isWorkerAvailable(currentWorkerTabId, day.id, shift.id);
+        return `
+          <div class="avail-shift-cell ${isAvail ? 'available' : 'unavailable'}"
+               onclick="toggleAvail('${currentWorkerTabId}', '${day.id}', '${shift.id}')">
+            <span class="avail-shift-name">${escapeHtml(shift.name)}</span>
+            <span class="avail-shift-time">${shift.start}~${shift.end}</span>
+            <span class="avail-shift-status">${isAvail ? '🟢 가능' : '⚪ 불가'}</span>
+          </div>
+        `;
+      }).join('');
+
+      return `
+        <div class="avail-day-col">
+          <div class="avail-day-header ${day.isWeekend ? 'weekend' : ''}">
+            ${day.name}요일 (${escapeHtml(group.name)})
+          </div>
+          <div>${shiftCells}</div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  function toggleAvail(workerId, dayId, shiftId) {
+    if (!state.availability[workerId]) state.availability[workerId] = {};
+    if (!state.availability[workerId][dayId]) state.availability[workerId][dayId] = {};
+
+    const cur = isWorkerAvailable(workerId, dayId, shiftId);
+    state.availability[workerId][dayId][shiftId] = !cur;
+    saveState();
+    renderAvailGrid();
+  }
+
+  function setWorkerAllAvail(isAvail) {
+    if (!currentWorkerTabId) return;
+    if (!state.availability[currentWorkerTabId]) state.availability[currentWorkerTabId] = {};
+
+    state.dayGroups.forEach(grp => {
+      grp.days.forEach(dId => {
+        if (!state.availability[currentWorkerTabId][dId]) state.availability[currentWorkerTabId][dId] = {};
+        grp.shifts.forEach(shift => {
+          state.availability[currentWorkerTabId][dId][shift.id] = isAvail;
+        });
+      });
+    });
+
+    saveState();
+    renderAvailGrid();
+    showToast(isAvail ? '모든 시간대를 [가능]으로 설정했습니다.' : '모든 시간대를 [불가]로 설정했습니다.');
+  }
+
+  function setWorkerWeekdaysOnly() {
+    if (!currentWorkerTabId) return;
+    if (!state.availability[currentWorkerTabId]) state.availability[currentWorkerTabId] = {};
+
+    state.dayGroups.forEach(grp => {
+      grp.days.forEach(dId => {
+        const isWeekend = (dId === 'sat' || dId === 'sun');
+        if (!state.availability[currentWorkerTabId][dId]) state.availability[currentWorkerTabId][dId] = {};
+        grp.shifts.forEach(shift => {
+          state.availability[currentWorkerTabId][dId][shift.id] = !isWeekend;
+        });
+      });
+    });
+
+    saveState();
+    renderAvailGrid();
+    showToast('평일만 [가능]으로 설정했습니다.');
+  }
+
+  function setWorkerWeekendsOnly() {
+    if (!currentWorkerTabId) return;
+    if (!state.availability[currentWorkerTabId]) state.availability[currentWorkerTabId] = {};
+
+    state.dayGroups.forEach(grp => {
+      grp.days.forEach(dId => {
+        const isWeekend = (dId === 'sat' || dId === 'sun');
+        if (!state.availability[currentWorkerTabId][dId]) state.availability[currentWorkerTabId][dId] = {};
+        grp.shifts.forEach(shift => {
+          state.availability[currentWorkerTabId][dId][shift.id] = isWeekend;
+        });
+      });
+    });
+
+    saveState();
+    renderAvailGrid();
+    showToast('주말만 [가능]으로 설정했습니다.');
+  }
+
+  function initWorkerAvailability(workerId) {
+    if (!state.availability[workerId]) state.availability[workerId] = {};
+    state.dayGroups.forEach(grp => {
+      grp.days.forEach(dId => {
+        if (!state.availability[workerId][dId]) state.availability[workerId][dId] = {};
+        grp.shifts.forEach(shift => {
+          if (state.availability[workerId][dId][shift.id] === undefined) {
+            state.availability[workerId][dId][shift.id] = true;
+          }
+        });
+      });
+    });
+  }
+
+  function syncAvailabilitySchema() {
+    state.workers.forEach(w => {
+      initWorkerAvailability(w.id);
+    });
+  }
+
+  /* Step 4: Rules Fold & Detail (Section C) */
+  function toggleRulesDetail() {
+    const panel = document.getElementById('rulesDetailPanel');
+    const btn = document.getElementById('btnToggleRules');
+    if (!panel || !btn) return;
+
+    if (panel.style.display === 'none' || panel.style.display === '') {
+      panel.style.display = 'block';
+      btn.textContent = '⚙️ 규칙 접어두기 🔼';
+    } else {
+      panel.style.display = 'none';
+      btn.textContent = '⚙️ 규칙 자세히 설정하기 🔽';
+    }
+  }
+
+  function renderRulesUI() {
+    const r = state.rules;
+    if (!r) return;
+    const maxShifts = document.getElementById('rule_maxShiftsPerDay');
+    if (maxShifts) maxShifts.value = r.maxShiftsPerDay || 2;
+    const noSplit = document.getElementById('rule_noSplitShift');
+    if (noSplit) noSplit.checked = !!r.noSplitShift;
+    const noClopen = document.getElementById('rule_noClopen');
+    if (noClopen) noClopen.checked = !!r.noClopen;
+    const minRest = document.getElementById('rule_minRestHours');
+    if (minRest) minRest.value = r.minRestHours || 11;
+    const limitConsec = document.getElementById('rule_limitConsecutiveDays');
+    if (limitConsec) limitConsec.checked = !!r.limitConsecutiveDays;
+    const maxConsec = document.getElementById('rule_maxConsecutiveDays');
+    if (maxConsec) maxConsec.value = r.maxConsecutiveDays || 6;
+    const limitWeekly = document.getElementById('rule_limitWeeklyHours');
+    if (limitWeekly) limitWeekly.checked = !!r.limitWeeklyHours;
+    const maxWeekly = document.getElementById('rule_maxWeeklyHours');
+    if (maxWeekly) maxWeekly.value = r.maxWeeklyHours || 40;
+    const balanceWknd = document.getElementById('rule_balanceWeekends');
+    if (balanceWknd) balanceWknd.checked = !!r.balanceWeekends;
+  }
+
+  function updateRule(key, value) {
+    if (!state.rules) state.rules = {};
+    state.rules[key] = value;
+    saveState();
+  }
+
+  /* ==========================================================================
+     SCHEDULING ALGORITHM (Pure JS, Constraint & Fair Load Balancing)
+     ========================================================================== */
+  function generateSchedule() {
+    if (state.workers.length === 0) {
+      alert('근무자를 1명 이상 등록해 주세요.');
+      return null;
+    }
+
+    let bestResult = null;
+    let bestScore = Infinity;
+
+    for (let sim = 0; sim < 60; sim++) {
+      const result = simulateScheduleOnce();
+      if (result.score < bestScore) {
+        bestScore = result.score;
+        bestResult = result;
+      }
+    }
+
+    return bestResult;
+  }
+
+  function simulateScheduleOnce() {
+    const rules = state.rules || {};
+    const assignments = {};
+    const workerStats = {};
+    const diagnostics = {};
+
+    state.workers.forEach(w => {
+      workerStats[w.id] = {
+        count: 0,
+        hours: 0,
+        weekendCount: 0,
+        daysAssigned: new Set(),
+        dayShifts: {}
+      };
+      ALL_DAYS.forEach(d => {
+        workerStats[w.id].dayShifts[d.id] = [];
+      });
+    });
+
+    const allSlots = [];
+    ALL_DAYS.forEach((day, dayIndex) => {
+      const grp = state.dayGroups.find(g => g.days.includes(day.id));
+      if (!grp) return;
+
+      assignments[day.id] = {};
+      grp.shifts.forEach((shift, shiftIndex) => {
+        assignments[day.id][shift.id] = [];
+        const required = shift.required || 1;
+        const duration = getShiftDurationHours(shift.start, shift.end);
+
+        const availableWorkers = state.workers.filter(w => {
+          return isWorkerAvailable(w.id, day.id, shift.id);
+        });
+
+        for (let i = 0; i < required; i++) {
+          allSlots.push({
+            slotKey: `${day.id}_${shift.id}_${i}`,
+            dayId: day.id,
+            dayIndex: dayIndex,
+            isWeekend: day.isWeekend,
+            group: grp,
+            shift: shift,
+            shiftIndex: shiftIndex,
+            duration: duration,
+            candidateCount: availableWorkers.length
+          });
+        }
+      });
+    });
+
+    allSlots.sort((a, b) => {
+      const diff = a.candidateCount - b.candidateCount;
+      if (diff !== 0) return diff;
+      return Math.random() - 0.5;
+    });
+
+    let shortageCount = 0;
+
+    allSlots.forEach(slot => {
+      const { slotKey, dayId, dayIndex, isWeekend, shift, duration } = slot;
+      diagnostics[slotKey] = [];
+      const currentAssignedInSlot = assignments[dayId][shift.id];
+
+      const eligibleCandidates = [];
+
+      state.workers.forEach(w => {
+        const isAvailable = isWorkerAvailable(w.id, dayId, shift.id);
+
+        if (!isAvailable) {
+          diagnostics[slotKey].push({ workerName: w.name, reason: '해당 시간대 "불가" 설정' });
+          return;
+        }
+
+        if (currentAssignedInSlot.includes(w.id)) {
+          diagnostics[slotKey].push({ workerName: w.name, reason: '동일 시간대 이미 배정됨' });
+          return;
+        }
+
+        const wStat = workerStats[w.id];
+        const existingShiftsToday = wStat.dayShifts[dayId];
+
+        // Rule 1: Max shifts per day
+        const maxDaily = rules.maxShiftsPerDay || 2;
+        if (existingShiftsToday.length >= maxDaily) {
+          diagnostics[slotKey].push({ workerName: w.name, reason: `하루 최대 ${maxDaily}타임 초과` });
+          return;
+        }
+
+        // Rule 2: No split shift
+        if (rules.noSplitShift && existingShiftsToday.length > 0) {
+          const combined = [...existingShiftsToday, shift];
+          combined.sort((a, b) => parseTime(a.start) - parseTime(b.start));
+
+          let isContiguous = true;
+          for (let k = 0; k < combined.length - 1; k++) {
+            const curEnd = parseTime(combined[k].end);
+            const nextStart = parseTime(combined[k + 1].start);
+            if (Math.abs(curEnd - nextStart) > 0.5) {
+              isContiguous = false;
+              break;
+            }
+          }
+
+          if (!isContiguous) {
+            diagnostics[slotKey].push({ workerName: w.name, reason: '하루 두 번 출근 금지 (중간 시간 빔)' });
+            return;
+          }
+        }
+
+        // Rule 3: No Clopen
+        if (rules.noClopen) {
+          const minRest = rules.minRestHours || 11;
+          const thisStart = parseTime(shift.start);
+          const thisEnd = parseTime(shift.end);
+
+          if (dayIndex > 0) {
+            const prevDayId = ALL_DAYS[dayIndex - 1].id;
+            const prevShifts = wStat.dayShifts[prevDayId];
+            if (prevShifts.length > 0) {
+              let latestPrevEnd = 0;
+              prevShifts.forEach(ps => {
+                const pe = parseTime(ps.end);
+                if (pe > latestPrevEnd) latestPrevEnd = pe;
+              });
+              const restBetween = (24 - latestPrevEnd) + thisStart;
+              if (restBetween < minRest) {
+                diagnostics[slotKey].push({
+                  workerName: w.name,
+                  reason: `클로픈 금지 (전날 퇴근 후 휴식 ${restBetween.toFixed(1)}시간 / 최소 ${minRest}시간 필요)`
+                });
+                return;
+              }
+            }
+          }
+
+          if (dayIndex < ALL_DAYS.length - 1) {
+            const nextDayId = ALL_DAYS[dayIndex + 1].id;
+            const nextShifts = wStat.dayShifts[nextDayId];
+            if (nextShifts.length > 0) {
+              let earliestNextStart = 24;
+              nextShifts.forEach(ns => {
+                const nsStart = parseTime(ns.start);
+                if (nsStart < earliestNextStart) earliestNextStart = nsStart;
+              });
+              const restBetween = (24 - thisEnd) + earliestNextStart;
+              if (restBetween < minRest) {
+                diagnostics[slotKey].push({
+                  workerName: w.name,
+                  reason: `클로픈 금지 (다음날 출근까지 휴식 ${restBetween.toFixed(1)}시간 / 최소 ${minRest}시간 필요)`
+                });
+                return;
+              }
+            }
+          }
+        }
+
+        // Rule 4: Consecutive Days
+        if (rules.limitConsecutiveDays) {
+          const maxConsec = rules.maxConsecutiveDays || 6;
+          const simDays = new Set(wStat.daysAssigned);
+          simDays.add(dayIndex);
+
+          let maxRun = 0;
+          let currentRun = 0;
+          for (let d = 0; d < 7; d++) {
+            if (simDays.has(d)) {
+              currentRun++;
+              if (currentRun > maxRun) maxRun = currentRun;
+            } else {
+              currentRun = 0;
+            }
+          }
+
+          if (maxRun > maxConsec) {
+            diagnostics[slotKey].push({
+              workerName: w.name,
+              reason: `연속 근무 ${maxRun}일 초과 (상한 ${maxConsec}일)`
+            });
+            return;
+          }
+        }
+
+        // Rule 5: Weekly Hours
+        if (rules.limitWeeklyHours) {
+          const maxHours = rules.maxWeeklyHours || 40;
+          if (wStat.hours + duration > maxHours) {
+            diagnostics[slotKey].push({
+              workerName: w.name,
+              reason: `주간 최대 ${maxHours}시간 초과 (현재 ${wStat.hours.toFixed(1)}시간)`
+            });
+            return;
+          }
+        }
+
+        eligibleCandidates.push(w);
+      });
+
+      if (eligibleCandidates.length === 0) {
+        assignments[dayId][shift.id].push(null);
+        shortageCount++;
+      } else {
+        eligibleCandidates.sort((a, b) => {
+          const statA = workerStats[a.id];
+          const statB = workerStats[b.id];
+
+          const hoursDiff = statA.hours - statB.hours;
+          if (Math.abs(hoursDiff) > 0.1) return hoursDiff;
+
+          if (rules.balanceWeekends && isWeekend) {
+            const wkndDiff = statA.weekendCount - statB.weekendCount;
+            if (wkndDiff !== 0) return wkndDiff;
+          }
+
+          const dayShiftsDiff = statA.dayShifts[dayId].length - statB.dayShifts[dayId].length;
+          if (dayShiftsDiff !== 0) return dayShiftsDiff;
+
+          return Math.random() - 0.5;
+        });
+
+        const chosen = eligibleCandidates[0];
+        assignments[dayId][shift.id].push(chosen.id);
+
+        const chosenStat = workerStats[chosen.id];
+        chosenStat.count++;
+        chosenStat.hours += duration;
+        if (isWeekend) chosenStat.weekendCount++;
+        chosenStat.daysAssigned.add(dayIndex);
+        chosenStat.dayShifts[dayId].push(shift);
+      }
+    });
+
+    const hourList = Object.values(workerStats).map(s => s.hours);
+    const avgHours = hourList.reduce((a, b) => a + b, 0) / (hourList.length || 1);
+    const varianceHours = hourList.reduce((acc, h) => acc + Math.pow(h - avgHours, 2), 0) / (hourList.length || 1);
+
+    const score = (shortageCount * 2000) + varianceHours;
+
+    return {
+      assignments,
+      workerStats,
+      diagnostics,
+      shortageCount,
+      score,
+      timestamp: new Date()
+    };
+  }
+
+  /* ==========================================================================
+     RENDER STEP 5 RESULTS
+     ========================================================================== */
+  function generateScheduleAndShow() {
+    if (state.workers.length === 0) {
+      showToast('⚠️ 근무자를 1명 이상 등록해야 합니다.');
+      goToStep(2);
+      return;
+    }
+
+    const schedule = generateSchedule();
+    if (!schedule) return;
+
+    state.lastSchedule = schedule;
+    saveState();
+
+    renderScheduleResult(schedule);
+    goToStep(5);
+    showToast('✨ 근무표가 성공적으로 생성되었습니다!');
+  }
+
+  function generateNextWeekSchedule() {
+    showToast('🗓️ 새로운 다음 주 근무표를 생성합니다...');
+    generateScheduleAndShow();
+  }
+
+  function renderScheduleResult(schedule) {
+    const table = document.getElementById('scheduleResultTable');
+    const shortageNotice = document.getElementById('shortageNotice');
+    const statsContainer = document.getElementById('statsContainer');
+    const timeLabel = document.getElementById('resultGeneratedTime');
+
+    if (timeLabel) {
+      const now = new Date();
+      timeLabel.textContent = `생성 일시: ${now.getFullYear()}년 ${now.getMonth()+1}월 ${now.getDate()}일 ${now.getHours()}시 ${now.getMinutes()}분`;
+    }
+
+    if (shortageNotice) {
+      shortageNotice.style.display = schedule.shortageCount > 0 ? 'block' : 'none';
+    }
+
+    const activeDays = [];
+    ALL_DAYS.forEach(d => {
+      const grp = state.dayGroups.find(g => g.days.includes(d.id));
+      if (grp) activeDays.push({ day: d, group: grp });
+    });
+
+    if (activeDays.length === 0) {
+      table.innerHTML = '<tr><td style="padding: 20px; text-align: center;">영업 요일이 없습니다.</td></tr>';
+      return;
+    }
+
+    let headerHtml = '<thead><tr>';
+    activeDays.forEach(({ day, group }) => {
+      headerHtml += `
+        <th class="${day.isWeekend ? 'weekend-col' : ''}">
+          ${day.name}요일
+          <div style="font-size: 11px; font-weight: normal; opacity: 0.85;">${escapeHtml(group.name)}</div>
+        </th>
+      `;
+    });
+    headerHtml += '</tr></thead>';
+
+    let bodyHtml = '<tbody><tr>';
+    activeDays.forEach(({ day, group }) => {
+      bodyHtml += `<td style="vertical-align: top; padding: 6px; background: ${day.isWeekend ? '#fafafa' : '#ffffff'};">`;
+
+      group.shifts.forEach((shift) => {
+        const duration = getShiftDurationHours(shift.start, shift.end);
+        const assignedIds = (schedule.assignments[day.id] && schedule.assignments[day.id][shift.id]) || [];
+
+        bodyHtml += `
+          <div style="background: white; border: 1px solid var(--gray-200); border-radius: var(--radius-sm); padding: 8px; margin-bottom: 8px; box-shadow: 0 1px 2px rgba(0,0,0,0.03);">
+            <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 6px; border-bottom: 1px dashed var(--gray-200); padding-bottom: 4px;">
+              <strong style="font-size: 13px; color: var(--gray-800);">${escapeHtml(shift.name)}</strong>
+              <span style="font-size: 11px; color: var(--gray-500);">${shift.start}~${shift.end} (${duration}h)</span>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 4px;">
+        `;
+
+        if (assignedIds.length === 0) {
+          bodyHtml += `<span class="badge-shortage">⚠️ 미배정</span>`;
+        } else {
+          assignedIds.forEach((wId, slotIdx) => {
+            if (wId === null) {
+              const slotKey = `${day.id}_${shift.id}_${slotIdx}`;
+              const diagList = schedule.diagnostics[slotKey] || [];
+              let tooltipText = '<strong>[제외 및 미배정 사유]</strong><br>';
+              if (diagList.length === 0) {
+                tooltipText += '지원 가능한 근무자 없음';
+              } else {
+                diagList.forEach(d => {
+                  tooltipText += `• <strong>${escapeHtml(d.workerName)}</strong>: ${escapeHtml(d.reason)}<br>`;
+                });
+              }
+
+              bodyHtml += `
+                <div class="badge-shortage">
+                  ⚠️ 인원 부족
+                  <div class="tooltip-box">${tooltipText}</div>
+                </div>
+              `;
+            } else {
+              const worker = state.workers.find(w => w.id === wId);
+              const name = worker ? escapeHtml(worker.name) : '알 수 없음';
+              bodyHtml += `<span class="assigned-badge">👤 ${name}</span>`;
+            }
+          });
+        }
+
+        bodyHtml += `
+            </div>
+          </div>
+        `;
+      });
+
+      bodyHtml += `</td>`;
+    });
+    bodyHtml += '</tr></tbody>';
+
+    table.innerHTML = headerHtml + bodyHtml;
+
+    if (statsContainer) {
+      statsContainer.innerHTML = state.workers.map(w => {
+        const stat = schedule.workerStats[w.id] || { count: 0, hours: 0, weekendCount: 0 };
+        const isHolidayPayEligible = stat.hours >= 15;
+
+        return `
+          <div class="stat-card">
+            <div class="stat-header-row">
+              <span class="stat-name">👤 ${escapeHtml(w.name)}</span>
+              ${isHolidayPayEligible ? `<span class="badge-holiday-pay">주휴수당 대상</span>` : ''}
+            </div>
+            <div class="stat-metrics">
+              <span>총 근무 시간</span>
+              <span class="stat-highlight">${stat.hours.toFixed(1)}<span style="font-size: 13px; font-weight: normal; color: var(--gray-500);">시간</span></span>
+            </div>
+            <div class="stat-metrics" style="font-size: 12px; color: var(--gray-500); border-top: 1px dashed var(--gray-200); padding-top: 4px;">
+              <span>배정 횟수: <strong>${stat.count}회</strong></span>
+              <span>(주말 ${stat.weekendCount}회)</span>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+  }
+
+  /* ==========================================================================
+     EXPORT & CLIPBOARD (KakaoTalk Friendly)
+     ========================================================================== */
+  function copyScheduleToClipboard() {
+    if (!state.lastSchedule) {
+      showToast('생성된 근무표가 없습니다.');
+      return;
+    }
+
+    const schedule = state.lastSchedule;
+    let text = `📅 [이번 주 알바 근무표]\n`;
+    text += `━━━━━━━━━━━━━━━━━━\n`;
+
+    ALL_DAYS.forEach(day => {
+      const grp = state.dayGroups.find(g => g.days.includes(day.id));
+      if (!grp) return;
+
+      text += `\n📌 [${day.name}요일 - ${grp.name}]\n`;
+
+      grp.shifts.forEach(shift => {
+        const assignedIds = (schedule.assignments[day.id] && schedule.assignments[day.id][shift.id]) || [];
+        const names = assignedIds.map(wId => {
+          if (wId === null) return '⚠️인원부족';
+          const w = state.workers.find(item => item.id === wId);
+          return w ? w.name : '알수없음';
+        }).join(', ');
+
+        text += ` • ${shift.name}(${shift.start}~${shift.end}): ${names || '없음'}\n`;
+      });
+    });
+
+    text += `\n━━━━━━━━━━━━━━━━━━\n`;
+    text += `📊 [주간 근무시간 및 배정 통계]\n`;
+    state.workers.forEach(w => {
+      const stat = schedule.workerStats[w.id] || { count: 0, hours: 0 };
+      const holidayTag = stat.hours >= 15 ? ' [주휴수당 대상]' : '';
+      text += ` - ${w.name}: 총 ${stat.hours.toFixed(1)}시간 (${stat.count}회)${holidayTag}\n`;
+    });
+
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(() => {
+        showToast('📋 근무표가 복사되었습니다! (카톡에 붙여넣기 해보세요)');
+      }).catch(() => {
+        fallbackCopy(text);
+      });
+    } else {
+      fallbackCopy(text);
+    }
+  }
+
+  function fallbackCopy(text) {
+    const textarea = document.createElement('textarea');
+    textarea.value = text;
+    textarea.style.position = 'fixed';
+    textarea.style.opacity = '0';
+    document.body.appendChild(textarea);
+    textarea.select();
+    try {
+      document.execCommand('copy');
+      showToast('📋 근무표가 복사되었습니다!');
+    } catch (e) {
+      showToast('복사에 실패했습니다. 직접 복사해주세요.');
+    }
+    document.body.removeChild(textarea);
+  }
+
+  /* ==========================================================================
+     TOAST & UTILS
+     ========================================================================== */
+  function showToast(msg) {
+    const toast = document.getElementById('toast');
+    if (!toast) return;
+    toast.textContent = msg;
+    toast.classList.add('show');
+    setTimeout(() => {
+      toast.classList.remove('show');
+    }, 2800);
+  }
+
+  function escapeHtml(str) {
+    if (!str) return '';
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#039;');
+  }
+
+  /* ==========================================================================
+     INITIALIZATION
+     ========================================================================== */
+  window.addEventListener('DOMContentLoaded', () => {
+    const isRestored = loadState();
+    const btnResume = document.getElementById('btnResume');
+
+    if (isRestored && (state.workers.length > 0 || state.lastSchedule)) {
+      if (btnResume) btnResume.style.display = 'flex';
+    }
+
+    syncAvailabilitySchema();
+    renderAll();
+    goToHome();
+  });
+</script>
+
+</body>
+</html>
