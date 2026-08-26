@@ -2784,6 +2784,8 @@
       text += ` - ${w.name}: 총 ${stat.hours.toFixed(1)}시간 (${stat.count}회)${holidayTag}\n`;
     });
 
+    text += `\n---\n근무표 자동 생성: https://shift-scheduler.moow-ui.workers.dev\n`;
+
     if (navigator.clipboard && navigator.clipboard.writeText) {
       navigator.clipboard.writeText(text).then(() => {
         showToast('📋 근무표가 복사되었습니다! (카톡에 붙여넣기 해보세요)');
