@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://shift-scheduler.moow-ui.workers.dev/sitemap.xml
