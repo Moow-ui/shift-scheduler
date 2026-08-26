@@ -953,28 +953,35 @@
        ========================================================================== */
     .table-container {
       overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
       border-radius: var(--radius-md);
       border: 1px solid var(--gray-200);
       background: white;
+      width: 100%;
+      margin-top: 10px;
     }
 
     .schedule-table {
       width: 100%;
+      min-width: 760px;
       border-collapse: collapse;
-      table-layout: fixed;
+      table-layout: auto;
       font-size: 13px;
     }
     .schedule-table th, .schedule-table td {
       border: 1px solid var(--gray-200);
       padding: 10px 8px;
       vertical-align: top;
+      min-width: 105px;
     }
     .schedule-table th {
       background: var(--gray-800);
       color: white;
       font-weight: 700;
       text-align: center;
-      padding: 12px 6px;
+      padding: 12px 8px;
+      white-space: nowrap;
+      word-break: keep-all;
     }
     .schedule-table th.weekend-col {
       background: #334155;
@@ -992,9 +999,21 @@
       font-weight: 700;
       font-size: 13px;
       margin-bottom: 4px;
+      cursor: pointer;
+      user-select: none;
+      transition: all 0.15s ease;
+      touch-action: manipulation;
+    }
+    .assigned-badge:hover {
+      background: #dbeafe;
+      border-color: var(--primary);
+      transform: translateY(-1px);
+    }
+    .assigned-badge:active {
+      transform: scale(0.96);
     }
 
-    /* Diagnostics Tooltip */
+    /* Diagnostics Tooltip & Interactive Shortage Badge */
     .badge-shortage {
       position: relative;
       display: inline-flex;
@@ -1008,7 +1027,18 @@
       border-radius: var(--radius-sm);
       font-weight: 700;
       font-size: 12px;
-      cursor: help;
+      cursor: pointer;
+      user-select: none;
+      transition: all 0.15s ease;
+      touch-action: manipulation;
+    }
+    .badge-shortage:hover {
+      background: #fee2e2;
+      border-color: #ef4444;
+      transform: translateY(-1px);
+    }
+    .badge-shortage:active {
+      transform: scale(0.96);
     }
     .badge-shortage .tooltip-box {
       visibility: hidden; opacity: 0;
@@ -1035,6 +1065,87 @@
     }
     .badge-shortage:hover .tooltip-box {
       visibility: visible; opacity: 1;
+    }
+
+    /* Schedule Actions Bar */
+    .schedule-action-bar {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 20px;
+      margin-bottom: 20px;
+      justify-content: center;
+      padding: 14px;
+      background: var(--gray-50);
+      border-radius: var(--radius-md);
+      border: 1px solid var(--gray-200);
+    }
+
+    /* Micro-editing Swap Worker Modal */
+    .modal-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0, 0, 0, 0.45);
+      backdrop-filter: blur(3px);
+      -webkit-backdrop-filter: blur(3px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10000;
+      padding: 16px;
+      animation: fadeIn 0.15s ease;
+    }
+    .modal-card {
+      background: white;
+      border-radius: var(--radius-lg);
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.18);
+      width: 100%;
+      max-width: 440px;
+      padding: 20px;
+      border: 1px solid var(--gray-200);
+    }
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+    .modal-close-btn {
+      border: none;
+      background: none;
+      font-size: 18px;
+      color: var(--gray-400);
+      cursor: pointer;
+      padding: 4px 8px;
+      border-radius: 4px;
+    }
+    .modal-close-btn:hover {
+      color: var(--gray-700);
+      background: var(--gray-100);
+    }
+    .swap-candidate-btn {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 14px;
+      background: white;
+      border: 1.5px solid var(--gray-200);
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 600;
+      text-align: left;
+      transition: all 0.15s ease;
+      touch-action: manipulation;
+    }
+    .swap-candidate-btn:hover {
+      border-color: var(--primary);
+      background: var(--primary-light);
+    }
+    .swap-candidate-btn.is-current {
+      background: var(--gray-100);
+      border-color: var(--gray-300);
+      opacity: 0.7;
     }
 
     /* Stats Grid */
@@ -1387,12 +1498,12 @@
 
     <!-- Bottom Slot & Import Links (Section D) -->
     <div class="home-footer-links">
-      <span>📂 다른 설정 불러오기:</span>
+      <span>📂 저장된 매장 설정 불러오기:</span>
       <select id="homeSlotSelect" class="select-box" onchange="handleHomeSlotSelect(this.value)">
         <option value="">-- 저장된 매장 선택 --</option>
       </select>
       <span class="home-footer-link" onclick="document.getElementById('homeImportFileInput').click()">
-        📥 파일에서 불러오기 (.json)
+        📂 내 컴퓨터에서 백업 파일 불러오기
       </span>
       <input type="file" id="homeImportFileInput" style="display: none;" accept=".json" onchange="importConfigFile(event)">
     </div>
@@ -1676,17 +1787,14 @@
         <h2 class="card-title">🎉 5단계: 이번 주 알바 근무표</h2>
         <p class="card-desc" id="resultGeneratedTime"></p>
       </div>
-      <div style="display: flex; gap: 6px; flex-wrap: wrap;">
-        <button class="btn btn-sm btn-primary" onclick="generateNextWeekSchedule()">🗓️ 다음 주 근무표 만들기</button>
-        <button class="btn btn-sm btn-secondary" onclick="generateScheduleAndShow()">🔄 다시 생성하기</button>
-        <button class="btn btn-sm btn-outline-primary" onclick="copyScheduleToClipboard()">📋 텍스트 복사</button>
-        <button class="btn btn-sm btn-secondary" onclick="window.print()">🖨️ 인쇄 / PDF</button>
+      <div style="font-size: 12px; color: var(--primary); font-weight: 700; background: var(--primary-light); padding: 4px 10px; border-radius: 20px;">
+        💡 알바생 클릭 시 즉시 대타 교체 가능
       </div>
     </div>
 
-    <!-- Shortage Notice -->
+    <!-- Shortage Notice (Placed on Top) -->
     <div id="shortageNotice" class="callout callout-warning" style="display: none;">
-      ⚠️ 일부 시간대에 지원자가 부족하거나 규칙에 의해 <strong style="color: var(--danger);">인원 부족</strong>으로 표시되었습니다. <strong>빨간색 뱃지에 마우스를 올리면 제외 사유</strong>를 확인할 수 있습니다.
+      ⚠️ 일부 시간대에 지원자가 부족하거나 규칙에 의해 <strong style="color: var(--danger);">인원 부족</strong>으로 표시되었습니다. <strong>해당 칸을 클릭하여 다른 알바생을 즉시 대타로 배정</strong>할 수 있습니다.
     </div>
 
     <!-- View Switcher (Cards vs Table) -->
@@ -1710,8 +1818,16 @@
       </table>
     </div>
 
+    <!-- Schedule Action Buttons (Positioned below the schedule) -->
+    <div class="schedule-action-bar">
+      <button class="btn btn-primary" onclick="generateNextWeekSchedule()">🗓️ 다음 주 근무표 만들기</button>
+      <button class="btn btn-secondary" onclick="generateScheduleAndShow()">🔄 다시 생성하기</button>
+      <button class="btn btn-outline-primary" onclick="copyScheduleToClipboard()">📋 텍스트 복사</button>
+      <button class="btn btn-secondary" onclick="window.print()">🖨️ 인쇄 / PDF</button>
+    </div>
+
     <!-- Workload & Weekly Hours Summary with Holiday Pay -->
-    <div style="margin-top: 28px;">
+    <div style="margin-top: 10px;">
       <h3 style="font-size: 15px; font-weight: 700; color: var(--gray-800); margin-bottom: 8px;">
         📊 근무자별 주간 근무시간 & 배정 통계
       </h3>
@@ -1723,7 +1839,7 @@
       </div>
     </div>
 
-    <!-- Save & Export Box at Step 5 Bottom (Section D) -->
+    <!-- Save & Backup Box at Step 5 Bottom (Section D) -->
     <div class="result-save-box">
       <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
         <strong>💾 현재 설정 저장:</strong>
@@ -1731,7 +1847,7 @@
         <button class="btn btn-sm btn-secondary" onclick="saveSlotFromInput()">슬롯에 저장</button>
       </div>
       <div style="display: flex; gap: 6px; flex-wrap: wrap;">
-        <button class="btn btn-sm btn-outline-primary" onclick="exportConfigFile()">📤 설정 파일 내보내기 (.json)</button>
+        <button class="btn btn-sm btn-outline-primary" onclick="exportConfigFile()">💾 내 근무표 백업 파일 다운로드</button>
       </div>
     </div>
 
@@ -1744,7 +1860,7 @@
   <!-- Page Footer Notice (Section F & G) -->
   <footer class="page-footer">
     <p style="margin-bottom: 6px; color: var(--gray-600);">
-      ※ 브라우저 저장은 현재 사용 중인 기기(브라우저)에만 보관됩니다. 다른 기기로 옮기려면 <strong>[설정 내보내기]</strong>를 이용하세요.
+      ※ 브라우저 저장은 현재 사용 중인 기기(브라우저)에만 보관됩니다. 다른 기기로 옮기려면 <strong>[내 근무표 백업 파일 다운로드]</strong>를 이용하세요.
     </p>
     <p style="font-size: 11px; color: var(--gray-400); margin-bottom: 4px;">
       본 도구는 근무표 작성을 돕는 참고용입니다. 실제 운영 전 근로시간·휴게시간·임금 기준은 별도로 확인하세요.
@@ -1760,6 +1876,31 @@
 <a href="#" id="floatingFeedbackBtn" class="floating-feedback-btn" target="_blank" onclick="handleFeedbackClick(event)">
   💬 의견 보내기
 </a>
+
+<!-- Micro-editing Swap Worker Modal (Section 4) -->
+<div id="swapWorkerModal" class="modal-overlay" style="display: none;" onclick="handleModalOverlayClick(event)">
+  <div class="modal-card">
+    <div class="modal-header">
+      <h3 style="font-size: 16px; font-weight: 800; color: var(--gray-900);">🔄 근무자 즉시 교체 (대타 배정)</h3>
+      <button class="modal-close-btn" onclick="closeSwapWorkerModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div id="swapModalTargetInfo" style="background: var(--gray-50); border: 1.5px solid var(--gray-200); border-radius: var(--radius-sm); padding: 10px 12px; font-size: 13px; margin-bottom: 14px; line-height: 1.5;">
+        <!-- Slot info rendered here -->
+      </div>
+      <div style="font-size: 12px; font-weight: 700; color: var(--gray-600); margin-bottom: 8px;">
+        👉 교체할 알바생을 선택하세요:
+      </div>
+      <div id="swapWorkerList" style="display: flex; flex-direction: column; gap: 6px; max-height: 280px; overflow-y: auto; padding-right: 2px;">
+        <!-- Worker candidates rendered here -->
+      </div>
+    </div>
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 14px; border-top: 1px solid var(--gray-200); padding-top: 12px;">
+      <button class="btn btn-sm btn-danger-outline" onclick="applySwapWorker(null)">⚠️ 미배정(공석)으로 비우기</button>
+      <button class="btn btn-sm btn-secondary" onclick="closeSwapWorkerModal()">닫기</button>
+    </div>
+  </div>
+</div>
 
 <script>
   /* ==========================================================================
@@ -1922,11 +2063,11 @@
     const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(state, null, 2));
     const downloadAnchor = document.createElement('a');
     downloadAnchor.setAttribute("href", dataStr);
-    downloadAnchor.setAttribute("download", `alba_schedule_config_${new Date().toISOString().slice(0,10)}.json`);
+    downloadAnchor.setAttribute("download", `근무표_설정_백업_${new Date().toISOString().slice(0,10)}.json`);
     document.body.appendChild(downloadAnchor);
     downloadAnchor.click();
     downloadAnchor.remove();
-    showToast('설정 파일이 다운로드되었습니다.');
+    showToast('💾 근무표 백업 파일이 다운로드되었습니다.');
   }
 
   function importConfigFile(event) {
@@ -1941,13 +2082,13 @@
           syncAvailabilitySchema();
           saveState();
           renderAll();
-          showToast('설정 파일을 성공적으로 불러왔습니다!');
+          showToast('📂 백업 파일을 성공적으로 불러왔습니다!');
           goToStep(1);
         } else {
-          alert('올바른 설정 파일 형식이 아닙니다.');
+          alert('올바른 백업 파일(.json) 형식이 아닙니다.');
         }
       } catch (err) {
-        alert('파일을 읽는 중 오류가 발생했습니다.');
+        alert('백업 파일을 읽는 중 오류가 발생했습니다.');
       }
       event.target.value = '';
     };
@@ -3193,15 +3334,15 @@
         `;
 
         if (assignedIds.length === 0) {
-          bodyHtml += `<span class="badge-shortage">⚠️ 미배정</span>`;
+          bodyHtml += `<span class="badge-shortage" onclick="openSwapWorkerModal('${day.id}', '${shift.id}', 0)" title="클릭하여 알바생 배정">⚠️ 미배정 ▾</span>`;
         } else {
           assignedIds.forEach((wId, slotIdx) => {
             if (wId === null) {
               const slotKey = `${day.id}_${shift.id}_${slotIdx}`;
-              const diagList = schedule.diagnostics[slotKey] || [];
+              const diagList = (schedule.diagnostics && schedule.diagnostics[slotKey]) || [];
               let tooltipText = '<strong>[제외 및 미배정 사유]</strong><br>';
               if (diagList.length === 0) {
-                tooltipText += '지원 가능한 근무자 없음';
+                tooltipText += '지원 가능한 근무자 없음 (클릭하여 대타 배정)';
               } else {
                 diagList.forEach(d => {
                   tooltipText += `• <strong>${escapeHtml(d.workerName)}</strong>: ${escapeHtml(d.reason)}<br>`;
@@ -3209,15 +3350,15 @@
               }
 
               bodyHtml += `
-                <div class="badge-shortage">
-                  ⚠️ 인원 부족
+                <div class="badge-shortage" onclick="openSwapWorkerModal('${day.id}', '${shift.id}', ${slotIdx})" title="클릭하여 알바생 배정 (대타)">
+                  ⚠️ 인원 부족 ▾
                   <div class="tooltip-box">${tooltipText}</div>
                 </div>
               `;
             } else {
               const worker = state.workers.find(w => w.id === wId);
               const name = worker ? escapeHtml(worker.name) : '알 수 없음';
-              bodyHtml += `<span class="assigned-badge">👤 ${name}</span>`;
+              bodyHtml += `<span class="assigned-badge" onclick="openSwapWorkerModal('${day.id}', '${shift.id}', ${slotIdx})" title="클릭하여 알바생 변경 (대타 교체)">👤 ${name} ▾</span>`;
             }
           });
         }
@@ -3243,30 +3384,30 @@
 
           let assignedHtml = '';
           if (assignedIds.length === 0) {
-            assignedHtml = `<span class="badge-shortage">⚠️ 미배정</span>`;
+            assignedHtml = `<span class="badge-shortage" onclick="openSwapWorkerModal('${day.id}', '${shift.id}', 0)" title="클릭하여 알바생 배정">⚠️ 미배정 ▾</span>`;
           } else {
             assignedHtml = assignedIds.map((wId, slotIdx) => {
               if (wId === null) {
                 const slotKey = `${day.id}_${shift.id}_${slotIdx}`;
-                const diagList = schedule.diagnostics[slotKey] || [];
+                const diagList = (schedule.diagnostics && schedule.diagnostics[slotKey]) || [];
                 let tooltipText = '<strong>[제외 및 미배정 사유]</strong><br>';
                 if (diagList.length === 0) {
-                  tooltipText += '지원 가능한 근무자 없음';
+                  tooltipText += '지원 가능한 근무자 없음 (클릭하여 대타 배정)';
                 } else {
                   diagList.forEach(d => {
                     tooltipText += `• <strong>${escapeHtml(d.workerName)}</strong>: ${escapeHtml(d.reason)}<br>`;
                   });
                 }
                 return `
-                  <div class="badge-shortage">
-                    ⚠️ 인원 부족
+                  <div class="badge-shortage" onclick="openSwapWorkerModal('${day.id}', '${shift.id}', ${slotIdx})" title="클릭하여 알바생 배정 (대타)">
+                    ⚠️ 인원 부족 ▾
                     <div class="tooltip-box">${tooltipText}</div>
                   </div>
                 `;
               } else {
                 const worker = state.workers.find(w => w.id === wId);
                 const name = worker ? escapeHtml(worker.name) : '알 수 없음';
-                return `<span class="assigned-badge">👤 ${name}</span>`;
+                return `<span class="assigned-badge" onclick="openSwapWorkerModal('${day.id}', '${shift.id}', ${slotIdx})" title="클릭하여 알바생 변경 (대타 교체)">👤 ${name} ▾</span>`;
               }
             }).join('');
           }
@@ -3345,6 +3486,174 @@
         `;
       }).join('');
     }
+  }
+
+  /* ==========================================================================
+     MICRO-EDITING / SWAP WORKER (대타 즉시 교체 기능 - Section 4)
+     ========================================================================== */
+  let currentSwapTarget = null; // { dayId, shiftId, slotIdx }
+
+  function openSwapWorkerModal(dayId, shiftId, slotIdx) {
+    if (!state.lastSchedule) return;
+    const schedule = state.lastSchedule;
+
+    const day = ALL_DAYS.find(d => d.id === dayId);
+    const grp = state.dayGroups.find(g => g.days.includes(dayId));
+    if (!grp || !day) return;
+    const shift = grp.shifts.find(s => s.id === shiftId);
+    if (!shift) return;
+
+    const assignedIds = (schedule.assignments[dayId] && schedule.assignments[dayId][shiftId]) || [];
+    const currentWorkerId = assignedIds[slotIdx];
+    const currentWorker = state.workers.find(w => w.id === currentWorkerId);
+    const currentWorkerName = currentWorker ? escapeHtml(currentWorker.name) : '없음 (인원 부족)';
+
+    currentSwapTarget = { dayId, shiftId, slotIdx };
+
+    const infoBox = document.getElementById('swapModalTargetInfo');
+    if (infoBox) {
+      infoBox.innerHTML = `
+        <div><strong>📌 대상 타임:</strong> [${day.name}요일 - ${escapeHtml(grp.name)}] <strong>${escapeHtml(shift.name)}</strong> (${shift.start}~${shift.end})</div>
+        <div style="margin-top: 4px;"><strong>👤 현재 배정:</strong> <span style="color: ${currentWorker ? 'var(--primary)' : 'var(--danger)'}; font-weight: 700;">${currentWorkerName}</span></div>
+      `;
+    }
+
+    const listContainer = document.getElementById('swapWorkerList');
+    if (listContainer) {
+      const candidates = state.workers.map(w => {
+        const isAvail = isWorkerAvailable(w.id, dayId, shiftId);
+        const stat = (schedule.workerStats && schedule.workerStats[w.id]) || { hours: 0, count: 0 };
+        const isCurrent = (w.id === currentWorkerId);
+
+        return {
+          worker: w,
+          isAvail,
+          hours: stat.hours,
+          count: stat.count,
+          isCurrent
+        };
+      });
+
+      // Sort: Available first, then current worker, then by hours ascending
+      candidates.sort((a, b) => {
+        if (a.isAvail !== b.isAvail) return a.isAvail ? -1 : 1;
+        return a.hours - b.hours;
+      });
+
+      listContainer.innerHTML = candidates.map(c => {
+        const statusBadge = c.isAvail
+          ? `<span style="color: #059669; font-size: 12px; font-weight: 700;">🟢 가능</span>`
+          : `<span style="color: #9ca3af; font-size: 12px;">⚪ 불가</span>`;
+        const currentTag = c.isCurrent ? `<span style="font-size: 11px; background: #e2e8f0; color: #475569; padding: 2px 6px; border-radius: 4px; margin-left: 6px;">현재 배정됨</span>` : '';
+
+        return `
+          <button type="button" class="swap-candidate-btn ${c.isCurrent ? 'is-current' : ''}" onclick="applySwapWorker('${c.worker.id}')">
+            <div>
+              <span style="font-size: 14px; font-weight: 700; color: var(--gray-900);">👤 ${escapeHtml(c.worker.name)}</span>
+              ${currentTag}
+              <div style="font-size: 11px; color: var(--gray-500); margin-top: 2px;">
+                현재 주간: ${c.hours.toFixed(1)}h (${c.count}회)
+              </div>
+            </div>
+            <div style="display: flex; align-items: center; gap: 8px;">
+              ${statusBadge}
+              <span style="font-size: 12px; color: var(--primary); font-weight: 700;">선택 ➡️</span>
+            </div>
+          </button>
+        `;
+      }).join('');
+    }
+
+    const modal = document.getElementById('swapWorkerModal');
+    if (modal) modal.style.display = 'flex';
+  }
+
+  function closeSwapWorkerModal() {
+    const modal = document.getElementById('swapWorkerModal');
+    if (modal) modal.style.display = 'none';
+    currentSwapTarget = null;
+  }
+
+  function handleModalOverlayClick(e) {
+    if (e.target && e.target.id === 'swapWorkerModal') {
+      closeSwapWorkerModal();
+    }
+  }
+
+  function applySwapWorker(newWorkerId) {
+    if (!currentSwapTarget || !state.lastSchedule) return;
+    const { dayId, shiftId, slotIdx } = currentSwapTarget;
+
+    if (!state.lastSchedule.assignments[dayId]) state.lastSchedule.assignments[dayId] = {};
+    if (!state.lastSchedule.assignments[dayId][shiftId]) state.lastSchedule.assignments[dayId][shiftId] = [];
+
+    state.lastSchedule.assignments[dayId][shiftId][slotIdx] = newWorkerId;
+
+    recalculateScheduleStats(state.lastSchedule);
+    saveState();
+    renderScheduleResult(state.lastSchedule);
+
+    closeSwapWorkerModal();
+
+    const day = ALL_DAYS.find(d => d.id === dayId);
+    const grp = state.dayGroups.find(g => g.days.includes(dayId));
+    const shift = grp ? grp.shifts.find(s => s.id === shiftId) : null;
+    const shiftName = shift ? shift.name : '';
+    const dayName = day ? day.name : '';
+
+    if (newWorkerId) {
+      const worker = state.workers.find(w => w.id === newWorkerId);
+      const wName = worker ? worker.name : '';
+      showToast(`✨ [${dayName}요일 ${shiftName}] 근무자를 '${wName}' 님으로 변경했습니다.`);
+    } else {
+      showToast(`⚠️ [${dayName}요일 ${shiftName}] 슬롯을 미배정(인원 부족)으로 변경했습니다.`);
+    }
+  }
+
+  function recalculateScheduleStats(schedule) {
+    if (!schedule) return;
+    const workerStats = {};
+
+    state.workers.forEach(w => {
+      workerStats[w.id] = {
+        count: 0,
+        hours: 0,
+        weekendCount: 0,
+        daysAssigned: new Set(),
+        dayShifts: {}
+      };
+      ALL_DAYS.forEach(d => {
+        workerStats[w.id].dayShifts[d.id] = [];
+      });
+    });
+
+    let shortageCount = 0;
+
+    ALL_DAYS.forEach((day, dayIndex) => {
+      const grp = state.dayGroups.find(g => g.days.includes(day.id));
+      if (!grp) return;
+
+      grp.shifts.forEach(shift => {
+        const assignedIds = (schedule.assignments[day.id] && schedule.assignments[day.id][shift.id]) || [];
+        const duration = getShiftDurationHours(shift.start, shift.end);
+
+        assignedIds.forEach(wId => {
+          if (wId === null) {
+            shortageCount++;
+          } else if (workerStats[wId]) {
+            const wStat = workerStats[wId];
+            wStat.count++;
+            wStat.hours += duration;
+            if (day.isWeekend) wStat.weekendCount++;
+            wStat.daysAssigned.add(dayIndex);
+            wStat.dayShifts[day.id].push(shift);
+          }
+        });
+      });
+    });
+
+    schedule.workerStats = workerStats;
+    schedule.shortageCount = shortageCount;
   }
 
   /* ==========================================================================
