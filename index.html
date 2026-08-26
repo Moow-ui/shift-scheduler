@@ -444,60 +444,174 @@
 
     .group-shift-item {
       display: flex;
-      align-items: center;
-      gap: 8px;
+      flex-direction: column;
+      gap: 10px;
       background: white;
-      padding: 10px 12px;
+      padding: 14px;
       border-radius: var(--radius-md);
-      border: 1px solid var(--gray-200);
+      border: 1.5px solid var(--gray-200);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+    }
+
+    .shift-top-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
       flex-wrap: wrap;
     }
 
     .shift-input-name {
-      flex: 2;
-      min-width: 110px;
+      flex: 1;
+      min-width: 140px;
     }
 
-    /* Formatted Time Selectors */
+    /* Formatted Time Inputs & Quick Chips */
     .time-selector-box {
-      flex: 3;
-      min-width: 230px;
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 8px;
+      flex-wrap: wrap;
     }
 
-    .time-select {
-      padding: 6px 8px;
-      font-size: 13px;
-      font-weight: 600;
+    .time-input-native {
+      padding: 8px 10px;
+      font-size: 14px;
+      font-weight: 700;
       border: 1.5px solid var(--gray-300);
       border-radius: var(--radius-sm);
       background: white;
       color: var(--gray-800);
       outline: none;
+      min-height: 44px;
       cursor: pointer;
+      font-family: inherit;
     }
-    .time-select:focus {
+    .time-input-native:focus {
       border-color: var(--primary);
+      box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.15);
+    }
+
+    .quick-time-chips {
+      display: flex;
+      gap: 4px;
+      flex-wrap: wrap;
+      align-items: center;
+      padding-top: 6px;
+      border-top: 1px dashed var(--gray-200);
+      margin-top: 2px;
+    }
+    .quick-chip-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--gray-500);
+      margin-right: 2px;
+    }
+    .quick-chip {
+      background: var(--gray-100);
+      border: 1px solid var(--gray-300);
+      border-radius: 14px;
+      padding: 5px 9px;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--gray-700);
+      cursor: pointer;
+      user-select: none;
+      transition: all 0.15s ease;
+      touch-action: manipulation;
+      min-height: 28px;
+      display: inline-flex;
+      align-items: center;
+    }
+    .quick-chip:hover, .quick-chip:active {
+      background: var(--primary-light);
+      border-color: var(--primary);
+      color: var(--primary);
+      transform: scale(0.96);
     }
 
     .shift-duration-badge {
       font-size: 12px;
-      font-weight: 600;
-      color: var(--gray-500);
+      font-weight: 700;
+      color: var(--gray-700);
       white-space: nowrap;
       background: var(--gray-100);
-      padding: 4px 8px;
+      padding: 6px 10px;
       border-radius: var(--radius-sm);
     }
 
     .shift-input-count {
-      width: 50px;
+      width: 55px;
       text-align: center;
-      padding: 6px 4px;
+      padding: 8px 4px;
+      font-size: 14px;
+      font-weight: 700;
+      min-height: 44px;
+    }
+
+    /* Result Schedule Cards for Mobile (Section C) */
+    .schedule-cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 12px;
+      margin-top: 10px;
+    }
+    .day-schedule-card {
+      background: white;
+      border: 1.5px solid var(--gray-200);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+    }
+    .day-schedule-header {
+      background: var(--gray-100);
+      padding: 10px 14px;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--gray-800);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--gray-200);
+    }
+    .day-schedule-header.weekend {
+      background: #fef2f2;
+      color: #dc2626;
+      border-bottom-color: #fee2e2;
+    }
+    .day-schedule-body {
+      padding: 12px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .mobile-shift-row {
+      border-bottom: 1px dashed var(--gray-200);
+      padding-bottom: 10px;
+    }
+    .mobile-shift-row:last-child {
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+    .mobile-shift-title-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+    }
+    .mobile-shift-name {
       font-size: 13px;
       font-weight: 700;
+      color: var(--gray-800);
+    }
+    .mobile-shift-time {
+      font-size: 11px;
+      color: var(--gray-500);
+    }
+    .mobile-assigned-workers {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
     }
 
     /* Closed Days Status Box (Bug 2) */
@@ -554,6 +668,7 @@
       z-index: 999;
       transition: all 0.2s ease;
       cursor: pointer;
+      touch-action: manipulation;
     }
     .floating-feedback-btn:hover {
       background: var(--gray-50);
@@ -973,7 +1088,7 @@
       gap: 12px;
     }
 
-    /* Buttons & Inputs */
+    /* Buttons & Inputs (Touch target 44px minimum) */
     .btn {
       display: inline-flex;
       align-items: center;
@@ -987,6 +1102,13 @@
       cursor: pointer;
       transition: all 0.15s ease;
       text-decoration: none;
+      min-height: 44px;
+      touch-action: manipulation;
+      user-select: none;
+    }
+    .btn:active, .day-toggle-btn:active, .worker-tab:active, .preset-card:active, .btn-resume:active, .btn-start-new:active, .step-btn:active {
+      transform: scale(0.96);
+      filter: brightness(0.92);
     }
     .btn-primary { background: var(--primary); color: white; }
     .btn-primary:hover { background: var(--primary-hover); box-shadow: 0 4px 10px rgba(37, 99, 235, 0.3); }
@@ -1003,8 +1125,8 @@
     .btn-danger-outline { background: white; color: var(--danger); border: 1px solid #fecaca; }
     .btn-danger-outline:hover { background: var(--danger-light); }
 
-    .btn-large { padding: 14px 28px; font-size: 16px; font-weight: 700; border-radius: var(--radius-lg); }
-    .btn-sm { padding: 6px 10px; font-size: 12px; border-radius: var(--radius-sm); }
+    .btn-large { padding: 14px 28px; font-size: 16px; font-weight: 700; border-radius: var(--radius-lg); min-height: 50px; }
+    .btn-sm { padding: 8px 12px; font-size: 13px; border-radius: var(--radius-sm); min-height: 38px; }
 
     .input-text {
       padding: 8px 12px;
@@ -1012,16 +1134,18 @@
       border-radius: var(--radius-md);
       font-size: 14px;
       outline: none;
+      min-height: 44px;
     }
     .input-text:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15); }
 
     .select-box {
-      padding: 6px 10px;
+      padding: 8px 12px;
       border: 1px solid var(--gray-300);
       border-radius: var(--radius-md);
       font-size: 13px;
       background: white;
       outline: none;
+      min-height: 44px;
     }
 
     .action-footer {
@@ -1086,24 +1210,103 @@
     }
 
     @media print {
-      body { background: white; padding: 0; }
+      body { background: white; padding: 0 !important; }
       .container { max-width: 100%; }
-      #homeScreen, .step-nav, .action-footer, .btn, .card-header .btn, #step1, #step2, #step3, #step4, .result-save-box, .floating-feedback-btn {
+      #homeScreen, .step-nav, .action-footer, .btn, .card-header .btn, #step1, #step2, #step3, #step4, .result-save-box, .floating-feedback-btn, .view-toggle-bar, .mobile-swipe-guide {
         display: none !important;
       }
       #step5 { display: block !important; border: none; box-shadow: none; padding: 0; }
+      #scheduleTableContainer { display: block !important; }
+      #scheduleCardsContainer { display: none !important; }
       .schedule-table th { background: #333 !important; color: white !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
       .assigned-badge { background: #f3f4f6 !important; color: #000 !important; border: 1px solid #ccc !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
       .badge-shortage { background: #fee2e2 !important; color: #b91c1c !important; border: 1px solid #f87171 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
       .page-footer { margin-top: 20px; font-size: 11px; }
     }
 
+    /* Mobile Responsive Optimizations (<= 640px) */
     @media (max-width: 640px) {
-      body { padding: 10px; }
-      .card { padding: 16px; }
-      .group-shift-item { flex-direction: column; align-items: stretch; }
-      .time-selector-box { justify-content: space-between; }
-      .avail-days-container { grid-template-columns: repeat(2, 1fr); }
+      body {
+        padding: 10px 10px 92px 10px;
+      }
+      .card {
+        padding: 14px;
+        margin-bottom: 14px;
+      }
+      .card-header {
+        margin-bottom: 14px;
+      }
+      .card-title {
+        font-size: 16px;
+      }
+
+      /* Step 1 Shift Items Stacked */
+      .group-shift-item {
+        padding: 12px;
+      }
+      .shift-top-row {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .time-selector-box {
+        justify-content: flex-start;
+      }
+      .time-input-native {
+        flex: 1;
+        min-width: 110px;
+      }
+
+      /* Step 3 Horizontal Carousel */
+      .avail-days-container {
+        display: flex;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+        gap: 12px;
+        padding-bottom: 10px;
+        padding-top: 4px;
+      }
+      .avail-day-col {
+        flex: 0 0 220px;
+        min-width: 220px;
+        scroll-snap-align: start;
+      }
+      .mobile-swipe-guide {
+        display: flex !important;
+      }
+
+      /* Sticky Bottom Action Bar */
+      .action-footer {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: rgba(255, 255, 255, 0.97);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        padding: 10px 14px;
+        box-shadow: 0 -4px 16px rgba(0,0,0,0.09);
+        z-index: 900;
+        border-top: 1px solid var(--gray-200);
+        padding-bottom: max(10px, env(safe-area-inset-bottom));
+        margin: 0;
+        display: flex;
+        gap: 8px;
+      }
+      .action-footer .btn {
+        flex: 1;
+        min-height: 48px;
+        font-size: 14px;
+        font-weight: 700;
+      }
+
+      /* Floating feedback button repositioned above sticky bar */
+      .floating-feedback-btn {
+        bottom: 74px;
+        right: 12px;
+        padding: 7px 12px;
+        font-size: 12px;
+      }
     }
   </style>
 </head>
@@ -1285,6 +1488,11 @@
         <button class="btn btn-sm btn-secondary" onclick="setWorkerAllAvail(false)">전체 불가(X)</button>
         <button class="btn btn-sm btn-secondary" onclick="setWorkerWeekdaysOnly()">평일만 가능</button>
         <button class="btn btn-sm btn-secondary" onclick="setWorkerWeekendsOnly()">주말만 가능</button>
+      </div>
+
+      <!-- Mobile Swipe Guide -->
+      <div class="mobile-swipe-guide" style="display: none; align-items: center; justify-content: center; gap: 6px; font-size: 12px; color: var(--primary); font-weight: 600; margin-bottom: 8px; background: var(--primary-light); padding: 6px 12px; border-radius: 20px;">
+        <span>👉 좌우로 스와이프하여 모든 요일을 확인하세요 👈</span>
       </div>
 
       <!-- Dynamic Days Grid for Selected Worker -->
@@ -1470,8 +1678,22 @@
       ⚠️ 일부 시간대에 지원자가 부족하거나 규칙에 의해 <strong style="color: var(--danger);">인원 부족</strong>으로 표시되었습니다. <strong>빨간색 뱃지에 마우스를 올리면 제외 사유</strong>를 확인할 수 있습니다.
     </div>
 
-    <!-- Result Schedule Table -->
-    <div class="table-container">
+    <!-- View Switcher (Cards vs Table) -->
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px;" class="view-toggle-bar">
+      <span style="font-size: 13px; font-weight: 700; color: var(--gray-700);">📅 근무표 표시 방식:</span>
+      <div style="display: flex; gap: 6px;">
+        <button id="btnViewCards" class="btn btn-sm btn-primary" onclick="setResultView('cards')">📱 요일별 카드</button>
+        <button id="btnViewTable" class="btn btn-sm btn-secondary" onclick="setResultView('table')">📊 전체 격자표</button>
+      </div>
+    </div>
+
+    <!-- Result Schedule Cards View (Mobile Optimized) -->
+    <div id="scheduleCardsContainer" class="schedule-cards-grid">
+      <!-- Rendered by JS -->
+    </div>
+
+    <!-- Result Schedule Table View (Desktop & Tablet) -->
+    <div class="table-container" id="scheduleTableContainer" style="display: none;">
       <table class="schedule-table" id="scheduleResultTable">
         <!-- Rendered by JS -->
       </table>
@@ -2113,34 +2335,62 @@
         `;
       }).join('');
 
-      // Shift items with explicit time dropdowns + duration + break time notice
+      // Shift items with native time input + quick time chips + duration + break time notice
       const shiftListHtml = group.shifts.map(shift => {
-        const duration = getShiftDurationHours(shift.start || '09:00', shift.end || '15:00');
+        const startVal = shift.start || '09:00';
+        const endVal = shift.end || '15:00';
+        const duration = getShiftDurationHours(startVal, endVal);
         const breakText = getBreakDisplayText(duration);
+
+        // Context-aware Quick Chips for start & end
+        const startChips = ['07:00', '08:00', '09:00', '10:00', '11:00', '12:00', '17:00', '18:00', '22:00'];
+        const endChips = ['14:00', '15:00', '17:00', '18:00', '21:00', '22:00', '23:00', '00:00'];
+
+        const startChipsHtml = startChips.map(t => `
+          <button type="button" class="quick-chip" onclick="setQuickShiftTime('${group.id}', '${shift.id}', 'start', '${t}')">${t}</button>
+        `).join('');
+
+        const endChipsHtml = endChips.map(t => `
+          <button type="button" class="quick-chip" onclick="setQuickShiftTime('${group.id}', '${shift.id}', 'end', '${t}')">${t === '00:00' ? '24:00' : t}</button>
+        `).join('');
+
         return `
           <div class="group-shift-item">
-            <div class="shift-input-name">
-              <input type="text" class="input-text" style="width: 100%;" value="${escapeHtml(shift.name)}" placeholder="타임 이름" onchange="updateGroupShift('${group.id}', '${shift.id}', 'name', this.value)">
+            <div class="shift-top-row">
+              <div class="shift-input-name">
+                <input type="text" class="input-text" style="width: 100%; font-weight: 700;" value="${escapeHtml(shift.name)}" placeholder="타임 이름 (예: 오픈, 미들, 마감)" onchange="updateGroupShift('${group.id}', '${shift.id}', 'name', this.value)">
+              </div>
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <div style="display: flex; align-items: center; gap: 4px;">
+                  <span style="font-size: 12px; color: var(--gray-600); font-weight: 600;">필요:</span>
+                  <input type="number" class="input-text shift-input-count" min="1" max="20" value="${shift.required || 1}" onchange="updateGroupShift('${group.id}', '${shift.id}', 'required', parseInt(this.value)||1)">
+                  <span style="font-size: 12px; color: var(--gray-600);">명</span>
+                </div>
+                ${group.shifts.length > 1 ? `
+                  <button class="btn btn-sm btn-danger-outline" onclick="deleteGroupShift('${group.id}', '${shift.id}')">삭제</button>
+                ` : ''}
+              </div>
             </div>
+
             <div class="time-selector-box">
-              <select class="time-select" onchange="updateGroupShift('${group.id}', '${shift.id}', 'start', this.value)">
-                ${renderTimeSelectOptions(shift.start || '09:00')}
-              </select>
-              <span style="color: var(--gray-400);">~</span>
-              <select class="time-select" onchange="updateGroupShift('${group.id}', '${shift.id}', 'end', this.value)">
-                ${renderTimeSelectOptions(shift.end || '15:00')}
-              </select>
-              <span class="shift-duration-badge">${formatDurationText(duration)}</span>
-              <span style="font-size: 11px; color: var(--gray-500); white-space: nowrap;">${breakText}</span>
+              <div style="display: flex; align-items: center; gap: 6px; flex-wrap: wrap;">
+                <input type="time" class="time-input-native" step="1800" value="${startVal}" onchange="updateGroupShift('${group.id}', '${shift.id}', 'start', this.value)">
+                <span style="color: var(--gray-400); font-weight: bold;">~</span>
+                <input type="time" class="time-input-native" step="1800" value="${endVal === '24:00' ? '00:00' : endVal}" onchange="updateGroupShift('${group.id}', '${shift.id}', 'end', this.value === '00:00' ? '24:00' : this.value)">
+                <span class="shift-duration-badge">${formatDurationText(duration)}</span>
+                <span style="font-size: 11px; color: var(--gray-500); font-weight: 600; white-space: nowrap;">${breakText}</span>
+              </div>
             </div>
-            <div style="display: flex; align-items: center; gap: 4px;">
-              <span style="font-size: 12px; color: var(--gray-600);">인원:</span>
-              <input type="number" class="input-text shift-input-count" min="1" max="20" value="${shift.required || 1}" onchange="updateGroupShift('${group.id}', '${shift.id}', 'required', parseInt(this.value)||1)">
-              <span style="font-size: 12px; color: var(--gray-600);">명</span>
+
+            <!-- Quick Time Chips -->
+            <div class="quick-time-chips">
+              <span class="quick-chip-label">시작 퀵:</span>
+              ${startChipsHtml}
             </div>
-            ${group.shifts.length > 1 ? `
-              <button class="btn btn-sm btn-danger-outline" style="margin-left: auto;" onclick="deleteGroupShift('${group.id}', '${shift.id}')">삭제</button>
-            ` : ''}
+            <div class="quick-time-chips" style="border-top: none; padding-top: 0;">
+              <span class="quick-chip-label">종료 퀵:</span>
+              ${endChipsHtml}
+            </div>
           </div>
         `;
       }).join('');
@@ -2179,6 +2429,18 @@
 
     renderClosedDaysStatus();
     renderShiftValidationStatus();
+  }
+
+  function setQuickShiftTime(groupId, shiftId, field, timeVal) {
+    const group = state.dayGroups.find(g => g.id === groupId);
+    if (!group) return;
+    const shift = group.shifts.find(s => s.id === shiftId);
+    if (!shift) return;
+
+    shift[field] = (timeVal === '00:00' && field === 'end') ? '24:00' : timeVal;
+    syncAvailabilitySchema();
+    saveState();
+    renderDayGroups();
   }
 
   function addDayGroup() {
@@ -2817,6 +3079,28 @@
   /* ==========================================================================
      RENDER STEP 5 RESULTS
      ========================================================================== */
+  let currentResultView = 'cards';
+
+  function setResultView(viewType) {
+    currentResultView = viewType;
+    const cards = document.getElementById('scheduleCardsContainer');
+    const tableContainer = document.getElementById('scheduleTableContainer');
+    const btnCards = document.getElementById('btnViewCards');
+    const btnTable = document.getElementById('btnViewTable');
+
+    if (viewType === 'cards') {
+      if (cards) cards.style.display = 'grid';
+      if (tableContainer) tableContainer.style.display = 'none';
+      if (btnCards) { btnCards.className = 'btn btn-sm btn-primary'; }
+      if (btnTable) { btnTable.className = 'btn btn-sm btn-secondary'; }
+    } else {
+      if (cards) cards.style.display = 'none';
+      if (tableContainer) tableContainer.style.display = 'block';
+      if (btnCards) { btnCards.className = 'btn btn-sm btn-secondary'; }
+      if (btnTable) { btnTable.className = 'btn btn-sm btn-primary'; }
+    }
+  }
+
   function generateScheduleAndShow() {
     if (state.workers.length === 0) {
       showToast('⚠️ 근무자를 1명 이상 등록해야 합니다.');
@@ -2842,6 +3126,7 @@
 
   function renderScheduleResult(schedule) {
     const table = document.getElementById('scheduleResultTable');
+    const cardsContainer = document.getElementById('scheduleCardsContainer');
     const shortageNotice = document.getElementById('shortageNotice');
     const statsContainer = document.getElementById('statsContainer');
     const timeLabel = document.getElementById('resultGeneratedTime');
@@ -2862,10 +3147,12 @@
     });
 
     if (activeDays.length === 0) {
-      table.innerHTML = '<tr><td style="padding: 20px; text-align: center;">영업 요일이 없습니다.</td></tr>';
+      if (table) table.innerHTML = '<tr><td style="padding: 20px; text-align: center;">영업 요일이 없습니다.</td></tr>';
+      if (cardsContainer) cardsContainer.innerHTML = '<div style="padding: 20px; text-align: center; color: var(--gray-500);">영업 요일이 없습니다.</div>';
       return;
     }
 
+    // 1. Render Desktop/Tablet Grid Table
     let headerHtml = '<thead><tr>';
     activeDays.forEach(({ day, group }) => {
       headerHtml += `
@@ -2934,8 +3221,75 @@
     });
     bodyHtml += '</tr></tbody>';
 
-    table.innerHTML = headerHtml + bodyHtml;
+    if (table) table.innerHTML = headerHtml + bodyHtml;
 
+    // 2. Render Mobile-friendly Day Cards View (Section C)
+    if (cardsContainer) {
+      cardsContainer.innerHTML = activeDays.map(({ day, group }) => {
+        const shiftsHtml = group.shifts.map(shift => {
+          const duration = getShiftDurationHours(shift.start, shift.end);
+          const assignedIds = (schedule.assignments[day.id] && schedule.assignments[day.id][shift.id]) || [];
+
+          let assignedHtml = '';
+          if (assignedIds.length === 0) {
+            assignedHtml = `<span class="badge-shortage">⚠️ 미배정</span>`;
+          } else {
+            assignedHtml = assignedIds.map((wId, slotIdx) => {
+              if (wId === null) {
+                const slotKey = `${day.id}_${shift.id}_${slotIdx}`;
+                const diagList = schedule.diagnostics[slotKey] || [];
+                let tooltipText = '<strong>[제외 및 미배정 사유]</strong><br>';
+                if (diagList.length === 0) {
+                  tooltipText += '지원 가능한 근무자 없음';
+                } else {
+                  diagList.forEach(d => {
+                    tooltipText += `• <strong>${escapeHtml(d.workerName)}</strong>: ${escapeHtml(d.reason)}<br>`;
+                  });
+                }
+                return `
+                  <div class="badge-shortage">
+                    ⚠️ 인원 부족
+                    <div class="tooltip-box">${tooltipText}</div>
+                  </div>
+                `;
+              } else {
+                const worker = state.workers.find(w => w.id === wId);
+                const name = worker ? escapeHtml(worker.name) : '알 수 없음';
+                return `<span class="assigned-badge">👤 ${name}</span>`;
+              }
+            }).join('');
+          }
+
+          return `
+            <div class="mobile-shift-row">
+              <div class="mobile-shift-title-row">
+                <span class="mobile-shift-name">${escapeHtml(shift.name)}</span>
+                <span class="mobile-shift-time">${shift.start}~${shift.end} (${duration}h)</span>
+              </div>
+              <div class="mobile-assigned-workers">
+                ${assignedHtml}
+              </div>
+            </div>
+          `;
+        }).join('');
+
+        return `
+          <div class="day-schedule-card">
+            <div class="day-schedule-header ${day.isWeekend ? 'weekend' : ''}">
+              <span>🗓️ ${day.name}요일</span>
+              <span style="font-size: 12px; font-weight: normal; opacity: 0.85;">${escapeHtml(group.name)}</span>
+            </div>
+            <div class="day-schedule-body">
+              ${shiftsHtml}
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    setResultView(currentResultView);
+
+    // 3. Render Stats Summary
     if (statsContainer) {
       statsContainer.innerHTML = state.workers.map(w => {
         const stat = schedule.workerStats[w.id] || { count: 0, hours: 0, weekendCount: 0, dayShifts: {} };
