@@ -517,6 +517,52 @@
       border: 1.5px solid #fed7aa;
     }
 
+    /* Shift Validation Status Box (Section B) */
+    .shift-validation-box {
+      padding: 12px 16px;
+      border-radius: var(--radius-md);
+      margin-bottom: 12px;
+      transition: all 0.2s ease;
+      font-size: 13px;
+    }
+    .shift-validation-box.val-ok {
+      background: #f0fdf4;
+      border: 1.5px solid #bbf7d0;
+    }
+    .shift-validation-box.val-warning {
+      background: #fefce8;
+      border: 1.5px solid #fef08a;
+    }
+
+    /* Floating Feedback Button (Section C) */
+    .floating-feedback-btn {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: white;
+      color: var(--gray-700);
+      border: 1.5px solid var(--gray-300);
+      border-radius: 30px;
+      padding: 9px 16px;
+      font-size: 13px;
+      font-weight: 700;
+      box-shadow: var(--shadow-md);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      text-decoration: none;
+      z-index: 999;
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+    .floating-feedback-btn:hover {
+      background: var(--gray-50);
+      border-color: var(--primary);
+      color: var(--primary);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-lg);
+    }
+
     /* ==========================================================================
        STEP 2: Worker Registration
        ========================================================================== */
@@ -1042,7 +1088,7 @@
     @media print {
       body { background: white; padding: 0; }
       .container { max-width: 100%; }
-      #homeScreen, .step-nav, .action-footer, .btn, .card-header .btn, #step1, #step2, #step3, #step4, .result-save-box {
+      #homeScreen, .step-nav, .action-footer, .btn, .card-header .btn, #step1, #step2, #step3, #step4, .result-save-box, .floating-feedback-btn {
         display: none !important;
       }
       #step5 { display: block !important; border: none; box-shadow: none; padding: 0; }
@@ -1160,6 +1206,11 @@
       <!-- Rendered by JS -->
     </div>
 
+    <!-- Shift Validation Status Box (Section B) -->
+    <div id="shiftValidationStatusBox">
+      <!-- Rendered by JS -->
+    </div>
+
     <div class="callout" style="margin-top: 10px;">
       💡 <strong>요일 선택 안내:</strong> 파란색으로 채워진 요일이 해당 그룹에 배정된 요일입니다. 어떤 그룹에도 선택되지 않은 요일은 휴무일로 처리됩니다.
     </div>
@@ -1263,7 +1314,7 @@
     <div class="rules-summary-box">
       <div class="rules-summary-text">
         <strong>✅ 기본 스마트 규칙이 적용되어 있습니다.</strong>
-        하루 최대 2타임 · 연속 근무 보장 · 클로픈(11h) 금지 · 연속 6일 상한 · 주 40시간 상한 · 주말 균등배분
+        하루 최대 2타임 · 1일 최대 8시간 · 연속 근무 보장 · 클로픈(11h) 금지 · 연속 6일 상한 · 주 40시간 상한 · 주말 균등배분
       </div>
       <button class="btn btn-sm btn-outline-primary" id="btnToggleRules" onclick="toggleRulesDetail()">
         ⚙️ 규칙 자세히 설정하기 🔽
@@ -1369,6 +1420,26 @@
           </label>
         </div>
       </div>
+
+      <!-- Rule 7: 1일 최대 근무시간 제한 (Section A) -->
+      <div class="rule-item">
+        <div class="rule-info">
+          <div class="rule-title">7. 1일 최대 근무시간 제한</div>
+          <div class="rule-desc">
+            하루 총 근로시간이 설정한 시간을 넘지 않도록 제한합니다.<br>
+            <span style="color: var(--primary); font-size: 11px; font-weight: 600;">💡 근로기준법 제50조: 1일 법정 근로시간은 8시간 기준입니다.</span>
+          </div>
+        </div>
+        <div class="rule-controls">
+          <span style="font-size: 13px; color: var(--gray-600);">하루 최대</span>
+          <input type="number" id="rule_maxDailyHours" class="input-text" style="width: 55px; text-align: center; padding: 4px;" value="8" min="4" max="16" onchange="updateRule('maxDailyHours', parseInt(this.value)||8)">
+          <span style="font-size: 13px; color: var(--gray-600);">시간</span>
+          <label class="switch" style="margin-left: 6px;">
+            <input type="checkbox" id="rule_limitDailyHours" checked onchange="updateRule('limitDailyHours', this.checked)">
+            <span class="slider"></span>
+          </label>
+        </div>
+      </div>
     </div>
 
     <div class="action-footer">
@@ -1414,6 +1485,9 @@
       <div class="stats-grid" id="statsContainer">
         <!-- Rendered by JS -->
       </div>
+      <div style="font-size: 12px; color: var(--gray-500); margin-top: 10px; line-height: 1.5;">
+        💡 <strong>휴게시간 안내:</strong> 휴게시간은 근로기준법 제54조(4시간당 30분, 8시간당 1시간)에 따른 최소 기준입니다. 실제 부여 시점은 매장 사정에 맞게 조정하세요.
+      </div>
     </div>
 
     <!-- Save & Export Box at Step 5 Bottom (Section D) -->
@@ -1449,10 +1523,18 @@
 <!-- Toast Notification -->
 <div id="toast" class="toast">메시지</div>
 
+<!-- Floating Feedback Button (Section C) -->
+<a href="#" id="floatingFeedbackBtn" class="floating-feedback-btn" target="_blank" onclick="handleFeedbackClick(event)">
+  💬 의견 보내기
+</a>
+
 <script>
   /* ==========================================================================
      CONSTANTS & MASTER DEFINITIONS
      ========================================================================== */
+  // [피드백 링크 수정 위치] 아래 URL을 구글 폼 등의 링크로 변경하세요.
+  const FEEDBACK_URL = '#';
+
   const ALL_DAYS = [
     { id: 'mon', name: '월', isWeekend: false },
     { id: 'tue', name: '화', isWeekend: false },
@@ -1497,6 +1579,8 @@
     ],
     rules: {
       maxShiftsPerDay: 2,
+      limitDailyHours: true,
+      maxDailyHours: 8,
       noSplitShift: true,
       noClopen: true,
       minRestHours: 11,
@@ -1535,10 +1619,13 @@
         state = JSON.parse(saved);
         if (!state.rules) {
           state.rules = {
-            maxShiftsPerDay: 2, noSplitShift: true, noClopen: true, minRestHours: 11,
+            maxShiftsPerDay: 2, limitDailyHours: true, maxDailyHours: 8, noSplitShift: true, noClopen: true, minRestHours: 11,
             limitConsecutiveDays: true, maxConsecutiveDays: 6, limitWeeklyHours: true,
             maxWeeklyHours: 40, balanceWeekends: true
           };
+        } else {
+          if (state.rules.limitDailyHours === undefined) state.rules.limitDailyHours = true;
+          if (state.rules.maxDailyHours === undefined) state.rules.maxDailyHours = 8;
         }
         return true;
       }
@@ -1683,7 +1770,7 @@
         }
       ];
       state.rules = {
-        maxShiftsPerDay: 1, noSplitShift: true, noClopen: true, minRestHours: 11,
+        maxShiftsPerDay: 1, limitDailyHours: true, maxDailyHours: 8, noSplitShift: true, noClopen: true, minRestHours: 11,
         limitConsecutiveDays: true, maxConsecutiveDays: 6, limitWeeklyHours: true,
         maxWeeklyHours: 40, balanceWeekends: true
       };
@@ -1717,7 +1804,7 @@
         }
       ];
       state.rules = {
-        maxShiftsPerDay: 2, noSplitShift: true, noClopen: true, minRestHours: 11,
+        maxShiftsPerDay: 2, limitDailyHours: true, maxDailyHours: 8, noSplitShift: true, noClopen: true, minRestHours: 11,
         limitConsecutiveDays: true, maxConsecutiveDays: 6, limitWeeklyHours: true,
         maxWeeklyHours: 40, balanceWeekends: true
       };
@@ -1749,7 +1836,7 @@
         }
       ];
       state.rules = {
-        maxShiftsPerDay: 2, noSplitShift: false, noClopen: true, minRestHours: 11,
+        maxShiftsPerDay: 2, limitDailyHours: true, maxDailyHours: 12, noSplitShift: false, noClopen: true, minRestHours: 11,
         limitConsecutiveDays: true, maxConsecutiveDays: 6, limitWeeklyHours: true,
         maxWeeklyHours: 40, balanceWeekends: true
       };
@@ -1808,12 +1895,19 @@
   }
 
   /* ==========================================================================
-     TIME & DURATION HELPERS (Section A)
+     TIME & DURATION HELPERS (Section A & D)
      ========================================================================== */
   function parseTime(str) {
     if (!str) return 0;
     const parts = str.split(':');
     return parseInt(parts[0]) + (parseInt(parts[1] || '0') / 60);
+  }
+
+  function formatHourMin(h) {
+    const normalized = (h + 24) % 24;
+    const hh = String(Math.floor(normalized)).padStart(2, '0');
+    const mm = String(Math.round((normalized % 1) * 60)).padStart(2, '0');
+    return `${hh}:${mm}`;
   }
 
   function getShiftDurationHours(startStr, endStr) {
@@ -1833,6 +1927,107 @@
 
   function renderTimeSelectOptions(selectedTime) {
     return TIME_OPTIONS.map(t => `<option value="${t}" ${t === selectedTime ? 'selected' : ''}>${t}</option>`).join('');
+  }
+
+  /* ==========================================================================
+     BREAK TIME HELPERS (근로기준법 제54조)
+     ========================================================================== */
+  function getRequiredBreakHours(hours) {
+    if (hours >= 8) return 1.0; // 60분
+    if (hours >= 4) return 0.5; // 30분
+    return 0; // 4시간 미만은 휴게 불필요
+  }
+
+  function getBreakDisplayText(hours) {
+    const b = getRequiredBreakHours(hours);
+    if (b === 1.0) return '☕ 휴게 60분 필요';
+    if (b === 0.5) return '☕ 휴게 30분 필요';
+    return '☕ 휴게 불필요';
+  }
+
+  /* ==========================================================================
+     SHIFT VALIDATION HELPERS (Section B - 겹침 및 빈 구간 점검)
+     ========================================================================== */
+  function validateGroupShifts(group) {
+    const warnings = [];
+    const notices = [];
+    const shifts = group.shifts || [];
+    if (shifts.length <= 1) return { warnings, notices };
+
+    const intervals = shifts.map(s => {
+      let start = parseTime(s.start);
+      let end = parseTime(s.end);
+      if (end <= start) end += 24; // Overnight
+      return { shift: s, start, end };
+    });
+
+    // 1. Check pairwise overlap
+    for (let i = 0; i < intervals.length; i++) {
+      for (let j = i + 1; j < intervals.length; j++) {
+        const a = intervals[i];
+        const b = intervals[j];
+        if (a.start < b.end && b.start < a.end) {
+          const overlapStart = Math.max(a.start, b.start);
+          const overlapEnd = Math.min(a.end, b.end);
+          warnings.push(`[${group.name}] '${a.shift.name}'와 '${b.shift.name}'의 시간(${formatHourMin(overlapStart)}~${formatHourMin(overlapEnd)})이 겹칩니다.`);
+        }
+      }
+    }
+
+    // 2. Check gaps between shifts
+    const sorted = [...intervals].sort((a, b) => a.start - b.start);
+    for (let k = 0; k < sorted.length - 1; k++) {
+      const cur = sorted[k];
+      const next = sorted[k + 1];
+      if (next.start > cur.end) {
+        notices.push(`[${group.name}] ${formatHourMin(cur.end)}~${formatHourMin(next.start)}에 배정된 근무타임이 없습니다.`);
+      }
+    }
+
+    return { warnings, notices };
+  }
+
+  function renderShiftValidationStatus() {
+    const box = document.getElementById('shiftValidationStatusBox');
+    if (!box) return;
+
+    let allWarnings = [];
+    let allNotices = [];
+
+    state.dayGroups.forEach(g => {
+      const res = validateGroupShifts(g);
+      allWarnings.push(...res.warnings);
+      allNotices.push(...res.notices);
+    });
+
+    if (allWarnings.length === 0 && allNotices.length === 0) {
+      box.className = 'shift-validation-box val-ok';
+      box.innerHTML = `
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <span style="font-size: 16px;">✅</span>
+          <div>
+            <strong style="color: #065f46; font-size: 13px;">근무타임 점검: 정상</strong>
+            <div style="font-size: 12px; color: #047857; margin-top: 1px;">시간대 겹침이나 중간 빈 구간 없이 잘 구성되어 있습니다.</div>
+          </div>
+        </div>
+      `;
+    } else {
+      let itemsHtml = '';
+      allWarnings.forEach(w => {
+        itemsHtml += `<div style="font-size: 12px; color: #b45309; margin-top: 3px;">⚠️ <strong>겹침 주의:</strong> ${escapeHtml(w)}</div>`;
+      });
+      allNotices.forEach(n => {
+        itemsHtml += `<div style="font-size: 12px; color: #0369a1; margin-top: 3px;">ℹ️ <strong>빈 구간 알림:</strong> ${escapeHtml(n)} (브레이크타임 또는 미영업 시간인지 확인하세요)</div>`;
+      });
+
+      box.className = 'shift-validation-box val-warning';
+      box.innerHTML = `
+        <div>
+          <strong style="color: #854d0e; font-size: 13px;">📋 근무타임 점검 결과 (참고용 알림):</strong>
+          ${itemsHtml}
+        </div>
+      `;
+    }
   }
 
   /* ==========================================================================
@@ -1918,9 +2113,10 @@
         `;
       }).join('');
 
-      // Shift items with explicit time dropdowns + duration
+      // Shift items with explicit time dropdowns + duration + break time notice
       const shiftListHtml = group.shifts.map(shift => {
         const duration = getShiftDurationHours(shift.start || '09:00', shift.end || '15:00');
+        const breakText = getBreakDisplayText(duration);
         return `
           <div class="group-shift-item">
             <div class="shift-input-name">
@@ -1935,6 +2131,7 @@
                 ${renderTimeSelectOptions(shift.end || '15:00')}
               </select>
               <span class="shift-duration-badge">${formatDurationText(duration)}</span>
+              <span style="font-size: 11px; color: var(--gray-500); white-space: nowrap;">${breakText}</span>
             </div>
             <div style="display: flex; align-items: center; gap: 4px;">
               <span style="font-size: 12px; color: var(--gray-600);">인원:</span>
@@ -1981,6 +2178,7 @@
     }).join('');
 
     renderClosedDaysStatus();
+    renderShiftValidationStatus();
   }
 
   function addDayGroup() {
@@ -2305,6 +2503,10 @@
     if (!r) return;
     const maxShifts = document.getElementById('rule_maxShiftsPerDay');
     if (maxShifts) maxShifts.value = r.maxShiftsPerDay || 2;
+    const limitDaily = document.getElementById('rule_limitDailyHours');
+    if (limitDaily) limitDaily.checked = (r.limitDailyHours !== false);
+    const maxDaily = document.getElementById('rule_maxDailyHours');
+    if (maxDaily) maxDaily.value = r.maxDailyHours || 8;
     const noSplit = document.getElementById('rule_noSplitShift');
     if (noSplit) noSplit.checked = !!r.noSplitShift;
     const noClopen = document.getElementById('rule_noClopen');
@@ -2434,10 +2636,23 @@
         const existingShiftsToday = wStat.dayShifts[dayId];
 
         // Rule 1: Max shifts per day
-        const maxDaily = rules.maxShiftsPerDay || 2;
-        if (existingShiftsToday.length >= maxDaily) {
-          diagnostics[slotKey].push({ workerName: w.name, reason: `하루 최대 ${maxDaily}타임 초과` });
+        const maxDailyShifts = rules.maxShiftsPerDay || 2;
+        if (existingShiftsToday.length >= maxDailyShifts) {
+          diagnostics[slotKey].push({ workerName: w.name, reason: `하루 최대 ${maxDailyShifts}타임 초과` });
           return;
+        }
+
+        // Rule 7: Max daily hours (Section A)
+        if (rules.limitDailyHours) {
+          const maxDailyH = rules.maxDailyHours || 8;
+          const existingDailyHours = existingShiftsToday.reduce((sum, s) => sum + getShiftDurationHours(s.start, s.end), 0);
+          if (existingDailyHours + duration > maxDailyH) {
+            diagnostics[slotKey].push({
+              workerName: w.name,
+              reason: `1일 최대 ${maxDailyH}시간 초과 (배정 시 ${(existingDailyHours + duration).toFixed(1)}시간)`
+            });
+            return;
+          }
         }
 
         // Rule 2: No split shift
@@ -2723,8 +2938,25 @@
 
     if (statsContainer) {
       statsContainer.innerHTML = state.workers.map(w => {
-        const stat = schedule.workerStats[w.id] || { count: 0, hours: 0, weekendCount: 0 };
-        const isHolidayPayEligible = stat.hours >= 15;
+        const stat = schedule.workerStats[w.id] || { count: 0, hours: 0, weekendCount: 0, dayShifts: {} };
+
+        // Compute per-day break and total net work hours (Section D)
+        let totalPresenceHours = stat.hours || 0;
+        let totalBreakHours = 0;
+        let totalNetWorkHours = 0;
+
+        ALL_DAYS.forEach(d => {
+          const dShifts = (stat.dayShifts && stat.dayShifts[d.id]) || [];
+          if (dShifts.length > 0) {
+            const dPresence = dShifts.reduce((acc, s) => acc + getShiftDurationHours(s.start, s.end), 0);
+            const dBreak = getRequiredBreakHours(dPresence);
+            totalBreakHours += dBreak;
+            totalNetWorkHours += Math.max(0, dPresence - dBreak);
+          }
+        });
+
+        // Holiday Pay rule: Net work hours >= 15h
+        const isHolidayPayEligible = totalNetWorkHours >= 15;
 
         return `
           <div class="stat-card">
@@ -2733,10 +2965,14 @@
               ${isHolidayPayEligible ? `<span class="badge-holiday-pay">주휴수당 대상</span>` : ''}
             </div>
             <div class="stat-metrics">
-              <span>총 근무 시간</span>
-              <span class="stat-highlight">${stat.hours.toFixed(1)}<span style="font-size: 13px; font-weight: normal; color: var(--gray-500);">시간</span></span>
+              <span>실근로시간 (휴게제외)</span>
+              <span class="stat-highlight">${totalNetWorkHours.toFixed(1)}<span style="font-size: 13px; font-weight: normal; color: var(--gray-500);">시간</span></span>
             </div>
-            <div class="stat-metrics" style="font-size: 12px; color: var(--gray-500); border-top: 1px dashed var(--gray-200); padding-top: 4px;">
+            <div class="stat-metrics" style="font-size: 12px; color: var(--gray-600);">
+              <span>총 체류시간: <strong>${totalPresenceHours.toFixed(1)}시간</strong></span>
+              <span style="color: var(--gray-400);">(휴게 ${totalBreakHours.toFixed(1)}h)</span>
+            </div>
+            <div class="stat-metrics" style="font-size: 12px; color: var(--gray-500); border-top: 1px dashed var(--gray-200); padding-top: 4px; margin-top: 2px;">
               <span>배정 횟수: <strong>${stat.count}회</strong></span>
               <span>(주말 ${stat.weekendCount}회)</span>
             </div>
@@ -2780,9 +3016,23 @@
     text += `\n━━━━━━━━━━━━━━━━━━\n`;
     text += `📊 [주간 근무시간 및 배정 통계]\n`;
     state.workers.forEach(w => {
-      const stat = schedule.workerStats[w.id] || { count: 0, hours: 0 };
-      const holidayTag = stat.hours >= 15 ? ' [주휴수당 대상]' : '';
-      text += ` - ${w.name}: 총 ${stat.hours.toFixed(1)}시간 (${stat.count}회)${holidayTag}\n`;
+      const stat = schedule.workerStats[w.id] || { count: 0, hours: 0, dayShifts: {} };
+      let totalPresenceHours = stat.hours || 0;
+      let totalBreakHours = 0;
+      let totalNetWorkHours = 0;
+
+      ALL_DAYS.forEach(d => {
+        const dShifts = (stat.dayShifts && stat.dayShifts[d.id]) || [];
+        if (dShifts.length > 0) {
+          const dPresence = dShifts.reduce((acc, s) => acc + getShiftDurationHours(s.start, s.end), 0);
+          const dBreak = getRequiredBreakHours(dPresence);
+          totalBreakHours += dBreak;
+          totalNetWorkHours += Math.max(0, dPresence - dBreak);
+        }
+      });
+
+      const holidayTag = totalNetWorkHours >= 15 ? ' [주휴수당 대상]' : '';
+      text += ` - ${w.name}: 실근로 ${totalNetWorkHours.toFixed(1)}시간 (체류 ${totalPresenceHours.toFixed(1)}h / 휴게 ${totalBreakHours.toFixed(1)}h 제외, ${stat.count}회)${holidayTag}\n`;
     });
 
     text += `\n---\n근무표 자동 생성: https://shift-scheduler.moow-ui.workers.dev\n`;
@@ -2815,8 +3065,17 @@
   }
 
   /* ==========================================================================
-     TOAST & UTILS
+     FEEDBACK & TOAST & UTILS
      ========================================================================== */
+  function handleFeedbackClick(e) {
+    if (FEEDBACK_URL && FEEDBACK_URL !== '#') {
+      window.open(FEEDBACK_URL, '_blank');
+    } else {
+      e.preventDefault();
+      alert('의견 보내기 링크가 아직 설정되지 않았습니다.\n(HTML 코드 상단의 FEEDBACK_URL에 링크를 입력해 주세요)');
+    }
+  }
+
   function showToast(msg) {
     const toast = document.getElementById('toast');
     if (!toast) return;
