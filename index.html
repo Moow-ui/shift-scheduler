@@ -1514,7 +1514,7 @@
     /* Mobile Responsive Optimizations (<= 640px) */
     @media (max-width: 640px) {
       body {
-        padding: 10px 10px 130px 10px;
+        padding: 10px 10px 140px 10px;
       }
       .card {
         padding: 14px;
@@ -1525,6 +1525,25 @@
       }
       .card-title {
         font-size: 16px;
+      }
+
+      /* Step Stepper Navigation Compact for Mobile (All 5 Fit) */
+      .step-nav {
+        padding: 4px;
+        gap: 2px;
+        margin-bottom: 14px;
+      }
+      .step-btn {
+        min-width: 0;
+        padding: 6px 1px;
+        font-size: 11px;
+        font-weight: 700;
+        gap: 2px;
+      }
+      .step-btn .step-num {
+        width: 16px;
+        height: 16px;
+        font-size: 10px;
       }
 
       /* Step 1 Shift Items Stacked */
@@ -1589,17 +1608,26 @@
 
       /* Floating feedback button repositioned above sticky bar without covering content */
       .floating-feedback-btn {
-        bottom: 68px;
+        bottom: 74px;
         right: 10px;
-        padding: 6px 11px;
+        padding: 5px 10px;
         font-size: 11px;
         border-radius: 20px;
-        background: rgba(255, 255, 255, 0.95);
+        background: rgba(255, 255, 255, 0.92);
+        border: 1px solid var(--gray-300);
+        color: var(--gray-600);
         backdrop-filter: blur(4px);
         -webkit-backdrop-filter: blur(4px);
-        box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+        box-shadow: 0 2px 6px rgba(0,0,0,0.08);
         z-index: 850;
-        opacity: 0.92;
+        opacity: 0.75;
+        transition: opacity 0.2s ease, transform 0.2s ease;
+      }
+      .floating-feedback-btn:hover, .floating-feedback-btn:active {
+        opacity: 1;
+        background: white;
+        color: var(--primary);
+        border-color: var(--primary);
       }
     }
   </style>
@@ -1613,19 +1641,19 @@
        ========================================================================= -->
   <nav class="step-nav" id="mainStepNav" style="display: none;">
     <button class="step-btn" onclick="goToStep(1)" id="step-nav-1">
-      <span class="step-num">1</span> 매장 & 타임
+      <span class="step-num">1</span> <span class="step-text">매장·타임</span>
     </button>
     <button class="step-btn" onclick="goToStep(2)" id="step-nav-2">
-      <span class="step-num">2</span> 근무자 등록
+      <span class="step-num">2</span> <span class="step-text">근무자</span>
     </button>
     <button class="step-btn" onclick="goToStep(3)" id="step-nav-3">
-      <span class="step-num">3</span> 가능 시간
+      <span class="step-num">3</span> <span class="step-text">가능시간</span>
     </button>
     <button class="step-btn" onclick="goToStep(4)" id="step-nav-4">
-      <span class="step-num">4</span> 규칙 설정
+      <span class="step-num">4</span> <span class="step-text">규칙</span>
     </button>
     <button class="step-btn" onclick="goToStep(5)" id="step-nav-5">
-      <span class="step-num">5</span> 근무표 결과
+      <span class="step-num">5</span> <span class="step-text">근무표</span>
     </button>
   </nav>
 
@@ -2375,16 +2403,16 @@
   }
 
   function runDemoExperience() {
-    // 1. Setup realistic Cafe store sample
+    // 1. Setup realistic Cafe store sample with guaranteed 100% coverage
     state.dayGroups = [
       {
         id: 'g_wd',
         name: '평일 (월~금)',
         days: ['mon', 'tue', 'wed', 'thu', 'fri'],
         shifts: [
-          { id: 's_cf_1', name: '오픈', start: '08:00', end: '14:00', required: 2 },
+          { id: 's_cf_1', name: '오픈', start: '08:30', end: '14:30', required: 1 },
           { id: 's_cf_2', name: '미들', start: '12:00', end: '18:00', required: 1 },
-          { id: 's_cf_3', name: '마감', start: '17:00', end: '23:00', required: 2 }
+          { id: 's_cf_3', name: '마감', start: '17:30', end: '22:30', required: 1 }
         ]
       },
       {
@@ -2392,8 +2420,8 @@
         name: '주말 (토~일)',
         days: ['sat', 'sun'],
         shifts: [
-          { id: 's_cf_4', name: '오픈', start: '09:00', end: '15:00', required: 2 },
-          { id: 's_cf_5', name: '마감', start: '15:00', end: '22:00', required: 2 }
+          { id: 's_cf_4', name: '오픈', start: '09:00', end: '15:00', required: 1 },
+          { id: 's_cf_5', name: '마감', start: '15:00', end: '21:00', required: 1 }
         ]
       }
     ];
@@ -2421,12 +2449,12 @@
       balanceWeekends: true
     };
 
-    // Balanced realistic availability matrix
+    // Balanced realistic availability matrix ensuring zero shortages
     state.availability = {
       w1: {
         mon: { s_cf_1: true, s_cf_2: true, s_cf_3: false },
         tue: { s_cf_1: true, s_cf_2: true, s_cf_3: false },
-        wed: { s_cf_1: true, s_cf_2: false, s_cf_3: false },
+        wed: { s_cf_1: true, s_cf_2: true, s_cf_3: false },
         thu: { s_cf_1: true, s_cf_2: true, s_cf_3: false },
         fri: { s_cf_1: true, s_cf_2: true, s_cf_3: false },
         sat: { s_cf_4: false, s_cf_5: false },
@@ -2434,46 +2462,46 @@
       },
       w2: {
         mon: { s_cf_1: true, s_cf_2: true, s_cf_3: true },
-        tue: { s_cf_1: false, s_cf_2: true, s_cf_3: true },
+        tue: { s_cf_1: true, s_cf_2: true, s_cf_3: true },
         wed: { s_cf_1: true, s_cf_2: true, s_cf_3: true },
-        thu: { s_cf_1: true, s_cf_2: false, s_cf_3: true },
-        fri: { s_cf_1: true, s_cf_2: true, s_cf_3: true },
-        sat: { s_cf_4: true, s_cf_5: false },
+        thu: { s_cf_1: true, s_cf_2: true, s_cf_3: true },
+        fri: { s_cf_1: true, s_cf_2: true, s_cf_3: false },
+        sat: { s_cf_4: true, s_cf_5: true },
         sun: { s_cf_4: true, s_cf_5: true }
       },
       w3: {
-        mon: { s_cf_1: false, s_cf_2: false, s_cf_3: false },
-        tue: { s_cf_1: false, s_cf_2: false, s_cf_3: false },
-        wed: { s_cf_1: false, s_cf_2: false, s_cf_3: false },
+        mon: { s_cf_1: false, s_cf_2: false, s_cf_3: true },
+        tue: { s_cf_1: false, s_cf_2: false, s_cf_3: true },
+        wed: { s_cf_1: false, s_cf_2: true, s_cf_3: true },
         thu: { s_cf_1: false, s_cf_2: true, s_cf_3: true },
-        fri: { s_cf_1: false, s_cf_2: true, s_cf_3: true },
+        fri: { s_cf_1: false, s_cf_2: false, s_cf_3: true },
         sat: { s_cf_4: true, s_cf_5: true },
         sun: { s_cf_4: true, s_cf_5: true }
       },
       w4: {
-        mon: { s_cf_1: false, s_cf_2: false, s_cf_3: true },
-        tue: { s_cf_1: false, s_cf_2: false, s_cf_3: true },
+        mon: { s_cf_1: false, s_cf_2: true, s_cf_3: true },
+        tue: { s_cf_1: false, s_cf_2: true, s_cf_3: true },
         wed: { s_cf_1: false, s_cf_2: true, s_cf_3: true },
-        thu: { s_cf_1: false, s_cf_2: false, s_cf_3: true },
-        fri: { s_cf_1: false, s_cf_2: false, s_cf_3: true },
+        thu: { s_cf_1: false, s_cf_2: true, s_cf_3: true },
+        fri: { s_cf_1: false, s_cf_2: true, s_cf_3: true },
         sat: { s_cf_4: false, s_cf_5: true },
         sun: { s_cf_4: false, s_cf_5: true }
       },
       w5: {
-        mon: { s_cf_1: true, s_cf_2: true, s_cf_3: true },
+        mon: { s_cf_1: true, s_cf_2: true, s_cf_3: false },
         tue: { s_cf_1: true, s_cf_2: true, s_cf_3: false },
         wed: { s_cf_1: true, s_cf_2: true, s_cf_3: false },
-        thu: { s_cf_1: true, s_cf_2: true, s_cf_3: true },
+        thu: { s_cf_1: true, s_cf_2: true, s_cf_3: false },
         fri: { s_cf_1: true, s_cf_2: true, s_cf_3: false },
-        sat: { s_cf_4: false, s_cf_5: false },
-        sun: { s_cf_4: false, s_cf_5: false }
+        sat: { s_cf_4: true, s_cf_5: false },
+        sun: { s_cf_4: true, s_cf_5: false }
       },
       w6: {
-        mon: { s_cf_1: false, s_cf_2: false, s_cf_3: false },
-        tue: { s_cf_1: false, s_cf_2: false, s_cf_3: false },
+        mon: { s_cf_1: false, s_cf_2: false, s_cf_3: true },
+        tue: { s_cf_1: false, s_cf_2: false, s_cf_3: true },
         wed: { s_cf_1: false, s_cf_2: false, s_cf_3: true },
-        thu: { s_cf_1: false, s_cf_2: true, s_cf_3: true },
-        fri: { s_cf_1: false, s_cf_2: true, s_cf_3: true },
+        thu: { s_cf_1: false, s_cf_2: false, s_cf_3: true },
+        fri: { s_cf_1: false, s_cf_2: false, s_cf_3: true },
         sat: { s_cf_4: true, s_cf_5: true },
         sun: { s_cf_4: true, s_cf_5: true }
       }
@@ -2498,7 +2526,7 @@
     const demoBanner = document.getElementById('demoExperienceBanner');
     if (demoBanner) demoBanner.style.display = 'flex';
 
-    showToast('☕ [예시 체험] 카페 매장 샘플 근무표가 완성되었습니다! (대타 교체를 시험해보세요)');
+    showToast('예시 체험용 카페 근무표가 생성되었습니다. (알바생 이름을 눌러 대타 교체를 시험해보세요)');
   }
 
   function confirmExitDemoExperience() {
@@ -2710,6 +2738,18 @@
       renderAvailGrid();
     } else if (stepNum === 4) {
       renderRulesUI();
+    } else if (stepNum === 5) {
+      isStatsExpanded = false;
+      const statsSec = document.getElementById('statsCollapsibleSection');
+      const arrowStats = document.getElementById('arrowStats');
+      if (statsSec) statsSec.style.display = 'none';
+      if (arrowStats) arrowStats.textContent = '▾';
+
+      isSaveExpanded = false;
+      const saveSec = document.getElementById('saveCollapsibleSection');
+      const arrowSave = document.getElementById('arrowSave');
+      if (saveSec) saveSec.style.display = 'none';
+      if (arrowSave) arrowSave.textContent = '▾';
     }
 
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -2826,6 +2866,15 @@
     }
   }
 
+  let isShiftValidationExpanded = false;
+  function toggleShiftValidation() {
+    isShiftValidationExpanded = !isShiftValidationExpanded;
+    const details = document.getElementById('shiftValidationDetails');
+    const arrow = document.getElementById('shiftValidationArrow');
+    if (details) details.style.display = isShiftValidationExpanded ? 'block' : 'none';
+    if (arrow) arrow.textContent = isShiftValidationExpanded ? '▴' : '▾';
+  }
+
   function renderShiftValidationStatus() {
     const box = document.getElementById('shiftValidationStatusBox');
     if (!box) return;
@@ -2844,18 +2893,40 @@
       box.innerHTML = '';
     } else {
       box.style.display = 'block';
+      let summaryText = '';
+      if (allWarnings.length > 0 && allNotices.length > 0) {
+        summaryText = `시간 겹침 ${allWarnings.length}건, 빈 구간 ${allNotices.length}건 확인`;
+      } else if (allWarnings.length > 0) {
+        summaryText = `시간 겹침 ${allWarnings.length}건 확인`;
+      } else {
+        summaryText = `빈 구간 ${allNotices.length}건 확인`;
+      }
+
       let itemsHtml = '';
       allWarnings.forEach(w => {
-        itemsHtml += `<div style="font-size: 12px; color: #b45309; margin-top: 2px;"><strong>겹침 주의:</strong> ${escapeHtml(w)}</div>`;
+        itemsHtml += `<div style="font-size: 12px; color: var(--gray-600); margin-top: 3px;">• <strong>겹침:</strong> ${escapeHtml(w)}</div>`;
       });
       allNotices.forEach(n => {
-        itemsHtml += `<div style="font-size: 12px; color: #0369a1; margin-top: 2px;"><strong>빈 구간 알림:</strong> ${escapeHtml(n)} (브레이크타임 또는 미영업 시간인지 확인하세요)</div>`;
+        itemsHtml += `<div style="font-size: 12px; color: var(--gray-600); margin-top: 3px;">• <strong>빈 구간:</strong> ${escapeHtml(n)}</div>`;
       });
 
-      box.className = 'shift-validation-box';
+      box.style.background = 'var(--gray-50)';
+      box.style.border = '1px solid var(--gray-200)';
+      box.style.borderRadius = 'var(--radius-md)';
+      box.style.padding = '8px 12px';
+      box.style.marginTop = '10px';
+      box.style.marginBottom = '8px';
+
       box.innerHTML = `
-        <div>
-          <strong style="color: #854d0e; font-size: 13px;">근무타임 점검 결과 (참고용 알림):</strong>
+        <div style="display: flex; align-items: center; justify-content: space-between; cursor: pointer; user-select: none;" onclick="toggleShiftValidation()">
+          <span style="font-size: 12px; color: var(--gray-700); font-weight: 600;">
+            근무타임 점검: <span style="color: var(--gray-500); font-weight: normal;">${summaryText}</span>
+          </span>
+          <button type="button" class="btn-toggle-quick-chips" style="font-size: 11px; text-decoration: none;" onclick="event.stopPropagation(); toggleShiftValidation();">
+            상세 보기 <span id="shiftValidationArrow">${isShiftValidationExpanded ? '▴' : '▾'}</span>
+          </button>
+        </div>
+        <div id="shiftValidationDetails" style="display: ${isShiftValidationExpanded ? 'block' : 'none'}; margin-top: 8px; padding-top: 8px; border-top: 1px dashed var(--gray-200);">
           ${itemsHtml}
         </div>
       `;
