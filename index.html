@@ -860,63 +860,92 @@
       display: flex;
       gap: 8px;
       overflow-x: auto;
-      padding-bottom: 10px;
-      margin-bottom: 16px;
+      padding-bottom: 8px;
+      margin-bottom: 14px;
       scrollbar-width: thin;
     }
 
     .worker-tab {
       padding: 8px 16px;
-      border: 1.5px solid var(--gray-200);
+      border: 1.5px solid var(--gray-300);
       background: white;
       border-radius: 20px;
       font-size: 14px;
-      font-weight: 600;
+      font-weight: 700;
       color: var(--gray-700);
       cursor: pointer;
       white-space: nowrap;
       transition: all 0.2s;
     }
     .worker-tab.active {
-      background: var(--gray-900);
+      background: #1e40af;
       color: white;
-      border-color: var(--gray-900);
+      border-color: #1e40af;
+      box-shadow: 0 2px 4px rgba(30, 64, 175, 0.25);
     }
 
     .quick-toggle-bar {
       display: flex;
-      gap: 6px;
+      gap: 8px;
       flex-wrap: wrap;
       margin-bottom: 14px;
-      background: var(--gray-50);
-      padding: 10px 14px;
+      background: #f1f5f9;
+      border: 1px solid var(--gray-200);
+      padding: 10px 12px;
       border-radius: var(--radius-md);
       align-items: center;
     }
-    .quick-toggle-bar span {
+    .quick-toggle-bar-label {
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--gray-700);
+      margin-right: 2px;
+    }
+    .btn-quick-toggle {
+      background: white;
+      border: 1.5px solid var(--gray-300);
+      border-radius: 20px;
+      padding: 6px 12px;
       font-size: 12px;
       font-weight: 700;
-      color: var(--gray-600);
-      margin-right: 4px;
+      color: var(--gray-700);
+      cursor: pointer;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+      transition: all 0.15s ease;
+      touch-action: manipulation;
+    }
+    .btn-quick-toggle:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+      background: var(--primary-light);
+    }
+    .btn-quick-toggle.highlight-avail {
+      color: #065f46;
+      border-color: #10b981;
+      background: #f0fdf4;
+    }
+    .btn-quick-toggle.highlight-avail:hover {
+      background: #dcfce7;
+      border-color: #059669;
     }
 
     .avail-days-container {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(125px, 1fr));
-      gap: 10px;
+      grid-template-columns: repeat(auto-fit, minmax(115px, 1fr));
+      gap: 8px;
     }
 
     .avail-day-col {
-      background: white;
+      background: var(--gray-50);
       border: 1px solid var(--gray-200);
       border-radius: var(--radius-md);
       overflow: hidden;
     }
 
     .avail-day-header {
-      background: var(--gray-100);
-      padding: 8px;
-      font-size: 13px;
+      background: white;
+      padding: 8px 6px;
+      font-size: 12px;
       font-weight: 700;
       text-align: center;
       color: var(--gray-800);
@@ -925,52 +954,59 @@
     .avail-day-header.weekend {
       background: #fef2f2;
       color: #dc2626;
+      border-bottom-color: #fee2e2;
     }
 
     .avail-shift-cell {
-      padding: 10px 6px;
-      border-bottom: 1px solid var(--gray-100);
+      padding: 8px 6px;
+      border-bottom: 1px solid var(--gray-200);
       text-align: center;
       cursor: pointer;
       transition: all 0.15s;
       user-select: none;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
     }
     .avail-shift-cell:last-child {
       border-bottom: none;
     }
     .avail-shift-cell.available {
-      background: var(--success-light);
+      background: #ecfdf5;
       color: #065f46;
     }
     .avail-shift-cell.unavailable {
-      background: var(--gray-100);
+      background: white;
       color: var(--gray-400);
     }
     .avail-shift-cell:hover {
       filter: brightness(0.96);
     }
-
     .avail-shift-name {
-      font-size: 13px;
+      font-size: 12px;
       font-weight: 700;
-      display: block;
     }
     .avail-shift-time {
       font-size: 11px;
-      color: inherit;
       opacity: 0.8;
-      display: block;
-      margin-top: 1px;
     }
     .avail-shift-status {
       font-size: 11px;
       font-weight: 700;
-      margin-top: 4px;
-      display: inline-block;
-      padding: 2px 6px;
+      margin-top: 2px;
+      padding: 1px 6px;
       border-radius: 4px;
-      background: rgba(255,255,255,0.6);
     }
+    .avail-shift-cell.available .avail-shift-status {
+      background: #d1fae5;
+      color: #065f46;
+    }
+    .avail-shift-cell.unavailable .avail-shift-status {
+      background: var(--gray-100);
+      color: var(--gray-500);
+    }
+
 
     /* ==========================================================================
        STEP 4: Smart Scheduling Rules (Folded by Default - Section C)
@@ -1513,13 +1549,13 @@
         overflow-x: auto;
         scroll-snap-type: x mandatory;
         -webkit-overflow-scrolling: touch;
-        gap: 12px;
-        padding-bottom: 10px;
+        gap: 8px;
+        padding-bottom: 8px;
         padding-top: 4px;
       }
       .avail-day-col {
-        flex: 0 0 220px;
-        min-width: 220px;
+        flex: 0 0 150px;
+        min-width: 150px;
         scroll-snap-align: start;
       }
       .mobile-swipe-guide {
@@ -1694,23 +1730,23 @@
 
     <div style="display: flex; gap: 10px; margin-bottom: 16px;">
       <input type="text" id="workerNameInput" class="input-text" style="flex: 1;" placeholder="근무자 이름 입력 (예: 김민수)" onkeydown="if(event.key === 'Enter') addWorker()">
-      <button class="btn btn-primary" onclick="addWorker()" style="white-space: nowrap;">+ 추가</button>
+      <button type="button" class="btn btn-outline-secondary" onclick="addWorker()" style="white-space: nowrap; font-weight: 700;">+ 추가</button>
     </div>
 
-    <div style="margin-bottom: 20px;">
+    <div style="margin-bottom: 16px;">
       <label style="font-size: 14px; font-weight: 600; color: var(--gray-700); margin-bottom: 8px; display: block;">등록된 근무자 목록</label>
       <div class="worker-tags" id="workerTagsContainer">
         <!-- Rendered by JS -->
       </div>
     </div>
 
-    <div class="callout">
-      💡 <strong>안내:</strong> 한 번 등록된 근무자 명단과 가능 시간표는 다음 주 근무표를 짤 때도 그대로 재사용됩니다.
-    </div>
+    <p style="font-size: 12px; color: var(--gray-400); margin-top: 14px; line-height: 1.4;">
+      등록된 근무자 명단과 가능 시간표는 브라우저에 자동 보관되어 다음 주에도 그대로 재사용할 수 있습니다.
+    </p>
 
     <div class="action-footer">
-      <button class="btn btn-secondary" onclick="goToStep(1)">⬅️ 이전: 매장 설정</button>
-      <button class="btn btn-primary" onclick="goToStep(3)">다음: 가능 시간 체크 ➡️</button>
+      <button class="btn btn-outline-secondary" onclick="goToStep(1)">이전: 매장 & 타임</button>
+      <button class="btn btn-primary" onclick="goToStep(3)">다음: 가능 시간 체크</button>
     </div>
   </section>
 
@@ -1737,16 +1773,16 @@
 
       <!-- Quick Toggles -->
       <div class="quick-toggle-bar">
-        <span>빠른 설정:</span>
-        <button class="btn btn-sm btn-secondary" onclick="setWorkerAllAvail(true)">전체 가능(O)</button>
-        <button class="btn btn-sm btn-secondary" onclick="setWorkerAllAvail(false)">전체 불가(X)</button>
-        <button class="btn btn-sm btn-secondary" onclick="setWorkerWeekdaysOnly()">평일만 가능</button>
-        <button class="btn btn-sm btn-secondary" onclick="setWorkerWeekendsOnly()">주말만 가능</button>
+        <span class="quick-toggle-bar-label">빠른 설정:</span>
+        <button type="button" class="btn-quick-toggle highlight-avail" onclick="setWorkerAllAvail(true)">전체 가능</button>
+        <button type="button" class="btn-quick-toggle" onclick="setWorkerWeekdaysOnly()">평일만 가능</button>
+        <button type="button" class="btn-quick-toggle" onclick="setWorkerWeekendsOnly()">주말만 가능</button>
+        <button type="button" class="btn-quick-toggle" style="color: var(--gray-500);" onclick="setWorkerAllAvail(false)">전체 불가</button>
       </div>
 
       <!-- Mobile Swipe Guide -->
-      <div class="mobile-swipe-guide" style="display: none; align-items: center; justify-content: center; gap: 6px; font-size: 12px; color: var(--primary); font-weight: 600; margin-bottom: 8px; background: var(--primary-light); padding: 6px 12px; border-radius: 20px;">
-        <span>👉 좌우로 스와이프하여 모든 요일을 확인하세요 👈</span>
+      <div class="mobile-swipe-guide" style="display: none; align-items: center; justify-content: center; font-size: 11px; color: var(--gray-500); font-weight: 600; margin-bottom: 8px;">
+        <span>좌우로 넘겨서 모든 요일을 확인할 수 있습니다.</span>
       </div>
 
       <!-- Dynamic Days Grid for Selected Worker -->
@@ -1756,8 +1792,8 @@
     </div>
 
     <div class="action-footer">
-      <button class="btn btn-secondary" onclick="goToStep(2)">⬅️ 이전: 근무자 등록</button>
-      <button class="btn btn-primary" onclick="goToStep(4)">다음: 규칙 설정 ➡️</button>
+      <button class="btn btn-outline-secondary" onclick="goToStep(2)">이전: 근무자 등록</button>
+      <button class="btn btn-primary" onclick="goToStep(4)">다음: 규칙 설정</button>
     </div>
   </section>
 
@@ -3114,7 +3150,7 @@
 
     container.innerHTML = state.workers.map(w => `
       <span class="worker-tag" data-worker-id="${w.id}">
-        <span style="pointer-events: none;">👤 ${escapeHtml(w.name)}</span>
+        <span style="pointer-events: none;">${escapeHtml(w.name)}</span>
         <button type="button" class="worker-tag-del" onclick="event.preventDefault(); event.stopPropagation(); deleteWorker('${w.id}')" title="${escapeHtml(w.name)} 삭제" aria-label="${escapeHtml(w.name)} 삭제">✕</button>
       </span>
     `).join('');
@@ -3171,7 +3207,7 @@
 
     bar.innerHTML = state.workers.map(w => `
       <button class="worker-tab ${w.id === currentWorkerTabId ? 'active' : ''}" onclick="selectWorkerTab('${w.id}')">
-        👤 ${escapeHtml(w.name)}
+        ${escapeHtml(w.name)}
       </button>
     `).join('');
   }
@@ -3205,7 +3241,7 @@
                onclick="toggleAvail('${currentWorkerTabId}', '${day.id}', '${shift.id}')">
             <span class="avail-shift-name">${escapeHtml(shift.name)}</span>
             <span class="avail-shift-time">${shift.start}~${shift.end}</span>
-            <span class="avail-shift-status">${isAvail ? '🟢 가능' : '⚪ 불가'}</span>
+            <span class="avail-shift-status">${isAvail ? '가능' : '불가'}</span>
           </div>
         `;
       }).join('');
