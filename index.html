@@ -290,6 +290,32 @@
       transform: scale(0.98);
     }
 
+    .btn-create-store-outline {
+      width: 100%;
+      padding: 14px 20px;
+      font-size: 15px;
+      font-weight: 700;
+      background: white;
+      color: var(--gray-800);
+      border: 1.5px solid var(--gray-300);
+      border-radius: var(--radius-lg);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.2s;
+      touch-action: manipulation;
+    }
+    .btn-create-store-outline:hover {
+      background: var(--gray-50);
+      border-color: var(--gray-400);
+      color: var(--gray-900);
+    }
+    .btn-create-store-outline:active {
+      transform: scale(0.98);
+    }
+
     .btn-demo-link {
       background: none;
       border: none;
@@ -903,7 +929,7 @@
     }
     .btn-quick-toggle {
       background: white;
-      border: 1.5px solid var(--gray-300);
+      border: 1px solid var(--gray-300);
       border-radius: 20px;
       padding: 6px 12px;
       font-size: 12px;
@@ -915,18 +941,9 @@
       touch-action: manipulation;
     }
     .btn-quick-toggle:hover {
-      border-color: var(--primary);
-      color: var(--primary);
-      background: var(--primary-light);
-    }
-    .btn-quick-toggle.highlight-avail {
-      color: #065f46;
-      border-color: #10b981;
-      background: #f0fdf4;
-    }
-    .btn-quick-toggle.highlight-avail:hover {
-      background: #dcfce7;
-      border-color: #059669;
+      border-color: var(--gray-400);
+      background: var(--gray-100);
+      color: var(--gray-900);
     }
 
     .avail-days-container {
@@ -1666,14 +1683,17 @@
     <p>조건만 입력하면 공평하고 빈틈없는 맞춤 근무표를 자동으로 만듭니다.</p>
 
     <div class="home-main-actions">
-      <!-- 1. Single Primary Solid Button -->
-      <button class="btn-start-new" onclick="startNewSession()">
-        근무표 만들기 시작
+      <!-- 1. Single Primary Solid Button: Preview Demo 1s (Main Promoted Action) -->
+      <button class="btn-start-new" onclick="runDemoExperience()">
+        예시 근무표 1초 만에 보기
       </button>
+      <div style="font-size: 12px; color: var(--gray-500); margin-top: -4px; margin-bottom: 6px;">
+        카페 샘플 데이터로 완성된 결과를 바로 확인
+      </div>
 
-      <!-- 2. Small Text Link for Sample Demo -->
-      <button type="button" class="btn-demo-link" onclick="runDemoExperience()">
-        예시 근무표 먼저 보기
+      <!-- 2. Large Secondary Gray Outline Button: Create Own Store Schedule -->
+      <button class="btn-create-store-outline" onclick="startNewSession()">
+        내 매장 근무표 만들기
       </button>
 
       <!-- 3. Saved Data Section (Only visible if saved data actually exists) -->
@@ -1802,7 +1822,7 @@
       <!-- Quick Toggles -->
       <div class="quick-toggle-bar">
         <span class="quick-toggle-bar-label">빠른 설정:</span>
-        <button type="button" class="btn-quick-toggle highlight-avail" onclick="setWorkerAllAvail(true)">전체 가능</button>
+        <button type="button" class="btn-quick-toggle" onclick="setWorkerAllAvail(true)">전체 가능</button>
         <button type="button" class="btn-quick-toggle" onclick="setWorkerWeekdaysOnly()">평일만 가능</button>
         <button type="button" class="btn-quick-toggle" onclick="setWorkerWeekendsOnly()">주말만 가능</button>
         <button type="button" class="btn-quick-toggle" style="color: var(--gray-500);" onclick="setWorkerAllAvail(false)">전체 불가</button>
@@ -1997,7 +2017,7 @@
           <div style="font-size: 12px; color: #3b82f6; margin-top: 2px;">알바생 이름을 누르면 즉시 대타 교체(미세조정)를 시험해 볼 수 있습니다.</div>
         </div>
       </div>
-      <button class="btn btn-sm btn-outline-secondary" onclick="confirmExitDemoExperience()" style="margin-left: auto; background: white;">
+      <button class="btn btn-primary" onclick="confirmExitDemoExperience()" style="margin-left: auto; font-weight: 700; white-space: nowrap; padding: 10px 18px; box-shadow: 0 4px 12px rgba(30, 64, 175, 0.35);">
         내 매장 근무표 직접 만들기
       </button>
     </div>
