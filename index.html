@@ -1012,11 +1012,11 @@
        STEP 4: Smart Scheduling Rules (Folded by Default - Section C)
        ========================================================================== */
     .rules-summary-box {
-      background: #f0fdf4;
-      border: 1.5px solid #bbf7d0;
-      border-radius: var(--radius-lg);
-      padding: 20px;
-      margin-bottom: 20px;
+      background: var(--gray-50);
+      border: 1px solid var(--gray-200);
+      border-radius: var(--radius-md);
+      padding: 16px;
+      margin-bottom: 16px;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -1025,13 +1025,13 @@
     }
 
     .rules-summary-text {
-      font-size: 14px;
-      color: #166534;
-      line-height: 1.6;
+      font-size: 13px;
+      color: var(--gray-600);
+      line-height: 1.5;
     }
     .rules-summary-text strong {
-      font-size: 15px;
-      color: #14532d;
+      font-size: 14px;
+      color: var(--gray-900);
       display: block;
       margin-bottom: 2px;
     }
@@ -1811,17 +1811,17 @@
     <!-- Default 1-line Summary Box -->
     <div class="rules-summary-box">
       <div class="rules-summary-text">
-        <strong>✅ 기본 스마트 규칙이 적용되어 있습니다.</strong>
+        <strong>기본 스마트 규칙이 적용되어 있습니다.</strong>
         하루 최대 2타임 · 1일 최대 8시간 · 연속 근무 보장 · 클로픈(11h) 금지 · 연속 6일 상한 · 주 40시간 상한 · 주말 균등배분
       </div>
-      <button class="btn btn-sm btn-outline-primary" id="btnToggleRules" onclick="toggleRulesDetail()">
-        ⚙️ 규칙 자세히 설정하기 🔽
+      <button class="btn btn-sm btn-outline-secondary" id="btnToggleRules" onclick="toggleRulesDetail()">
+        규칙 자세히 설정하기 ▾
       </button>
     </div>
 
     <!-- Collapsible Detailed Rules Panel (Section C) -->
     <div class="rules-collapsible" id="rulesDetailPanel">
-      <h3 style="font-size: 15px; font-weight: 700; color: var(--gray-800); margin-bottom: 12px;">
+      <h3 style="font-size: 14px; font-weight: 700; color: var(--gray-800); margin-bottom: 12px;">
         세부 규칙 맞춤 조절
       </h3>
 
@@ -1919,13 +1919,13 @@
         </div>
       </div>
 
-      <!-- Rule 7: 1일 최대 근무시간 제한 (Section A) -->
+      <!-- Rule 7: 1일 최대 근무시간 제한 -->
       <div class="rule-item">
         <div class="rule-info">
           <div class="rule-title">7. 1일 최대 근무시간 제한</div>
           <div class="rule-desc">
             하루 총 근로시간이 설정한 시간을 넘지 않도록 제한합니다.<br>
-            <span style="color: var(--primary); font-size: 11px; font-weight: 600;">💡 근로기준법 제50조: 1일 법정 근로시간은 8시간 기준입니다.</span>
+            <span style="color: var(--primary); font-size: 11px; font-weight: 600;">근로기준법 제50조: 1일 법정 근로시간은 8시간 기준입니다.</span>
           </div>
         </div>
         <div class="rule-controls">
@@ -1941,8 +1941,8 @@
     </div>
 
     <div class="action-footer">
-      <button class="btn btn-secondary" onclick="goToStep(3)">⬅️ 이전: 가능 시간</button>
-      <button class="btn btn-success btn-large" onclick="generateScheduleAndShow()">✨ [근무표 만들기] ✨</button>
+      <button class="btn btn-outline-secondary" onclick="goToStep(3)">이전: 가능 시간</button>
+      <button class="btn btn-primary" onclick="generateScheduleAndShow()">근무표 만들기</button>
     </div>
   </section>
 
@@ -1952,40 +1952,39 @@
   <section class="card" id="step5" style="display: none;">
     <div class="card-header">
       <div>
-        <h2 class="card-title">🎉 5단계: 이번 주 알바 근무표</h2>
+        <h2 class="card-title">5단계: 이번 주 알바 근무표</h2>
         <p class="card-desc" id="resultGeneratedTime"></p>
       </div>
-      <div style="font-size: 12px; color: var(--primary); font-weight: 700; background: var(--primary-light); padding: 4px 10px; border-radius: 20px;">
-        💡 알바생 클릭 시 즉시 대타 교체 가능
+      <div style="font-size: 12px; color: var(--gray-600); font-weight: 600; background: var(--gray-100); padding: 4px 10px; border-radius: 20px;">
+        알바생 클릭 시 즉시 대타 교체 가능
       </div>
     </div>
 
     <!-- Demo Experience Guide Banner -->
     <div id="demoExperienceBanner" class="demo-experience-banner" style="display: none;">
       <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
-        <span style="font-size: 20px;">☕</span>
         <div>
           <strong style="color: #1e3a8a; font-size: 13px;">[예시 체험 모드]</strong>
           <span style="font-size: 13px; color: #1e40af;">카페 매장 샘플 데이터로 생성된 결과입니다.</span>
-          <div style="font-size: 12px; color: #3b82f6; margin-top: 2px;">💡 알바생 이름을 누르면 즉시 대타 교체(미세조정)를 시험해 볼 수 있습니다.</div>
+          <div style="font-size: 12px; color: #3b82f6; margin-top: 2px;">알바생 이름을 누르면 즉시 대타 교체(미세조정)를 시험해 볼 수 있습니다.</div>
         </div>
       </div>
-      <button class="btn btn-sm btn-primary" onclick="confirmExitDemoExperience()" style="margin-left: auto;">
-        ✨ 내 매장 근무표 직접 만들기 ➡️
+      <button class="btn btn-sm btn-outline-secondary" onclick="confirmExitDemoExperience()" style="margin-left: auto; background: white;">
+        내 매장 근무표 직접 만들기
       </button>
     </div>
 
     <!-- Shortage Notice (Placed on Top) -->
     <div id="shortageNotice" class="callout callout-warning" style="display: none;">
-      ⚠️ 일부 시간대에 지원자가 부족하거나 규칙에 의해 <strong style="color: var(--danger);">인원 부족</strong>으로 표시되었습니다. <strong>해당 칸을 클릭하여 다른 알바생을 즉시 대타로 배정</strong>할 수 있습니다.
+      일부 시간대에 지원자가 부족하거나 규칙에 의해 <strong style="color: var(--danger);">인원 부족</strong>으로 표시되었습니다. <strong>해당 칸을 클릭하여 다른 알바생을 즉시 대타로 배정</strong>할 수 있습니다.
     </div>
 
     <!-- View Switcher (Cards vs Table) -->
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px;" class="view-toggle-bar">
-      <span style="font-size: 13px; font-weight: 700; color: var(--gray-700);">📅 근무표 표시 방식:</span>
+      <span style="font-size: 13px; font-weight: 700; color: var(--gray-700);">근무표 표시 방식:</span>
       <div style="display: flex; gap: 6px;">
-        <button id="btnViewCards" class="btn btn-sm btn-primary" onclick="setResultView('cards')">📱 요일별 카드</button>
-        <button id="btnViewTable" class="btn btn-sm btn-secondary" onclick="setResultView('table')">📊 전체 격자표</button>
+        <button id="btnViewCards" class="btn btn-sm btn-primary" onclick="setResultView('cards')">요일별 카드</button>
+        <button id="btnViewTable" class="btn btn-sm btn-outline-secondary" onclick="setResultView('table')">전체 격자표</button>
       </div>
     </div>
 
@@ -2003,40 +2002,55 @@
 
     <!-- Schedule Action Buttons (Positioned below the schedule) -->
     <div class="schedule-action-bar">
-      <button class="btn btn-primary" onclick="generateNextWeekSchedule()">🗓️ 다음 주 근무표 만들기</button>
-      <button class="btn btn-secondary" onclick="generateScheduleAndShow()">🔄 다시 생성하기</button>
-      <button class="btn btn-outline-primary" onclick="copyScheduleToClipboard()">📋 텍스트 복사</button>
-      <button class="btn btn-secondary" onclick="window.print()">🖨️ 인쇄 / PDF</button>
+      <button class="btn btn-sm btn-outline-secondary" onclick="generateNextWeekSchedule()">다음 주 근무표 만들기</button>
+      <button class="btn btn-sm btn-outline-secondary" onclick="generateScheduleAndShow()">다시 생성하기</button>
+      <button class="btn btn-sm btn-outline-secondary" onclick="copyScheduleToClipboard()">텍스트 복사</button>
+      <button class="btn btn-sm btn-outline-secondary" onclick="window.print()">인쇄 / PDF</button>
     </div>
 
-    <!-- Workload & Weekly Hours Summary with Holiday Pay -->
-    <div style="margin-top: 10px;">
-      <h3 style="font-size: 15px; font-weight: 700; color: var(--gray-800); margin-bottom: 8px;">
-        📊 근무자별 주간 근무시간 & 배정 통계
-      </h3>
-      <div class="stats-grid" id="statsContainer">
-        <!-- Rendered by JS -->
+    <!-- Workload & Weekly Hours Summary with Holiday Pay (Collapsible by default) -->
+    <div style="margin-top: 14px; border-top: 1px solid var(--gray-200); padding-top: 12px;">
+      <div style="display: flex; align-items: center; justify-content: space-between; cursor: pointer; user-select: none;" onclick="toggleStatsSection()">
+        <span style="font-size: 13px; font-weight: 700; color: var(--gray-800);">근무자별 주간 근무시간 & 배정 통계</span>
+        <button type="button" class="btn-toggle-quick-chips" id="btnToggleStats" onclick="event.stopPropagation(); toggleStatsSection();">
+          근무시간 통계 보기 <span id="arrowStats">▾</span>
+        </button>
       </div>
-      <div style="font-size: 12px; color: var(--gray-500); margin-top: 10px; line-height: 1.5;">
-        💡 <strong>휴게시간 안내:</strong> 휴게시간은 근로기준법 제54조(4시간당 30분, 8시간당 1시간)에 따른 최소 기준입니다. 실제 부여 시점은 매장 사정에 맞게 조정하세요.
+      <div id="statsCollapsibleSection" style="display: none; margin-top: 10px;">
+        <div class="stats-grid" id="statsContainer">
+          <!-- Rendered by JS -->
+        </div>
+        <div style="font-size: 11px; color: var(--gray-500); margin-top: 10px; line-height: 1.4;">
+          휴게시간 안내: 근로기준법 제54조(4시간당 30분, 8시간당 1시간)에 따른 최소 기준입니다. 실제 부여 시점은 매장 사정에 맞게 조정하세요.
+        </div>
       </div>
     </div>
 
-    <!-- Save & Backup Box at Step 5 Bottom (Section D) -->
-    <div class="result-save-box">
-      <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
-        <strong>💾 현재 설정 저장:</strong>
-        <input type="text" id="slotSaveNameInput" class="input-text" style="width: 140px; padding: 6px 8px; font-size: 13px;" placeholder="매장 이름 (예: 강남점)">
-        <button class="btn btn-sm btn-secondary" onclick="saveSlotFromInput()">슬롯에 저장</button>
+    <!-- Save & Backup Box at Step 5 Bottom (Collapsible by default) -->
+    <div style="margin-top: 12px; border-top: 1px solid var(--gray-200); padding-top: 12px;">
+      <div style="display: flex; align-items: center; justify-content: space-between; cursor: pointer; user-select: none;" onclick="toggleSaveSection()">
+        <span style="font-size: 13px; font-weight: 600; color: var(--gray-600);">매장 설정 저장 및 백업</span>
+        <button type="button" class="btn-toggle-quick-chips" id="btnToggleSave" onclick="event.stopPropagation(); toggleSaveSection();">
+          이 설정 저장하기 <span id="arrowSave">▾</span>
+        </button>
       </div>
-      <div style="display: flex; gap: 6px; flex-wrap: wrap;">
-        <button class="btn btn-sm btn-outline-primary" onclick="exportConfigFile()">💾 내 근무표 백업 파일 다운로드</button>
+      <div id="saveCollapsibleSection" style="display: none; margin-top: 10px;">
+        <div class="result-save-box" style="margin-top: 0;">
+          <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+            <span style="font-size: 13px; font-weight: 700; color: var(--gray-700);">현재 설정 저장:</span>
+            <input type="text" id="slotSaveNameInput" class="input-text" style="width: 140px; padding: 6px 8px; font-size: 13px;" placeholder="매장 이름 (예: 강남점)">
+            <button class="btn btn-sm btn-outline-secondary" onclick="saveSlotFromInput()">슬롯에 저장</button>
+          </div>
+          <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+            <button class="btn btn-sm btn-outline-secondary" onclick="exportConfigFile()">내 근무표 백업 파일 다운로드</button>
+          </div>
+        </div>
       </div>
     </div>
 
     <div class="action-footer">
-      <button class="btn btn-secondary" onclick="goToStep(4)">⬅️ 이전: 규칙 수정</button>
-      <button class="btn btn-success" onclick="copyScheduleToClipboard()">📋 카카오톡 공유용 복사</button>
+      <button class="btn btn-outline-secondary" onclick="goToStep(4)">이전: 규칙 수정</button>
+      <button class="btn btn-primary" onclick="copyScheduleToClipboard()">카카오톡 공유용 복사</button>
     </div>
   </section>
 
@@ -2057,52 +2071,51 @@
 
 <!-- Floating Feedback Button (Section C) -->
 <a href="#" id="floatingFeedbackBtn" class="floating-feedback-btn" target="_blank" onclick="handleFeedbackClick(event)">
-  💬 의견 보내기
+  의견 보내기
 </a>
 
 <!-- Micro-editing Swap Worker Modal (Section 4) -->
 <div id="swapWorkerModal" class="modal-overlay" style="display: none;" onclick="handleModalOverlayClick(event)">
   <div class="modal-card">
     <div class="modal-header">
-      <h3 style="font-size: 16px; font-weight: 800; color: var(--gray-900);">🔄 근무자 즉시 교체 (대타 배정)</h3>
+      <h3 style="font-size: 15px; font-weight: 700; color: var(--gray-900);">근무자 즉시 교체 (대타 배정)</h3>
       <button class="modal-close-btn" onclick="closeSwapWorkerModal()">✕</button>
     </div>
     <div class="modal-body">
-      <div id="swapModalTargetInfo" style="background: var(--gray-50); border: 1.5px solid var(--gray-200); border-radius: var(--radius-sm); padding: 10px 12px; font-size: 13px; margin-bottom: 14px; line-height: 1.5;">
+      <div id="swapModalTargetInfo" style="background: var(--gray-50); border: 1px solid var(--gray-200); border-radius: var(--radius-sm); padding: 10px 12px; font-size: 13px; margin-bottom: 14px; line-height: 1.5;">
         <!-- Slot info rendered here -->
       </div>
       <div style="font-size: 12px; font-weight: 700; color: var(--gray-600); margin-bottom: 8px;">
-        👉 교체할 알바생을 선택하세요:
+        교체할 알바생을 선택하세요:
       </div>
       <div id="swapWorkerList" style="display: flex; flex-direction: column; gap: 6px; max-height: 280px; overflow-y: auto; padding-right: 2px;">
         <!-- Worker candidates rendered here -->
       </div>
     </div>
     <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 14px; border-top: 1px solid var(--gray-200); padding-top: 12px;">
-      <button class="btn btn-sm btn-danger-outline" onclick="applySwapWorker(null)">⚠️ 미배정(공석)으로 비우기</button>
-      <button class="btn btn-sm btn-secondary" onclick="closeSwapWorkerModal()">닫기</button>
+      <button class="btn btn-sm btn-danger-outline" onclick="applySwapWorker(null)">미배정(공석)으로 비우기</button>
+      <button class="btn btn-sm btn-outline-secondary" onclick="closeSwapWorkerModal()">닫기</button>
     </div>
   </div>
 </div>
 
 <!-- Demo Reset Choice Modal (Bug Fix 2) -->
 <div id="demoResetChoiceModal" class="modal-overlay" style="display: none;" onclick="handleDemoModalOverlayClick(event)">
-  <div class="modal-card" style="max-width: 420px; text-align: center;">
-    <div style="font-size: 32px; margin-bottom: 8px;">✨</div>
-    <h3 style="font-size: 17px; font-weight: 800; color: var(--gray-900); margin-bottom: 6px;">내 매장 근무표 만들기</h3>
+  <div class="modal-card" style="max-width: 400px; text-align: center;">
+    <h3 style="font-size: 16px; font-weight: 700; color: var(--gray-900); margin-bottom: 6px; margin-top: 6px;">내 매장 근무표 만들기</h3>
     <p style="font-size: 13px; color: var(--gray-600); line-height: 1.5; margin-bottom: 18px;">
       현재 입력된 예시(샘플) 데이터를 어떻게 할까요?
     </p>
 
     <div style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 14px;">
       <!-- Option 1: Clear and start fresh (Default / Recommended) -->
-      <button type="button" class="btn btn-primary" style="padding: 14px; font-size: 14px; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 6px; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);" onclick="applyDemoChoice('clear')">
-        🗑️ 예시 데이터를 지우고 새로 시작하기
+      <button type="button" class="btn btn-primary" style="padding: 12px; font-size: 14px; font-weight: 700;" onclick="applyDemoChoice('clear')">
+        예시 데이터를 지우고 새로 시작하기
       </button>
 
       <!-- Option 2: Keep sample and modify -->
-      <button type="button" class="btn btn-secondary" style="padding: 12px; font-size: 14px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 6px;" onclick="applyDemoChoice('keep')">
-        ✏️ 예시 설정을 그대로 수정해서 쓰기
+      <button type="button" class="btn btn-outline-secondary" style="padding: 12px; font-size: 14px; font-weight: 600;" onclick="applyDemoChoice('keep')">
+        예시 설정을 그대로 수정해서 쓰기
       </button>
     </div>
 
@@ -3351,10 +3364,10 @@
 
     if (panel.style.display === 'none' || panel.style.display === '') {
       panel.style.display = 'block';
-      btn.textContent = '⚙️ 규칙 접어두기 🔼';
+      btn.textContent = '규칙 접어두기 ▴';
     } else {
       panel.style.display = 'none';
-      btn.textContent = '⚙️ 규칙 자세히 설정하기 🔽';
+      btn.textContent = '규칙 자세히 설정하기 ▾';
     }
   }
 
@@ -3679,6 +3692,24 @@
      ========================================================================== */
   let currentResultView = 'cards';
 
+  let isStatsExpanded = false;
+  function toggleStatsSection() {
+    isStatsExpanded = !isStatsExpanded;
+    const sec = document.getElementById('statsCollapsibleSection');
+    const arrow = document.getElementById('arrowStats');
+    if (sec) sec.style.display = isStatsExpanded ? 'block' : 'none';
+    if (arrow) arrow.textContent = isStatsExpanded ? '▴' : '▾';
+  }
+
+  let isSaveExpanded = false;
+  function toggleSaveSection() {
+    isSaveExpanded = !isSaveExpanded;
+    const sec = document.getElementById('saveCollapsibleSection');
+    const arrow = document.getElementById('arrowSave');
+    if (sec) sec.style.display = isSaveExpanded ? 'block' : 'none';
+    if (arrow) arrow.textContent = isSaveExpanded ? '▴' : '▾';
+  }
+
   function setResultView(viewType) {
     currentResultView = viewType;
     const cards = document.getElementById('scheduleCardsContainer');
@@ -3690,18 +3721,18 @@
       if (cards) cards.style.display = 'grid';
       if (tableContainer) tableContainer.style.display = 'none';
       if (btnCards) { btnCards.className = 'btn btn-sm btn-primary'; }
-      if (btnTable) { btnTable.className = 'btn btn-sm btn-secondary'; }
+      if (btnTable) { btnTable.className = 'btn btn-sm btn-outline-secondary'; }
     } else {
       if (cards) cards.style.display = 'none';
       if (tableContainer) tableContainer.style.display = 'block';
-      if (btnCards) { btnCards.className = 'btn btn-sm btn-secondary'; }
+      if (btnCards) { btnCards.className = 'btn btn-sm btn-outline-secondary'; }
       if (btnTable) { btnTable.className = 'btn btn-sm btn-primary'; }
     }
   }
 
   function generateScheduleAndShow() {
     if (state.workers.length === 0) {
-      showToast('⚠️ 근무자를 1명 이상 등록해야 합니다.');
+      showToast('근무자를 1명 이상 등록해야 합니다.');
       goToStep(2);
       return;
     }
@@ -3714,11 +3745,11 @@
 
     renderScheduleResult(schedule);
     goToStep(5);
-    showToast('✨ 근무표가 성공적으로 생성되었습니다!');
+    showToast('근무표가 성공적으로 생성되었습니다.');
   }
 
   function generateNextWeekSchedule() {
-    showToast('🗓️ 새로운 다음 주 근무표를 생성합니다...');
+    showToast('새로운 다음 주 근무표를 생성합니다...');
     generateScheduleAndShow();
   }
 
@@ -3780,7 +3811,7 @@
         `;
 
         if (assignedIds.length === 0) {
-          bodyHtml += `<span class="badge-shortage" onclick="openSwapWorkerModal('${day.id}', '${shift.id}', 0)" title="클릭하여 알바생 배정">⚠️ 미배정 ▾</span>`;
+          bodyHtml += `<span class="badge-shortage" onclick="openSwapWorkerModal('${day.id}', '${shift.id}', 0)" title="클릭하여 알바생 배정">미배정 ▾</span>`;
         } else {
           assignedIds.forEach((wId, slotIdx) => {
             if (wId === null) {
@@ -3797,14 +3828,14 @@
 
               bodyHtml += `
                 <div class="badge-shortage" onclick="openSwapWorkerModal('${day.id}', '${shift.id}', ${slotIdx})" title="클릭하여 알바생 배정 (대타)">
-                  ⚠️ 인원 부족 ▾
+                  인원 부족 ▾
                   <div class="tooltip-box">${tooltipText}</div>
                 </div>
               `;
             } else {
               const worker = state.workers.find(w => w.id === wId);
               const name = worker ? escapeHtml(worker.name) : '알 수 없음';
-              bodyHtml += `<span class="assigned-badge" onclick="openSwapWorkerModal('${day.id}', '${shift.id}', ${slotIdx})" title="클릭하여 알바생 변경 (대타 교체)">👤 ${name} ▾</span>`;
+              bodyHtml += `<span class="assigned-badge" onclick="openSwapWorkerModal('${day.id}', '${shift.id}', ${slotIdx})" title="클릭하여 알바생 변경 (대타 교체)">${name} ▾</span>`;
             }
           });
         }
@@ -3830,7 +3861,7 @@
 
           let assignedHtml = '';
           if (assignedIds.length === 0) {
-            assignedHtml = `<span class="badge-shortage" onclick="openSwapWorkerModal('${day.id}', '${shift.id}', 0)" title="클릭하여 알바생 배정">⚠️ 미배정 ▾</span>`;
+            assignedHtml = `<span class="badge-shortage" onclick="openSwapWorkerModal('${day.id}', '${shift.id}', 0)" title="클릭하여 알바생 배정">미배정 ▾</span>`;
           } else {
             assignedHtml = assignedIds.map((wId, slotIdx) => {
               if (wId === null) {
@@ -3846,14 +3877,14 @@
                 }
                 return `
                   <div class="badge-shortage" onclick="openSwapWorkerModal('${day.id}', '${shift.id}', ${slotIdx})" title="클릭하여 알바생 배정 (대타)">
-                    ⚠️ 인원 부족 ▾
+                    인원 부족 ▾
                     <div class="tooltip-box">${tooltipText}</div>
                   </div>
                 `;
               } else {
                 const worker = state.workers.find(w => w.id === wId);
                 const name = worker ? escapeHtml(worker.name) : '알 수 없음';
-                return `<span class="assigned-badge" onclick="openSwapWorkerModal('${day.id}', '${shift.id}', ${slotIdx})" title="클릭하여 알바생 변경 (대타 교체)">👤 ${name} ▾</span>`;
+                return `<span class="assigned-badge" onclick="openSwapWorkerModal('${day.id}', '${shift.id}', ${slotIdx})" title="클릭하여 알바생 변경 (대타 교체)">${name} ▾</span>`;
               }
             }).join('');
           }
@@ -3874,7 +3905,7 @@
         return `
           <div class="day-schedule-card">
             <div class="day-schedule-header ${day.isWeekend ? 'weekend' : ''}">
-              <span>🗓️ ${day.name}요일</span>
+              <span>${day.name}요일</span>
               <span style="font-size: 12px; font-weight: normal; opacity: 0.85;">${escapeHtml(group.name)}</span>
             </div>
             <div class="day-schedule-body">
@@ -3913,7 +3944,7 @@
         return `
           <div class="stat-card">
             <div class="stat-header-row">
-              <span class="stat-name">👤 ${escapeHtml(w.name)}</span>
+              <span class="stat-name">${escapeHtml(w.name)}</span>
               ${isHolidayPayEligible ? `<span class="badge-holiday-pay">주휴수당 대상</span>` : ''}
             </div>
             <div class="stat-metrics">
@@ -3959,8 +3990,8 @@
     const infoBox = document.getElementById('swapModalTargetInfo');
     if (infoBox) {
       infoBox.innerHTML = `
-        <div><strong>📌 대상 타임:</strong> [${day.name}요일 - ${escapeHtml(grp.name)}] <strong>${escapeHtml(shift.name)}</strong> (${shift.start}~${shift.end})</div>
-        <div style="margin-top: 4px;"><strong>👤 현재 배정:</strong> <span style="color: ${currentWorker ? 'var(--primary)' : 'var(--danger)'}; font-weight: 700;">${currentWorkerName}</span></div>
+        <div><strong>대상 타임:</strong> [${day.name}요일 - ${escapeHtml(grp.name)}] <strong>${escapeHtml(shift.name)}</strong> (${shift.start}~${shift.end})</div>
+        <div style="margin-top: 4px;"><strong>현재 배정:</strong> <span style="color: ${currentWorker ? 'var(--primary)' : 'var(--danger)'}; font-weight: 700;">${currentWorkerName}</span></div>
       `;
     }
 
@@ -3988,14 +4019,14 @@
 
       listContainer.innerHTML = candidates.map(c => {
         const statusBadge = c.isAvail
-          ? `<span style="color: #059669; font-size: 12px; font-weight: 700;">🟢 가능</span>`
-          : `<span style="color: #9ca3af; font-size: 12px;">⚪ 불가</span>`;
+          ? `<span style="color: #059669; font-size: 12px; font-weight: 700;">가능</span>`
+          : `<span style="color: #9ca3af; font-size: 12px;">불가</span>`;
         const currentTag = c.isCurrent ? `<span style="font-size: 11px; background: #e2e8f0; color: #475569; padding: 2px 6px; border-radius: 4px; margin-left: 6px;">현재 배정됨</span>` : '';
 
         return `
           <button type="button" class="swap-candidate-btn ${c.isCurrent ? 'is-current' : ''}" onclick="applySwapWorker('${c.worker.id}')">
             <div>
-              <span style="font-size: 14px; font-weight: 700; color: var(--gray-900);">👤 ${escapeHtml(c.worker.name)}</span>
+              <span style="font-size: 14px; font-weight: 700; color: var(--gray-900);">${escapeHtml(c.worker.name)}</span>
               ${currentTag}
               <div style="font-size: 11px; color: var(--gray-500); margin-top: 2px;">
                 현재 주간: ${c.hours.toFixed(1)}h (${c.count}회)
@@ -4003,7 +4034,7 @@
             </div>
             <div style="display: flex; align-items: center; gap: 8px;">
               ${statusBadge}
-              <span style="font-size: 12px; color: var(--primary); font-weight: 700;">선택 ➡️</span>
+              <span style="font-size: 12px; color: var(--primary); font-weight: 700;">선택</span>
             </div>
           </button>
         `;
@@ -4159,7 +4190,7 @@
 
     if (navigator.clipboard && navigator.clipboard.writeText) {
       navigator.clipboard.writeText(text).then(() => {
-        showToast('📋 근무표가 복사되었습니다! (카톡에 붙여넣기 해보세요)');
+        showToast('근무표가 복사되었습니다. (카카오톡 등에 붙여넣기 하세요)');
       }).catch(() => {
         fallbackCopy(text);
       });
@@ -4177,7 +4208,7 @@
     textarea.select();
     try {
       document.execCommand('copy');
-      showToast('📋 근무표가 복사되었습니다!');
+      showToast('근무표가 복사되었습니다.');
     } catch (e) {
       showToast('복사에 실패했습니다. 직접 복사해주세요.');
     }
