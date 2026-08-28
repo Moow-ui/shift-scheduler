@@ -473,7 +473,7 @@
        ========================================================================== */
     .day-group-card {
       background: var(--gray-50);
-      border: 1.5px solid var(--gray-200);
+      border: 1px solid var(--gray-200);
       border-radius: var(--radius-md);
       padding: 16px;
       margin-bottom: 16px;
@@ -551,12 +551,12 @@
     .group-shift-item {
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 8px;
       background: white;
-      padding: 14px;
-      border-radius: var(--radius-md);
-      border: 1.5px solid var(--gray-200);
-      box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+      padding: 12px 14px;
+      border-radius: var(--radius-sm);
+      border: none;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.03);
     }
 
     .shift-top-row {
@@ -598,14 +598,37 @@
       box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.15);
     }
 
+    .btn-toggle-quick-chips {
+      background: none;
+      border: none;
+      color: var(--gray-500);
+      font-size: 11px;
+      font-weight: 600;
+      cursor: pointer;
+      padding: 2px 0 0 0;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      touch-action: manipulation;
+    }
+    .btn-toggle-quick-chips:hover {
+      color: var(--primary);
+    }
+
+    .quick-chips-wrapper {
+      padding-top: 6px;
+      border-top: 1px dashed var(--gray-200);
+      margin-top: 4px;
+    }
+
     .quick-time-chips {
       display: flex;
       gap: 4px;
       flex-wrap: wrap;
       align-items: center;
-      padding-top: 6px;
-      border-top: 1px dashed var(--gray-200);
-      margin-top: 2px;
+      margin-bottom: 4px;
     }
     .quick-chip-label {
       font-size: 11px;
@@ -617,7 +640,7 @@
       background: var(--gray-100);
       border: 1px solid var(--gray-300);
       border-radius: 14px;
-      padding: 5px 9px;
+      padding: 4px 8px;
       font-size: 11px;
       font-weight: 600;
       color: var(--gray-700);
@@ -722,36 +745,23 @@
 
     /* Closed Days Status Box (Bug 2) */
     .closed-days-box {
-      padding: 12px 16px;
+      padding: 10px 14px;
       border-radius: var(--radius-md);
-      margin-top: 14px;
+      margin-top: 12px;
       margin-bottom: 8px;
-      transition: all 0.2s ease;
-    }
-    .closed-days-box.no-closed {
-      background: #ecfdf5;
-      border: 1.5px solid #a7f3d0;
-    }
-    .closed-days-box.has-closed {
       background: #fff7ed;
-      border: 1.5px solid #fed7aa;
+      border: 1px solid #fed7aa;
+      font-size: 13px;
     }
 
     /* Shift Validation Status Box (Section B) */
     .shift-validation-box {
-      padding: 12px 16px;
+      padding: 10px 14px;
       border-radius: var(--radius-md);
       margin-bottom: 12px;
-      transition: all 0.2s ease;
-      font-size: 13px;
-    }
-    .shift-validation-box.val-ok {
-      background: #f0fdf4;
-      border: 1.5px solid #bbf7d0;
-    }
-    .shift-validation-box.val-warning {
       background: #fefce8;
-      border: 1.5px solid #fef08a;
+      border: 1px solid #fef08a;
+      font-size: 13px;
     }
 
     /* Floating Feedback Button (Section C) */
@@ -1357,8 +1367,14 @@
     .btn-outline-primary { background: white; color: var(--primary); border: 1.5px solid var(--primary); }
     .btn-outline-primary:hover { background: var(--primary-light); }
 
+    .btn-outline-secondary { background: white; color: var(--gray-700); border: 1.5px solid var(--gray-300); }
+    .btn-outline-secondary:hover { background: var(--gray-100); border-color: var(--gray-400); color: var(--gray-900); }
+
     .btn-danger-outline { background: white; color: var(--danger); border: 1px solid #fecaca; }
     .btn-danger-outline:hover { background: var(--danger-light); }
+
+    .btn-outline-del { background: white; color: var(--gray-400); border: 1px solid var(--gray-200); border-radius: var(--radius-sm); padding: 4px 8px; font-size: 12px; cursor: pointer; transition: all 0.15s ease; }
+    .btn-outline-del:hover { color: var(--danger); border-color: #fecaca; background: #fef2f2; }
 
     .btn-large { padding: 14px 28px; font-size: 16px; font-weight: 700; border-radius: var(--radius-lg); min-height: 50px; }
     .btn-sm { padding: 8px 12px; font-size: 13px; border-radius: var(--radius-sm); min-height: 38px; }
@@ -1628,16 +1644,16 @@
         <h2 class="card-title">1단계: 요일 그룹 & 근무 타임 설정</h2>
         <p class="card-desc">평일과 주말 등 요일별로 근무 시간과 필요 인원을 다르게 설정할 수 있습니다.</p>
       </div>
-      <button class="btn btn-sm btn-outline-primary" onclick="addDayGroup()">+ 요일 그룹 추가</button>
+      <button class="btn btn-sm btn-outline-secondary" onclick="addDayGroup()">+ 요일 그룹 추가</button>
     </div>
 
     <!-- 4. Industry Presets (Moved to Step 1 top) -->
     <div class="step-presets-box">
-      <div class="step-presets-title">⚡ 빠른 템플릿으로 시작하기:</div>
+      <div class="step-presets-title">빠른 템플릿으로 시작하기:</div>
       <div class="step-preset-buttons">
-        <button type="button" class="btn-preset-chip" onclick="applyPresetAndStart('convenience')">🏪 편의점 (24시간 3교대)</button>
-        <button type="button" class="btn-preset-chip" onclick="applyPresetAndStart('cafe')">☕ 카페 (오픈·미들·마감)</button>
-        <button type="button" class="btn-preset-chip" onclick="applyPresetAndStart('restaurant')">🍽️ 음식점 (런치·디너 피크)</button>
+        <button type="button" class="btn-preset-chip" onclick="applyPresetAndStart('convenience')">편의점 (24시간 3교대)</button>
+        <button type="button" class="btn-preset-chip" onclick="applyPresetAndStart('cafe')">카페 (오픈·미들·마감)</button>
+        <button type="button" class="btn-preset-chip" onclick="applyPresetAndStart('restaurant')">음식점 (런치·디너 피크)</button>
       </div>
     </div>
 
@@ -1646,23 +1662,19 @@
       <!-- Rendered by JS -->
     </div>
 
-    <!-- Closed Days Notice Box (Bug 2) -->
-    <div id="closedDaysStatusBox">
+    <!-- Closed Days Notice Box (Only visible if there are closed days) -->
+    <div id="closedDaysStatusBox" style="display: none;">
       <!-- Rendered by JS -->
     </div>
 
-    <!-- Shift Validation Status Box (Section B) -->
-    <div id="shiftValidationStatusBox">
+    <!-- Shift Validation Status Box (Only visible if warnings/notices exist) -->
+    <div id="shiftValidationStatusBox" style="display: none;">
       <!-- Rendered by JS -->
-    </div>
-
-    <div class="callout" style="margin-top: 10px;">
-      💡 <strong>요일 선택 안내:</strong> 파란색으로 채워진 요일이 해당 그룹에 배정된 요일입니다. 어떤 그룹에도 선택되지 않은 요일은 휴무일로 처리됩니다.
     </div>
 
     <div class="action-footer">
-      <button class="btn btn-secondary" onclick="goToHome()">🏠 처음으로</button>
-      <button class="btn btn-primary" onclick="goToStep(2)">다음: 근무자 등록 ➡️</button>
+      <button class="btn btn-outline-secondary" onclick="goToHome()">처음으로</button>
+      <button class="btn btn-primary" onclick="goToStep(2)">다음: 근무자 등록</button>
     </div>
   </section>
 
@@ -2747,6 +2759,24 @@
     return { warnings, notices };
   }
 
+  let expandedQuickChips = new Set();
+
+  function toggleQuickChips(key) {
+    if (expandedQuickChips.has(key)) {
+      expandedQuickChips.delete(key);
+    } else {
+      expandedQuickChips.add(key);
+    }
+    const target = document.getElementById('quickChips_' + key);
+    const arrow = document.getElementById('arrow_' + key);
+    if (target) {
+      target.style.display = expandedQuickChips.has(key) ? 'block' : 'none';
+    }
+    if (arrow) {
+      arrow.textContent = expandedQuickChips.has(key) ? '▴' : '▾';
+    }
+  }
+
   function renderShiftValidationStatus() {
     const box = document.getElementById('shiftValidationStatusBox');
     if (!box) return;
@@ -2761,29 +2791,22 @@
     });
 
     if (allWarnings.length === 0 && allNotices.length === 0) {
-      box.className = 'shift-validation-box val-ok';
-      box.innerHTML = `
-        <div style="display: flex; align-items: center; gap: 8px;">
-          <span style="font-size: 16px;">✅</span>
-          <div>
-            <strong style="color: #065f46; font-size: 13px;">근무타임 점검: 정상</strong>
-            <div style="font-size: 12px; color: #047857; margin-top: 1px;">시간대 겹침이나 중간 빈 구간 없이 잘 구성되어 있습니다.</div>
-          </div>
-        </div>
-      `;
+      box.style.display = 'none';
+      box.innerHTML = '';
     } else {
+      box.style.display = 'block';
       let itemsHtml = '';
       allWarnings.forEach(w => {
-        itemsHtml += `<div style="font-size: 12px; color: #b45309; margin-top: 3px;">⚠️ <strong>겹침 주의:</strong> ${escapeHtml(w)}</div>`;
+        itemsHtml += `<div style="font-size: 12px; color: #b45309; margin-top: 2px;"><strong>겹침 주의:</strong> ${escapeHtml(w)}</div>`;
       });
       allNotices.forEach(n => {
-        itemsHtml += `<div style="font-size: 12px; color: #0369a1; margin-top: 3px;">ℹ️ <strong>빈 구간 알림:</strong> ${escapeHtml(n)} (브레이크타임 또는 미영업 시간인지 확인하세요)</div>`;
+        itemsHtml += `<div style="font-size: 12px; color: #0369a1; margin-top: 2px;"><strong>빈 구간 알림:</strong> ${escapeHtml(n)} (브레이크타임 또는 미영업 시간인지 확인하세요)</div>`;
       });
 
-      box.className = 'shift-validation-box val-warning';
+      box.className = 'shift-validation-box';
       box.innerHTML = `
         <div>
-          <strong style="color: #854d0e; font-size: 13px;">📋 근무타임 점검 결과 (참고용 알림):</strong>
+          <strong style="color: #854d0e; font-size: 13px;">근무타임 점검 결과 (참고용 알림):</strong>
           ${itemsHtml}
         </div>
       `;
@@ -2814,26 +2837,16 @@
 
     const closedDays = getClosedDays();
     if (closedDays.length === 0) {
-      statusBox.className = 'closed-days-box no-closed';
-      statusBox.innerHTML = `
-        <div style="display: flex; align-items: center; gap: 8px;">
-          <span style="font-size: 16px;">🗓️</span>
-          <div>
-            <strong style="color: #065f46; font-size: 14px;">휴무일: 없음 (월~일 전 요일 영업)</strong>
-            <div style="font-size: 12px; color: #047857; margin-top: 1px;">모든 요일에 근무 타임이 배정되어 있습니다.</div>
-          </div>
-        </div>
-      `;
+      statusBox.style.display = 'none';
+      statusBox.innerHTML = '';
     } else {
+      statusBox.style.display = 'block';
       const closedNames = closedDays.map(d => `${d.name}요일`).join(', ');
-      statusBox.className = 'closed-days-box has-closed';
+      statusBox.className = 'closed-days-box';
       statusBox.innerHTML = `
-        <div style="display: flex; align-items: center; gap: 8px;">
-          <span style="font-size: 16px;">🏖️</span>
-          <div>
-            <strong style="color: #9a3412; font-size: 14px;">휴무일: ${closedNames}</strong>
-            <div style="font-size: 12px; color: #c2410c; margin-top: 1px;">어떤 그룹에도 선택되지 않은 요일은 매장 휴무일로 처리되어 근무표에서 제외됩니다.</div>
-          </div>
+        <div style="font-size: 13px; color: #9a3412; line-height: 1.4;">
+          <strong>휴무일: ${closedNames}</strong>
+          <span style="font-size: 12px; color: #c2410c; margin-left: 6px;">(선택되지 않은 요일은 매장 휴무일로 처리되어 근무표에서 제외됩니다)</span>
         </div>
       `;
     }
@@ -2873,7 +2886,7 @@
         `;
       }).join('');
 
-      // Shift items with native time input + quick time chips + duration + break time notice
+      // Shift items with native time input + collapsible quick time chips + duration + break time notice
       const shiftListHtml = group.shifts.map(shift => {
         const startVal = shift.start || '09:00';
         const endVal = shift.end || '15:00';
@@ -2892,6 +2905,9 @@
           <button type="button" class="quick-chip" onclick="setQuickShiftTime('${group.id}', '${shift.id}', 'end', '${t}')">${t === '00:00' ? '24:00' : t}</button>
         `).join('');
 
+        const chipKey = `${group.id}_${shift.id}`;
+        const isExpanded = expandedQuickChips.has(chipKey);
+
         return `
           <div class="group-shift-item">
             <div class="shift-top-row">
@@ -2905,7 +2921,7 @@
                   <span style="font-size: 12px; color: var(--gray-600);">명</span>
                 </div>
                 ${group.shifts.length > 1 ? `
-                  <button class="btn btn-sm btn-danger-outline" onclick="deleteGroupShift('${group.id}', '${shift.id}')">삭제</button>
+                  <button type="button" class="btn-outline-del" onclick="deleteGroupShift('${group.id}', '${shift.id}')">삭제</button>
                 ` : ''}
               </div>
             </div>
@@ -2920,14 +2936,22 @@
               </div>
             </div>
 
-            <!-- Quick Time Chips -->
-            <div class="quick-time-chips">
-              <span class="quick-chip-label">시작 퀵:</span>
-              ${startChipsHtml}
+            <div style="display: flex; align-items: center; justify-content: flex-start; margin-top: 2px;">
+              <button type="button" class="btn-toggle-quick-chips" onclick="toggleQuickChips('${chipKey}')">
+                빠른 시간 선택 <span id="arrow_${chipKey}">${isExpanded ? '▴' : '▾'}</span>
+              </button>
             </div>
-            <div class="quick-time-chips" style="border-top: none; padding-top: 0;">
-              <span class="quick-chip-label">종료 퀵:</span>
-              ${endChipsHtml}
+
+            <!-- Quick Time Chips (Collapsible) -->
+            <div id="quickChips_${chipKey}" class="quick-chips-wrapper" style="display: ${isExpanded ? 'block' : 'none'};">
+              <div class="quick-time-chips">
+                <span class="quick-chip-label">시작:</span>
+                ${startChipsHtml}
+              </div>
+              <div class="quick-time-chips" style="border-top: none; padding-top: 0;">
+                <span class="quick-chip-label">종료:</span>
+                ${endChipsHtml}
+              </div>
             </div>
           </div>
         `;
@@ -2941,9 +2965,9 @@
               <span style="font-size: 12px; color: var(--gray-500);">${group.days.length}개 요일 배정됨</span>
             </div>
             <div style="display: flex; gap: 6px;">
-              <button class="btn btn-sm btn-secondary" onclick="addGroupShift('${group.id}')">+ 타임 추가</button>
+              <button type="button" class="btn btn-sm btn-outline-secondary" onclick="addGroupShift('${group.id}')">+ 타임 추가</button>
               ${state.dayGroups.length > 1 ? `
-                <button class="btn btn-sm btn-danger-outline" onclick="deleteDayGroup('${group.id}')">그룹 삭제</button>
+                <button type="button" class="btn btn-sm btn-outline-secondary" style="color: var(--gray-500); border-color: var(--gray-300);" onclick="deleteDayGroup('${group.id}')">그룹 삭제</button>
               ` : ''}
             </div>
           </div>
