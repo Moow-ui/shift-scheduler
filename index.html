@@ -290,29 +290,32 @@
       transform: scale(0.98);
     }
 
-    .btn-create-store-outline {
+    .btn-demo-highlight {
       width: 100%;
       padding: 14px 20px;
-      font-size: 15px;
+      font-size: 14px;
       font-weight: 700;
-      background: white;
-      color: var(--gray-800);
-      border: 1.5px solid var(--gray-300);
+      background: #fffbeb;
+      color: #b45309;
+      border: 1.5px solid #f59e0b;
       border-radius: var(--radius-lg);
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 8px;
-      transition: all 0.2s;
+      gap: 6px;
+      box-shadow: 0 2px 6px rgba(217, 119, 6, 0.12);
+      transition: all 0.2s ease;
       touch-action: manipulation;
     }
-    .btn-create-store-outline:hover {
-      background: var(--gray-50);
-      border-color: var(--gray-400);
-      color: var(--gray-900);
+    .btn-demo-highlight:hover {
+      background: #fef3c7;
+      border-color: #d97706;
+      color: #92400e;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 10px rgba(217, 119, 6, 0.18);
     }
-    .btn-create-store-outline:active {
+    .btn-demo-highlight:active {
       transform: scale(0.98);
     }
 
@@ -1683,18 +1686,18 @@
     <p>조건만 입력하면 공평하고 빈틈없는 맞춤 근무표를 자동으로 만듭니다.</p>
 
     <div class="home-main-actions">
-      <!-- 1. Single Primary Solid Button: Preview Demo 1s (Main Promoted Action) -->
-      <button class="btn-start-new" onclick="runDemoExperience()">
-        예시 근무표 1초 만에 보기
+      <!-- 1. Single Primary Solid Navy Button: Create My Store Schedule (Main Action) -->
+      <button class="btn-start-new" onclick="startNewSession()">
+        내 매장 근무표 만들기
+      </button>
+
+      <!-- 2. Distinct Highlighted Accent Button: Demo Preview (Warm Amber/Gold highlight) -->
+      <button class="btn-demo-highlight" onclick="runDemoExperience()">
+        예시 근무표 1초 만에 보고 느낌잡기
       </button>
       <div style="font-size: 12px; color: var(--gray-500); margin-top: -4px; margin-bottom: 6px;">
         카페 샘플 데이터로 완성된 결과를 바로 확인
       </div>
-
-      <!-- 2. Large Secondary Gray Outline Button: Create Own Store Schedule -->
-      <button class="btn-create-store-outline" onclick="startNewSession()">
-        내 매장 근무표 만들기
-      </button>
 
       <!-- 3. Saved Data Section (Only visible if saved data actually exists) -->
       <div id="homeSavedDataArea" class="home-saved-area" style="display: none;">
