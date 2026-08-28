@@ -727,7 +727,7 @@
       align-items: center;
       gap: 6px;
       text-decoration: none;
-      z-index: 999;
+      z-index: 850;
       transition: all 0.2s ease;
       cursor: pointer;
       touch-action: manipulation;
@@ -746,39 +746,57 @@
     .worker-tags {
       display: flex;
       flex-wrap: wrap;
-      gap: 8px;
-      min-height: 48px;
+      gap: 10px;
+      min-height: 52px;
       padding: 12px;
       background: var(--gray-50);
       border-radius: var(--radius-md);
       border: 1px dashed var(--gray-300);
+      align-items: center;
     }
 
     .worker-tag {
       display: inline-flex;
       align-items: center;
-      gap: 6px;
       background: white;
-      padding: 6px 14px;
-      border-radius: 20px;
-      border: 1px solid var(--gray-200);
+      padding: 4px 4px 4px 14px;
+      min-height: 44px;
+      border-radius: 24px;
+      border: 1.5px solid var(--gray-200);
       font-size: 14px;
-      font-weight: 600;
+      font-weight: 700;
       color: var(--gray-800);
       box-shadow: var(--shadow-sm);
+      user-select: none;
+      position: relative;
     }
 
     .worker-tag-del {
       cursor: pointer;
       color: var(--gray-400);
-      font-size: 16px;
+      font-size: 18px;
+      line-height: 1;
       border: none;
       background: none;
-      display: flex;
+      display: inline-flex;
       align-items: center;
+      justify-content: center;
+      min-width: 44px;
+      min-height: 44px;
+      width: 44px;
+      height: 44px;
+      padding: 0;
+      margin-left: 2px;
+      border-radius: 50%;
+      touch-action: manipulation;
+      -webkit-tap-highlight-color: rgba(239, 68, 68, 0.2);
+      transition: all 0.15s ease;
+      flex-shrink: 0;
     }
-    .worker-tag-del:hover {
+    .worker-tag-del:hover, .worker-tag-del:active {
       color: var(--danger);
+      background: #fee2e2;
+      transform: scale(1.08);
     }
 
     /* ==========================================================================
@@ -1400,7 +1418,7 @@
     /* Mobile Responsive Optimizations (<= 640px) */
     @media (max-width: 640px) {
       body {
-        padding: 10px 10px 92px 10px;
+        padding: 10px 10px 130px 10px;
       }
       .card {
         padding: 14px;
@@ -1473,12 +1491,19 @@
         font-weight: 700;
       }
 
-      /* Floating feedback button repositioned above sticky bar */
+      /* Floating feedback button repositioned above sticky bar without covering content */
       .floating-feedback-btn {
-        bottom: 74px;
-        right: 12px;
-        padding: 7px 12px;
-        font-size: 12px;
+        bottom: 68px;
+        right: 10px;
+        padding: 6px 11px;
+        font-size: 11px;
+        border-radius: 20px;
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(4px);
+        -webkit-backdrop-filter: blur(4px);
+        box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+        z-index: 850;
+        opacity: 0.92;
       }
     }
   </style>
@@ -1865,7 +1890,7 @@
           <div style="font-size: 12px; color: #3b82f6; margin-top: 2px;">💡 알바생 이름을 누르면 즉시 대타 교체(미세조정)를 시험해 볼 수 있습니다.</div>
         </div>
       </div>
-      <button class="btn btn-sm btn-primary" onclick="startNewSession()" style="margin-left: auto;">
+      <button class="btn btn-sm btn-primary" onclick="confirmExitDemoExperience()" style="margin-left: auto;">
         ✨ 내 매장 근무표 직접 만들기 ➡️
       </button>
     </div>
@@ -1977,6 +2002,33 @@
       <button class="btn btn-sm btn-danger-outline" onclick="applySwapWorker(null)">⚠️ 미배정(공석)으로 비우기</button>
       <button class="btn btn-sm btn-secondary" onclick="closeSwapWorkerModal()">닫기</button>
     </div>
+  </div>
+</div>
+
+<!-- Demo Reset Choice Modal (Bug Fix 2) -->
+<div id="demoResetChoiceModal" class="modal-overlay" style="display: none;" onclick="handleDemoModalOverlayClick(event)">
+  <div class="modal-card" style="max-width: 420px; text-align: center;">
+    <div style="font-size: 32px; margin-bottom: 8px;">✨</div>
+    <h3 style="font-size: 17px; font-weight: 800; color: var(--gray-900); margin-bottom: 6px;">내 매장 근무표 만들기</h3>
+    <p style="font-size: 13px; color: var(--gray-600); line-height: 1.5; margin-bottom: 18px;">
+      현재 입력된 예시(샘플) 데이터를 어떻게 할까요?
+    </p>
+
+    <div style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 14px;">
+      <!-- Option 1: Clear and start fresh (Default / Recommended) -->
+      <button type="button" class="btn btn-primary" style="padding: 14px; font-size: 14px; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 6px; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);" onclick="applyDemoChoice('clear')">
+        🗑️ 예시 데이터를 지우고 새로 시작하기
+      </button>
+
+      <!-- Option 2: Keep sample and modify -->
+      <button type="button" class="btn btn-secondary" style="padding: 12px; font-size: 14px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 6px;" onclick="applyDemoChoice('keep')">
+        ✏️ 예시 설정을 그대로 수정해서 쓰기
+      </button>
+    </div>
+
+    <button type="button" class="btn btn-sm btn-outline-secondary" style="border: none; color: var(--gray-400); font-size: 12px; cursor: pointer; padding: 6px;" onclick="closeDemoChoiceModal()">
+      취소 (현재 예시 결과 계속 보기)
+    </button>
   </div>
 </div>
 
@@ -2330,6 +2382,68 @@
     if (demoBanner) demoBanner.style.display = 'flex';
 
     showToast('☕ [예시 체험] 카페 매장 샘플 근무표가 완성되었습니다! (대타 교체를 시험해보세요)');
+  }
+
+  function confirmExitDemoExperience() {
+    const modal = document.getElementById('demoResetChoiceModal');
+    if (modal) modal.style.display = 'flex';
+  }
+
+  function closeDemoChoiceModal() {
+    const modal = document.getElementById('demoResetChoiceModal');
+    if (modal) modal.style.display = 'none';
+  }
+
+  function handleDemoModalOverlayClick(e) {
+    if (e.target && e.target.id === 'demoResetChoiceModal') {
+      closeDemoChoiceModal();
+    }
+  }
+
+  function applyDemoChoice(choice) {
+    closeDemoChoiceModal();
+    const demoBanner = document.getElementById('demoExperienceBanner');
+    if (demoBanner) demoBanner.style.display = 'none';
+
+    if (choice === 'clear') {
+      // Clear sample data and start fresh
+      state.dayGroups = [
+        {
+          id: 'group_' + Date.now(),
+          name: '평일 그룹',
+          days: ['mon', 'tue', 'wed', 'thu', 'fri'],
+          shifts: [
+            { id: 'shift_1', name: '오픈', start: '09:00', end: '15:00', required: 1 },
+            { id: 'shift_2', name: '마감', start: '15:00', end: '22:00', required: 1 }
+          ]
+        }
+      ];
+      state.workers = [];
+      state.availability = {};
+      state.lastSchedule = null;
+      state.rules = {
+        maxShiftsPerDay: 2,
+        limitDailyHours: true,
+        maxDailyHours: 8,
+        noSplitShift: true,
+        noClopen: true,
+        minRestHours: 11,
+        limitConsecutiveDays: true,
+        maxConsecutiveDays: 6,
+        limitWeeklyHours: true,
+        maxWeeklyHours: 40,
+        balanceWeekends: true
+      };
+      currentWorkerTabId = null;
+      saveState();
+      renderAll();
+      goToStep(1);
+      showToast('✨ 예시 데이터가 초기화되었습니다. 내 매장 정보를 입력해 보세요!');
+    } else if (choice === 'keep') {
+      // Keep sample as editable template
+      goToStep(1);
+      showToast('✏️ 예시 설정을 1단계부터 원하는 대로 수정해 보세요.');
+    }
   }
 
   function applyPresetAndStart(presetType) {
@@ -2917,9 +3031,9 @@
     }
 
     container.innerHTML = state.workers.map(w => `
-      <span class="worker-tag">
-        👤 ${escapeHtml(w.name)}
-        <button class="worker-tag-del" onclick="deleteWorker('${w.id}')" title="삭제">&times;</button>
+      <span class="worker-tag" data-worker-id="${w.id}">
+        <span style="pointer-events: none;">👤 ${escapeHtml(w.name)}</span>
+        <button type="button" class="worker-tag-del" onclick="event.preventDefault(); event.stopPropagation(); deleteWorker('${w.id}')" title="${escapeHtml(w.name)} 삭제" aria-label="${escapeHtml(w.name)} 삭제">✕</button>
       </span>
     `).join('');
   }
