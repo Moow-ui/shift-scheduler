@@ -223,49 +223,52 @@
        ========================================================================== */
     .home-hero {
       text-align: center;
-      padding: 36px 20px;
+      padding: 32px 16px 20px 16px;
     }
 
     .home-badge {
       display: inline-block;
       background: var(--primary-light);
       color: var(--primary);
-      font-size: 12px;
+      font-size: 11px;
       font-weight: 700;
-      padding: 4px 14px;
+      padding: 3px 12px;
       border-radius: 20px;
-      margin-bottom: 12px;
+      margin-bottom: 10px;
       letter-spacing: 0.5px;
     }
 
     .home-hero h1 {
-      font-size: 28px;
+      font-size: 24px;
       font-weight: 800;
       color: var(--gray-900);
       margin-bottom: 8px;
+      letter-spacing: -0.5px;
     }
 
     .home-hero p {
-      font-size: 15px;
+      font-size: 14px;
       color: var(--gray-600);
-      max-width: 500px;
-      margin: 0 auto 28px auto;
+      max-width: 440px;
+      margin: 0 auto 20px auto;
+      line-height: 1.5;
     }
 
     .home-main-actions {
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 12px;
-      max-width: 420px;
-      margin: 0 auto 32px auto;
+      gap: 10px;
+      max-width: 340px;
+      margin: 0 auto 16px auto;
+      width: 100%;
     }
 
-    .btn-resume {
+    .btn-start-new {
       width: 100%;
       padding: 16px 24px;
       font-size: 16px;
-      font-weight: 700;
+      font-weight: 800;
       background: #1e40af;
       color: white;
       border-radius: var(--radius-lg);
@@ -277,68 +280,115 @@
       gap: 8px;
       box-shadow: 0 4px 12px rgba(30, 64, 175, 0.35);
       transition: all 0.2s;
+      touch-action: manipulation;
     }
-    .btn-resume:hover {
+    .btn-start-new:hover {
       background: #1d4ed8;
       transform: translateY(-1px);
     }
-
-    .btn-start-new {
-      width: 100%;
-      padding: 14px 24px;
-      font-size: 15px;
-      font-weight: 700;
-      background: var(--primary);
-      color: white;
-      border-radius: var(--radius-lg);
-      border: none;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      box-shadow: 0 4px 10px rgba(37, 99, 235, 0.25);
-      transition: all 0.2s;
-    }
-    .btn-start-new:hover {
-      background: var(--primary-hover);
+    .btn-start-new:active {
+      transform: scale(0.98);
     }
 
-    .btn-demo-experience {
-      width: 100%;
-      padding: 14px 20px;
-      font-size: 15px;
-      font-weight: 700;
-      background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
-      color: white;
-      border-radius: var(--radius-lg);
+    .btn-demo-link {
+      background: none;
       border: none;
+      color: var(--gray-600);
+      font-size: 13px;
+      font-weight: 600;
       cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      box-shadow: 0 4px 14px rgba(99, 102, 241, 0.35);
-      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      padding: 6px 12px;
+      text-decoration: underline;
+      text-underline-offset: 4px;
+      transition: color 0.15s ease;
       touch-action: manipulation;
     }
-    .btn-demo-experience:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 18px rgba(99, 102, 241, 0.45);
-      filter: brightness(1.05);
+    .btn-demo-link:hover {
+      color: var(--primary);
     }
-    .btn-demo-experience:active {
-      transform: scale(0.97);
+
+    /* Saved Data Area (Only shown when saved data actually exists) */
+    .home-saved-area {
+      border-top: 1px solid var(--gray-200);
+      padding-top: 14px;
+      margin-top: 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      width: 100%;
     }
-    .demo-badge {
-      background: rgba(255, 255, 255, 0.25);
+
+    .btn-resume-subtle {
+      width: 100%;
+      padding: 9px 14px;
+      font-size: 13px;
+      font-weight: 700;
+      background: white;
+      color: var(--gray-700);
+      border: 1.5px solid var(--gray-300);
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .btn-resume-subtle:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+      background: var(--primary-light);
+    }
+
+    .home-saved-slots-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      width: 100%;
       font-size: 12px;
-      font-weight: 800;
-      padding: 4px 10px;
+      color: var(--gray-600);
+    }
+
+    .home-footer-note {
+      font-size: 12px;
+      color: var(--gray-400);
+      margin-top: 14px;
+      margin-bottom: 0;
+      line-height: 1.4;
+    }
+
+    /* Presets inside Step 1 */
+    .step-presets-box {
+      background: #f8fafc;
+      border: 1px solid var(--gray-200);
+      border-radius: var(--radius-md);
+      padding: 12px 14px;
+      margin-bottom: 16px;
+    }
+    .step-presets-title {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--gray-600);
+      margin-bottom: 8px;
+    }
+    .step-preset-buttons {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .btn-preset-chip {
+      background: white;
+      border: 1px solid var(--gray-300);
       border-radius: 20px;
-      letter-spacing: 0.3px;
-      white-space: nowrap;
-      border: 1px solid rgba(255, 255, 255, 0.3);
+      padding: 6px 12px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--gray-700);
+      cursor: pointer;
+      transition: all 0.15s ease;
+      touch-action: manipulation;
+    }
+    .btn-preset-chip:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+      background: var(--primary-light);
     }
 
     .demo-experience-banner {
@@ -353,12 +403,6 @@
       gap: 10px;
       flex-wrap: wrap;
       animation: fadeIn 0.3s ease;
-    }
-
-    .home-presets {
-      border-top: 1px solid var(--gray-200);
-      padding-top: 24px;
-      margin-top: 10px;
     }
 
     .home-presets-title {
@@ -1537,64 +1581,42 @@
        START / HOME SCREEN (Section B)
        ========================================================================= -->
   <section class="card home-hero" id="homeScreen">
-    <span class="home-badge">EASY & SMART SCHEDULER</span>
-    <h1>🏪 알바 근무표 자동 생성기</h1>
-    <p>조건을 입력하면 공평하고 빈틈없는 맞춤 근무표를 0.1초 만에 자동으로 만듭니다.</p>
+    <span class="home-badge">SMART SCHEDULER</span>
+    <h1>알바 근무표 자동 생성기</h1>
+    <p>조건만 입력하면 공평하고 빈틈없는 맞춤 근무표를 자동으로 만듭니다.</p>
 
     <div class="home-main-actions">
-      <!-- Resume button (shown if saved state exists) -->
-      <button id="btnResume" class="btn-resume" style="display: none;" onclick="resumePreviousSession()">
-        ▶️ 지난번 이어서 하기
-      </button>
-
-      <!-- Main Start Button -->
+      <!-- 1. Single Primary Solid Button -->
       <button class="btn-start-new" onclick="startNewSession()">
-        ✨ 내 매장 근무표 만들기 시작 ➡️
+        근무표 만들기 시작
       </button>
 
-      <!-- 1-Click Demo Experience Button -->
-      <button class="btn-demo-experience" onclick="runDemoExperience()">
-        <div style="display: flex; align-items: center; gap: 10px;">
-          <span style="font-size: 22px;">⚡</span>
-          <div style="text-align: left;">
-            <div style="font-size: 15px; font-weight: 800;">1초 만에 예시 근무표 체험하기</div>
-            <div style="font-size: 11px; opacity: 0.9; font-weight: 400; margin-top: 1px;">카페 샘플 데이터로 완성된 결과 바로보기</div>
-          </div>
-        </div>
-        <span class="demo-badge">체험 🚀</span>
+      <!-- 2. Small Text Link for Sample Demo -->
+      <button type="button" class="btn-demo-link" onclick="runDemoExperience()">
+        예시 근무표 먼저 보기
       </button>
-    </div>
 
-    <!-- Quick Industry Presets -->
-    <div class="home-presets">
-      <div class="home-presets-title">⚡ 빠른 시작 (업종 프리셋으로 시작하기)</div>
-      <div class="home-preset-grid">
-        <div class="preset-card" onclick="applyPresetAndStart('convenience')">
-          <div class="preset-card-title">🏪 편의점</div>
-          <div class="preset-card-desc">연중무휴 · 3교대(오전/오후/야간)</div>
+      <!-- 3. Saved Data Section (Only visible if saved data actually exists) -->
+      <div id="homeSavedDataArea" class="home-saved-area" style="display: none;">
+        <button id="btnResume" class="btn-resume-subtle" onclick="resumePreviousSession()">
+          지난번 작업 이어서 하기
+        </button>
+
+        <div id="homeSlotSelectContainer" class="home-saved-slots-row" style="display: none;">
+          <select id="homeSlotSelect" class="select-box" style="flex: 1; font-size: 12px; padding: 6px 8px;" onchange="handleHomeSlotSelect(this.value)">
+            <option value="">-- 저장된 매장 불러오기 --</option>
+          </select>
         </div>
-        <div class="preset-card" onclick="applyPresetAndStart('cafe')">
-          <div class="preset-card-title">☕ 카페</div>
-          <div class="preset-card-desc">평일/주말 분리 · 오픈/미들/마감</div>
-        </div>
-        <div class="preset-card" onclick="applyPresetAndStart('restaurant')">
-          <div class="preset-card-title">🍽️ 음식점</div>
-          <div class="preset-card-desc">런치·디너 피크 · 브레이크타임</div>
-        </div>
+
+        <button type="button" class="btn-demo-link" style="font-size: 12px; color: var(--gray-500); padding: 2px 8px;" onclick="document.getElementById('homeImportFileInput').click()">
+          백업 파일 불러오기
+        </button>
+        <input type="file" id="homeImportFileInput" style="display: none;" accept=".json" onchange="importConfigFile(event)">
       </div>
     </div>
 
-    <!-- Bottom Slot & Import Links (Section D) -->
-    <div class="home-footer-links">
-      <span>📂 저장된 매장 설정 불러오기:</span>
-      <select id="homeSlotSelect" class="select-box" onchange="handleHomeSlotSelect(this.value)">
-        <option value="">-- 저장된 매장 선택 --</option>
-      </select>
-      <span class="home-footer-link" onclick="document.getElementById('homeImportFileInput').click()">
-        📂 내 컴퓨터에서 백업 파일 불러오기
-      </span>
-      <input type="file" id="homeImportFileInput" style="display: none;" accept=".json" onchange="importConfigFile(event)">
-    </div>
+    <!-- 5. 1 Concise Line Footer Note without emojis -->
+    <p class="home-footer-note">회원가입 없이 무료로 사용하며, 입력한 데이터는 내 브라우저에만 안전하게 보관됩니다.</p>
   </section>
 
   <!-- =========================================================================
@@ -1607,6 +1629,16 @@
         <p class="card-desc">평일과 주말 등 요일별로 근무 시간과 필요 인원을 다르게 설정할 수 있습니다.</p>
       </div>
       <button class="btn btn-sm btn-outline-primary" onclick="addDayGroup()">+ 요일 그룹 추가</button>
+    </div>
+
+    <!-- 4. Industry Presets (Moved to Step 1 top) -->
+    <div class="step-presets-box">
+      <div class="step-presets-title">⚡ 빠른 템플릿으로 시작하기:</div>
+      <div class="step-preset-buttons">
+        <button type="button" class="btn-preset-chip" onclick="applyPresetAndStart('convenience')">🏪 편의점 (24시간 3교대)</button>
+        <button type="button" class="btn-preset-chip" onclick="applyPresetAndStart('cafe')">☕ 카페 (오픈·미들·마감)</button>
+        <button type="button" class="btn-preset-chip" onclick="applyPresetAndStart('restaurant')">🍽️ 음식점 (런치·디너 피크)</button>
+      </div>
     </div>
 
     <!-- Day Groups Container -->
@@ -2152,13 +2184,34 @@
     const select = document.getElementById('homeSlotSelect');
     if (!select) return;
     const slots = getSlots();
-    select.innerHTML = '<option value="">-- 저장된 매장 선택 --</option>';
+    select.innerHTML = '<option value="">-- 저장된 매장 불러오기 --</option>';
     Object.keys(slots).forEach(name => {
       const opt = document.createElement('option');
       opt.value = name;
       opt.textContent = name;
       select.appendChild(opt);
     });
+  }
+
+  function checkAndRenderSavedData() {
+    const savedArea = document.getElementById('homeSavedDataArea');
+    const btnResume = document.getElementById('btnResume');
+    const slotContainer = document.getElementById('homeSlotSelectContainer');
+
+    const hasState = state.workers.length > 0 || !!state.lastSchedule;
+    const slots = getSlots();
+    const hasSlots = Object.keys(slots).length > 0;
+
+    if (!savedArea) return;
+
+    if (hasState || hasSlots) {
+      savedArea.style.display = 'flex';
+      if (btnResume) btnResume.style.display = hasState ? 'block' : 'none';
+      if (slotContainer) slotContainer.style.display = hasSlots ? 'flex' : 'none';
+      renderHomeSlotSelect();
+    } else {
+      savedArea.style.display = 'none';
+    }
   }
 
   function handleHomeSlotSelect(slotName) {
@@ -2232,12 +2285,15 @@
     currentStep = 0;
     const demoBanner = document.getElementById('demoExperienceBanner');
     if (demoBanner) demoBanner.style.display = 'none';
+    checkAndRenderSavedData();
     document.getElementById('homeScreen').style.display = 'block';
     document.getElementById('mainStepNav').style.display = 'none';
     for (let i = 1; i <= 5; i++) {
       const sec = document.getElementById(`step${i}`);
       if (sec) sec.style.display = 'none';
     }
+    const pageFooter = document.querySelector('.page-footer');
+    if (pageFooter) pageFooter.style.display = 'none';
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
@@ -2572,6 +2628,8 @@
     currentStep = stepNum;
     document.getElementById('homeScreen').style.display = 'none';
     document.getElementById('mainStepNav').style.display = 'flex';
+    const pageFooter = document.querySelector('.page-footer');
+    if (pageFooter) pageFooter.style.display = 'block';
 
     for (let i = 1; i <= 5; i++) {
       const section = document.getElementById(`step${i}`);
@@ -4102,13 +4160,7 @@
      INITIALIZATION
      ========================================================================== */
   window.addEventListener('DOMContentLoaded', () => {
-    const isRestored = loadState();
-    const btnResume = document.getElementById('btnResume');
-
-    if (isRestored && (state.workers.length > 0 || state.lastSchedule)) {
-      if (btnResume) btnResume.style.display = 'flex';
-    }
-
+    loadState();
     syncAvailabilitySchema();
     renderAll();
     goToHome();
