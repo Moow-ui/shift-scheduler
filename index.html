@@ -808,6 +808,138 @@
       white-space: nowrap;
     }
 
+    /* Shift Attributes Checkboxes (Section C) */
+    .shift-attributes-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 4px;
+      padding-top: 4px;
+      border-top: 1px dashed #f1f5f9;
+    }
+    .shift-attr-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--gray-600);
+      cursor: pointer;
+      user-select: none;
+    }
+    .shift-attr-label input[type="checkbox"] {
+      cursor: pointer;
+      accent-color: var(--primary);
+    }
+
+    /* Worker Role Badges (Section A) */
+    .select-role-compact {
+      height: 42px;
+      padding: 0 8px;
+      font-size: 13px;
+      font-weight: 700;
+      border: 1.5px solid var(--gray-300);
+      border-radius: var(--radius-md);
+      background: white;
+      color: var(--gray-800);
+      cursor: pointer;
+    }
+    .worker-role-badge {
+      display: inline-flex;
+      align-items: center;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 6px;
+      border-radius: 4px;
+      margin-right: 6px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .worker-role-badge.senior {
+      background: #dbeafe;
+      color: #1e40af;
+      border: 1px solid #bfdbfe;
+    }
+    .worker-role-badge.junior {
+      background: #f1f5f9;
+      color: #475569;
+      border: 1px solid #e2e8f0;
+    }
+    .cell-role-badge {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 1px 4px;
+      border-radius: 3px;
+      margin-right: 3px;
+      line-height: 1.2;
+    }
+    .cell-role-badge.senior {
+      background: #dbeafe;
+      color: #1e40af;
+    }
+    .cell-role-badge.junior {
+      background: #f1f5f9;
+      color: #475569;
+    }
+
+    /* Night Shift Badge & Legal Notice */
+    .night-shift-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 2px;
+      background: #312e81;
+      color: #e0e7ff;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 1px 5px;
+      border-radius: 3px;
+      margin-left: 4px;
+    }
+    .night-legal-notice-box {
+      background: #eef2ff;
+      border: 1px solid #c7d2fe;
+      border-radius: var(--radius-sm);
+      padding: 10px 14px;
+      font-size: 12px;
+      color: #3730a3;
+      line-height: 1.5;
+      margin-top: 14px;
+    }
+
+    /* Strict Equal / Extra Unfilled Slot */
+    .slot-extra-unfilled {
+      border: 1.5px dashed #94a3b8 !important;
+      background: #f8fafc !important;
+      color: #64748b !important;
+      font-weight: 600;
+      cursor: pointer;
+      border-radius: 4px;
+      padding: 3px 6px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      font-size: 11.5px;
+      transition: all 0.15s ease;
+    }
+    .slot-extra-unfilled:hover {
+      border-color: var(--primary) !important;
+      background: #eff6ff !important;
+      color: var(--primary) !important;
+    }
+    .strict-equal-notice-banner {
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      border-radius: var(--radius-sm);
+      padding: 10px 14px;
+      color: #166534;
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+
     .btn-icon-del {
       background: white;
       border: 1.5px solid #cbd5e1;
@@ -1989,9 +2121,13 @@
       </span>
     </div>
 
-    <div style="display: flex; gap: 10px; margin-bottom: 16px;">
-      <input type="text" id="workerNameInput" class="input-text" style="flex: 1;" placeholder="근무자 이름 입력 (예: 김민수)" onkeydown="if(event.key === 'Enter') addWorker()">
-      <button type="button" class="btn btn-outline-secondary" onclick="addWorker()" style="white-space: nowrap; font-weight: 700;">+ 추가</button>
+    <div style="display: flex; gap: 8px; margin-bottom: 16px; align-items: center; flex-wrap: wrap;">
+      <input type="text" id="workerNameInput" class="input-text" style="flex: 1; min-width: 140px;" placeholder="근무자 이름 입력 (예: 김민수)" onkeydown="if(event.key === 'Enter') addWorker()">
+      <select id="workerRoleSelect" class="select-role-compact">
+        <option value="junior" id="optRoleJunior" selected>신입</option>
+        <option value="senior" id="optRoleSenior">숙련</option>
+      </select>
+      <button type="button" class="btn btn-outline-secondary" onclick="addWorker()" style="white-space: nowrap; font-weight: 700; height: 42px;">+ 추가</button>
     </div>
 
     <div style="margin-bottom: 16px;">
@@ -2059,7 +2195,7 @@
   </section>
 
   <!-- =========================================================================
-       STEP 4: Scheduling Rules (Folded by Default - Section B & C)
+       STEP 4: Scheduling Rules (Basic 1~7 & Advanced 8~12)
        ========================================================================= -->
   <section class="card" id="step4" style="display: none;">
     <div class="card-header">
@@ -2069,23 +2205,20 @@
       </div>
     </div>
 
-    <!-- Default 1-line Summary Box -->
-    <div class="rules-summary-box">
+    <!-- 1. Basic Rules Section (1~7) -->
+    <div class="rules-summary-box" style="margin-bottom: 12px;">
       <div class="rules-summary-text">
-        <strong>기본 스마트 규칙이 적용되어 있습니다.</strong>
-        하루 최대 2타임 · 1일 최대 8시간 · 연속 근무 보장 · 클로픈(11h) 금지 · 연속 6일 상한 · 주 40시간 상한 · 주말 균등배분
+        <strong>📋 기본 배정 규칙 (1~7번)</strong>
+        <div style="font-size: 12px; color: var(--gray-500); margin-top: 2px;" id="basicRulesSummaryText">
+          하루 최대 2타임 · 클로픈 금지 · 연속근무 상한 · 주 40시간 상한 등 기본 적용
+        </div>
       </div>
-      <button class="btn btn-sm btn-outline-secondary" id="btnToggleRules" onclick="toggleRulesDetail()">
-        규칙 자세히 설정하기 ▾
+      <button class="btn btn-sm btn-outline-secondary" id="btnToggleBasicRules" onclick="toggleBasicRulesDetail()">
+        기본 규칙 설정 ▾
       </button>
     </div>
 
-    <!-- Collapsible Detailed Rules Panel (Section C) -->
-    <div class="rules-collapsible" id="rulesDetailPanel">
-      <h3 style="font-size: 14px; font-weight: 700; color: var(--gray-800); margin-bottom: 12px;">
-        세부 규칙 맞춤 조절
-      </h3>
-
+    <div class="rules-collapsible" id="basicRulesDetailPanel" style="display: none; margin-bottom: 16px;">
       <!-- Rule 1 -->
       <div class="rule-item">
         <div class="rule-info">
@@ -2180,7 +2313,7 @@
         </div>
       </div>
 
-      <!-- Rule 7: 1일 최대 근무시간 제한 -->
+      <!-- Rule 7 -->
       <div class="rule-item">
         <div class="rule-info">
           <div class="rule-title">7. 1일 최대 근무시간 제한</div>
@@ -2200,15 +2333,127 @@
         </div>
       </div>
 
-      <!-- Rule 8: 급여 및 주휴수당 정보 표시 -->
+      <!-- Wage toggle -->
       <div class="rule-item" style="border-top: 1px dashed var(--gray-200); padding-top: 12px; margin-top: 8px;">
         <div class="rule-info">
-          <div class="rule-title">8. 급여 및 주휴수당 정보 표시</div>
-          <div class="rule-desc">주휴수당 대상(주 15시간 이상) 배지 및 법정 휴게시간을 통계에 표시합니다. (매장/급여 사업장 외에는 끌 수 있습니다)</div>
+          <div class="rule-title">급여 및 주휴수당 정보 표시</div>
+          <div class="rule-desc">주휴수당 대상(주 15시간 이상) 배지 및 법정 휴게시간을 통계에 표시합니다.</div>
         </div>
         <div class="rule-controls">
           <label class="switch">
             <input type="checkbox" id="rule_showWageInfo" checked onchange="updateShowWageInfo(this.checked)">
+            <span class="slider"></span>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. Advanced Rules Section (8~12) -->
+    <div class="rules-summary-box" style="background: #faf5ff; border-color: #e9d5ff;">
+      <div class="rules-summary-text">
+        <strong style="color: #6b21a8;">⚙️ 고급 맞춤 규칙 (8~12번)</strong>
+        <div style="font-size: 12px; color: #7e22ce; margin-top: 2px;" id="advancedRulesSummaryText">
+          완전 균등 배정 · 숙련자 필수 · 짝짓기 · 야간 익일 휴무 · 최소 간격 설정
+        </div>
+      </div>
+      <button class="btn btn-sm btn-outline-secondary" id="btnToggleAdvancedRules" style="border-color: #d8b4fe; color: #6b21a8;" onclick="toggleAdvancedRulesDetail()">
+        고급 규칙 설정 ▾
+      </button>
+    </div>
+
+    <div class="rules-collapsible" id="advancedRulesDetailPanel" style="display: none;">
+      <!-- Role/Tier Label Customization -->
+      <div class="rule-item" style="background: #fdf4ff; border: 1px solid #f0abfc; border-radius: var(--radius-sm); padding: 10px 12px; margin-bottom: 12px;">
+        <div class="rule-info">
+          <div class="rule-title" style="color: #86198f;">근무자 구분 명칭 설정</div>
+          <div class="rule-desc">현재 용도에 맞는 구분 명칭입니다. 필요시 직접 수정할 수 있습니다.</div>
+        </div>
+        <div class="rule-controls" style="display: flex; gap: 6px; align-items: center;">
+          <input type="text" id="tierLabelSeniorInput" class="input-text" style="width: 75px; text-align: center; font-size: 12px; font-weight: 700; padding: 4px;" placeholder="1번 (숙련)" onchange="updateTierLabel('senior', this.value)">
+          <span style="font-size: 12px; color: var(--gray-400);">/</span>
+          <input type="text" id="tierLabelJuniorInput" class="input-text" style="width: 75px; text-align: center; font-size: 12px; font-weight: 700; padding: 4px;" placeholder="2번 (신입)" onchange="updateTierLabel('junior', this.value)">
+        </div>
+      </div>
+
+      <!-- Rule 8: 근무 횟수 완전 균등 -->
+      <div class="rule-item">
+        <div class="rule-info">
+          <div class="rule-title">8. 근무 횟수 완전 균등 (공통 횟수만 배정)</div>
+          <div class="rule-desc">
+            모든 인원이 받을 수 있는 최대 공통 횟수(내림)만큼만 배정하고, 남는 칸은 <strong>[추가 배정]</strong>으로 비워둡니다.<br>
+            <span style="color: var(--gray-500); font-size: 11px;">※ 당직·동아리·봉사 등 횟수의 정확한 일치가 필수적인 곳에 유용합니다.</span>
+          </div>
+        </div>
+        <div class="rule-controls">
+          <label class="switch">
+            <input type="checkbox" id="rule_strictEqualShiftCount" onchange="updateRule('strictEqualShiftCount', this.checked)">
+            <span class="slider"></span>
+          </label>
+        </div>
+      </div>
+
+      <!-- Rule 9: 숙련자 필수 배치 -->
+      <div class="rule-item">
+        <div class="rule-info">
+          <div class="rule-title">9. 숙련자(1번 구분) 필수 배치</div>
+          <div class="rule-desc">
+            2인 이상 타임(또는 1단계에서 [숙련자 필수]로 지정된 타임)에 1번 구분 인원을 1명 이상 포함합니다.
+          </div>
+        </div>
+        <div class="rule-controls">
+          <label class="switch">
+            <input type="checkbox" id="rule_seniorMandatory" onchange="updateRule('seniorMandatory', this.checked)">
+            <span class="slider"></span>
+          </label>
+        </div>
+      </div>
+
+      <!-- Rule 10: 숙련-일반 짝짓기 우선 -->
+      <div class="rule-item">
+        <div class="rule-info">
+          <div class="rule-title">10. 숙련-일반 짝짓기 우선</div>
+          <div class="rule-desc">
+            필요 인원 2명인 타임 배정 시 1번 구분과 2번 구분의 조합을 우선 편성합니다.
+          </div>
+        </div>
+        <div class="rule-controls">
+          <label class="switch">
+            <input type="checkbox" id="rule_seniorJuniorPairing" onchange="updateRule('seniorJuniorPairing', this.checked)">
+            <span class="slider"></span>
+          </label>
+        </div>
+      </div>
+
+      <!-- Rule 11: 야간 근무 다음 날 휴무 -->
+      <div class="rule-item">
+        <div class="rule-info">
+          <div class="rule-title">11. 야간 근무 다음 날 휴무</div>
+          <div class="rule-desc">
+            [야간] 속성이 붙은 타임에 들어간 사람은 다음 날 전체 배정에서 자동으로 제외합니다. (교대근무/편의점 필수)
+          </div>
+        </div>
+        <div class="rule-controls">
+          <label class="switch">
+            <input type="checkbox" id="rule_nightRestNextDay" onchange="updateRule('nightRestNextDay', this.checked)">
+            <span class="slider"></span>
+          </label>
+        </div>
+      </div>
+
+      <!-- Rule 12: 배정 간 최소 간격 -->
+      <div class="rule-item">
+        <div class="rule-info">
+          <div class="rule-title">12. 배정 간 최소 간격 보장</div>
+          <div class="rule-desc">
+            한 번 배정된 인원은 다음 배정까지 최소 N일 동안 다시 배정하지 않습니다. (당직/불침번 격일 배정용)
+          </div>
+        </div>
+        <div class="rule-controls">
+          <span style="font-size: 13px; color: var(--gray-600);">최소 간격</span>
+          <input type="number" id="rule_minRestDaysBetweenShifts" class="input-text" style="width: 55px; text-align: center; padding: 4px;" value="1" min="1" max="5" onchange="updateRule('minRestDaysBetweenShifts', parseInt(this.value)||1)">
+          <span style="font-size: 13px; color: var(--gray-600);">일</span>
+          <label class="switch" style="margin-left: 6px;">
+            <input type="checkbox" id="rule_limitMinRestDays" onchange="updateRule('limitMinRestDays', this.checked)">
             <span class="slider"></span>
           </label>
         </div>
@@ -2439,26 +2684,33 @@
       scheduleName: '근무표',
       workerInputPlaceholder: '근무자 이름 입력 (예: 김철수)',
       showWageInfo: true,
+      tierLabels: { senior: '숙련', junior: '신입' },
+      contextNotice: '24시간 3교대 편의점: 야간 근무 다음 날은 자동으로 휴무 처리되며, 하루 1타임 및 연속 출근 금지가 적용됩니다.',
       dayGroups: [
         {
           id: 'g_all',
           name: '연중무휴 (월~일)',
           days: ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'],
           shifts: [
-            { id: 's_cv_1', name: '오전', start: '07:00', end: '15:00', required: 1 },
-            { id: 's_cv_2', name: '오후', start: '15:00', end: '23:00', required: 1 },
-            { id: 's_cv_3', name: '야간', start: '23:00', end: '07:00', required: 1 }
+            { id: 's_cv_1', name: '오전', start: '06:00', end: '14:00', required: 1, isNight: false, isSeniorRequired: false },
+            { id: 's_cv_2', name: '오후', start: '14:00', end: '22:00', required: 1, isNight: false, isSeniorRequired: false },
+            { id: 's_cv_3', name: '야간', start: '22:00', end: '06:00', required: 1, isNight: true, isSeniorRequired: false }
           ]
         }
       ],
       rules: {
-        maxShiftsPerDay: 1, limitDailyHours: true, maxDailyHours: 8, noSplitShift: true, noClopen: true, minRestHours: 11,
-        limitConsecutiveDays: true, maxConsecutiveDays: 6, limitWeeklyHours: true, maxWeeklyHours: 40, balanceWeekends: true
+        maxShiftsPerDay: 1, noSplitShift: true, noClopen: true, minRestHours: 11,
+        limitConsecutiveDays: true, maxConsecutiveDays: 6, limitWeeklyHours: true, maxWeeklyHours: 40, balanceWeekends: true,
+        limitDailyHours: true, maxDailyHours: 8,
+        strictEqualShiftCount: false, seniorMandatory: false, seniorJuniorPairing: false,
+        nightRestNextDay: true, limitMinRestDays: false, minRestDaysBetweenShifts: 1
       },
       sampleWorkers: [
-        { id: 'w1', name: '김철수' }, { id: 'w2', name: '이영희' },
-        { id: 'w3', name: '박민수' }, { id: 'w4', name: '최지은' },
-        { id: 'w5', name: '정우성' }
+        { id: 'w1', name: '김철수', roleType: 'senior' },
+        { id: 'w2', name: '이영희', roleType: 'junior' },
+        { id: 'w3', name: '박민수', roleType: 'junior' },
+        { id: 'w4', name: '최지은', roleType: 'junior' },
+        { id: 'w5', name: '정우성', roleType: 'senior' }
       ]
     },
     cafe: {
@@ -2471,15 +2723,17 @@
       scheduleName: '근무표',
       workerInputPlaceholder: '근무자 이름 입력 (예: 김민수)',
       showWageInfo: true,
+      tierLabels: { senior: '숙련', junior: '신입' },
+      contextNotice: '오픈(기계 세팅/재료 준비)과 마감(청소/정산) 타임에 숙련자가 최소 1명씩 우선 배치됩니다.',
       dayGroups: [
         {
           id: 'g_wd',
           name: '평일 (월~금)',
           days: ['mon', 'tue', 'wed', 'thu', 'fri'],
           shifts: [
-            { id: 's_cf_1', name: '오픈', start: '08:30', end: '14:30', required: 1 },
-            { id: 's_cf_2', name: '미들', start: '12:00', end: '18:00', required: 1 },
-            { id: 's_cf_3', name: '마감', start: '17:30', end: '22:30', required: 1 }
+            { id: 's_cf_1', name: '오픈', start: '08:00', end: '14:00', required: 2, isNight: false, isSeniorRequired: true },
+            { id: 's_cf_2', name: '미들', start: '14:00', end: '18:00', required: 2, isNight: false, isSeniorRequired: false },
+            { id: 's_cf_3', name: '마감', start: '18:00', end: '22:00', required: 2, isNight: false, isSeniorRequired: true }
           ]
         },
         {
@@ -2487,19 +2741,25 @@
           name: '주말 (토~일)',
           days: ['sat', 'sun'],
           shifts: [
-            { id: 's_cf_4', name: '오픈', start: '09:00', end: '15:00', required: 1 },
-            { id: 's_cf_5', name: '마감', start: '15:00', end: '21:00', required: 1 }
+            { id: 's_cf_4', name: '오픈', start: '10:00', end: '15:00', required: 2, isNight: false, isSeniorRequired: true },
+            { id: 's_cf_5', name: '마감', start: '15:00', end: '20:00', required: 2, isNight: false, isSeniorRequired: true }
           ]
         }
       ],
       rules: {
-        maxShiftsPerDay: 2, limitDailyHours: true, maxDailyHours: 8, noSplitShift: true, noClopen: true, minRestHours: 11,
-        limitConsecutiveDays: true, maxConsecutiveDays: 6, limitWeeklyHours: true, maxWeeklyHours: 40, balanceWeekends: true
+        maxShiftsPerDay: 2, noSplitShift: true, noClopen: true, minRestHours: 11,
+        limitConsecutiveDays: true, maxConsecutiveDays: 6, limitWeeklyHours: true, maxWeeklyHours: 40, balanceWeekends: true,
+        limitDailyHours: true, maxDailyHours: 8,
+        strictEqualShiftCount: false, seniorMandatory: true, seniorJuniorPairing: true,
+        nightRestNextDay: false, limitMinRestDays: false, minRestDaysBetweenShifts: 1
       },
       sampleWorkers: [
-        { id: 'w1', name: '김민수' }, { id: 'w2', name: '이지은' },
-        { id: 'w3', name: '박서준' }, { id: 'w4', name: '최유진' },
-        { id: 'w5', name: '정다운' }, { id: 'w6', name: '한소희' }
+        { id: 'w1', name: '김민수', roleType: 'senior' },
+        { id: 'w2', name: '이지은', roleType: 'junior' },
+        { id: 'w3', name: '박서준', roleType: 'senior' },
+        { id: 'w4', name: '최유진', roleType: 'junior' },
+        { id: 'w5', name: '정다운', roleType: 'senior' },
+        { id: 'w6', name: '한소희', roleType: 'junior' }
       ]
     },
     restaurant: {
@@ -2512,34 +2772,33 @@
       scheduleName: '근무표',
       workerInputPlaceholder: '근무자 이름 입력 (예: 이영호)',
       showWageInfo: true,
+      tierLabels: { senior: '홀', junior: '주방' },
+      contextNotice: '브레이크타임(15~17시)에는 근무 타임을 두지 않았습니다. 매장 사정에 맞게 수정하세요.',
       dayGroups: [
         {
-          id: 'g_wd',
-          name: '평일 (월~금)',
-          days: ['mon', 'tue', 'wed', 'thu', 'fri'],
+          id: 'g_all',
+          name: '연중무휴 (월~일)',
+          days: ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'],
           shifts: [
-            { id: 's_rs_1', name: '런치 피크', start: '10:00', end: '15:00', required: 2 },
-            { id: 's_rs_2', name: '디너 피크', start: '17:00', end: '22:00', required: 2 }
-          ]
-        },
-        {
-          id: 'g_we',
-          name: '주말 (토~일)',
-          days: ['sat', 'sun'],
-          shifts: [
-            { id: 's_rs_3', name: '주말 런치', start: '10:30', end: '15:30', required: 2 },
-            { id: 's_rs_4', name: '주말 디너', start: '16:30', end: '22:00', required: 2 }
+            { id: 's_rs_1', name: '런치 피크', start: '10:00', end: '15:00', required: 2, isNight: false, isSeniorRequired: false },
+            { id: 's_rs_2', name: '디너 피크', start: '17:00', end: '22:00', required: 2, isNight: false, isSeniorRequired: false }
           ]
         }
       ],
       rules: {
-        maxShiftsPerDay: 2, limitDailyHours: true, maxDailyHours: 12, noSplitShift: false, noClopen: true, minRestHours: 11,
-        limitConsecutiveDays: true, maxConsecutiveDays: 6, limitWeeklyHours: true, maxWeeklyHours: 40, balanceWeekends: true
+        maxShiftsPerDay: 2, noSplitShift: false, noClopen: true, minRestHours: 11,
+        limitConsecutiveDays: true, maxConsecutiveDays: 6, limitWeeklyHours: true, maxWeeklyHours: 40, balanceWeekends: true,
+        limitDailyHours: true, maxDailyHours: 10,
+        strictEqualShiftCount: false, seniorMandatory: true, seniorJuniorPairing: true,
+        nightRestNextDay: false, limitMinRestDays: false, minRestDaysBetweenShifts: 1
       },
       sampleWorkers: [
-        { id: 'w1', name: '강호동' }, { id: 'w2', name: '유재석' },
-        { id: 'w3', name: '신동엽' }, { id: 'w4', name: '이수근' },
-        { id: 'w5', name: '하동훈' }, { id: 'w6', name: '김종국' }
+        { id: 'w1', name: '강호동', roleType: 'senior' },
+        { id: 'w2', name: '유재석', roleType: 'junior' },
+        { id: 'w3', name: '신동엽', roleType: 'senior' },
+        { id: 'w4', name: '이수근', roleType: 'junior' },
+        { id: 'w5', name: '하동훈', roleType: 'senior' },
+        { id: 'w6', name: '김종국', roleType: 'junior' }
       ]
     },
     shiftwork: {
@@ -2552,26 +2811,35 @@
       scheduleName: '교대 근무표',
       workerInputPlaceholder: '근무자 이름 입력 (예: 박지훈)',
       showWageInfo: true,
+      tierLabels: { senior: '정규', junior: '보조' },
+      contextNotice: '야간 근무 다음 날은 자동으로 휴무 처리됩니다. 12시간 교대는 근로시간 산정 방식이 별도이니 확인이 필요합니다.',
       dayGroups: [
         {
           id: 'g_sw',
           name: '상시 교대 (월~일)',
           days: ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'],
           shifts: [
-            { id: 's_sw_1', name: '주간조', start: '08:00', end: '16:00', required: 2 },
-            { id: 's_sw_2', name: '야간조', start: '16:00', end: '24:00', required: 2 },
-            { id: 's_sw_3', name: '심야조', start: '00:00', end: '08:00', required: 1 }
+            { id: 's_sw_1', name: '주간조', start: '08:00', end: '20:00', required: 2, isNight: false, isSeniorRequired: false },
+            { id: 's_sw_2', name: '야간조', start: '20:00', end: '08:00', required: 2, isNight: true, isSeniorRequired: false }
           ]
         }
       ],
       rules: {
-        maxShiftsPerDay: 1, limitDailyHours: true, maxDailyHours: 8, noSplitShift: true, noClopen: true, minRestHours: 11,
-        limitConsecutiveDays: true, maxConsecutiveDays: 5, limitWeeklyHours: true, maxWeeklyHours: 40, balanceWeekends: true
+        maxShiftsPerDay: 1, noSplitShift: true, noClopen: true, minRestHours: 12,
+        limitConsecutiveDays: true, maxConsecutiveDays: 5, limitWeeklyHours: false, maxWeeklyHours: 60, balanceWeekends: true,
+        limitDailyHours: false, maxDailyHours: 24,
+        strictEqualShiftCount: false, seniorMandatory: false, seniorJuniorPairing: false,
+        nightRestNextDay: true, limitMinRestDays: false, minRestDaysBetweenShifts: 1
       },
       sampleWorkers: [
-        { id: 'w1', name: '박지훈' }, { id: 'w2', name: '최선우' },
-        { id: 'w3', name: '정태양' }, { id: 'w4', name: '윤하람' },
-        { id: 'w5', name: '강동원' }, { id: 'w6', name: '문채원' }
+        { id: 'w1', name: '박지훈', roleType: 'senior' },
+        { id: 'w2', name: '최선우', roleType: 'junior' },
+        { id: 'w3', name: '정태양', roleType: 'senior' },
+        { id: 'w4', name: '윤하람', roleType: 'junior' },
+        { id: 'w5', name: '강동원', roleType: 'senior' },
+        { id: 'w6', name: '문채원', roleType: 'junior' },
+        { id: 'w7', name: '송중기', roleType: 'senior' },
+        { id: 'w8', name: '김태리', roleType: 'junior' }
       ]
     },
     military: {
@@ -2584,35 +2852,37 @@
       scheduleName: '당직·근무 명령서',
       workerInputPlaceholder: '대원 이름/계급 입력 (예: 상병 김민수)',
       showWageInfo: false,
+      tierLabels: { senior: '선임', junior: '후임' },
+      contextNotice: '형평성이 가장 중요한 유형이라 횟수를 정확히 균등하게 맞춥니다. 남는 칸은 [추가 배정]으로 비워두니 협의해서 채우세요.',
       dayGroups: [
         {
-          id: 'g_mil_wd',
-          name: '평일 당직 (월~금)',
-          days: ['mon', 'tue', 'wed', 'thu', 'fri'],
+          id: 'g_mil',
+          name: '불침번·초병 (월~일)',
+          days: ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'],
           shifts: [
-            { id: 's_mil_1', name: '주간당직', start: '08:30', end: '17:30', required: 1 },
-            { id: 's_mil_2', name: '야간당직', start: '17:30', end: '08:30', required: 1 },
-            { id: 's_mil_3', name: '불침번/CCTV', start: '22:00', end: '06:00', required: 2 }
-          ]
-        },
-        {
-          id: 'g_mil_we',
-          name: '주말 당직 (토~일)',
-          days: ['sat', 'sun'],
-          shifts: [
-            { id: 's_mil_4', name: '24시간 당직', start: '08:30', end: '08:30', required: 1 },
-            { id: 's_mil_5', name: '불침번/CCTV', start: '22:00', end: '06:00', required: 2 }
+            { id: 's_mil_1', name: '1번초', start: '22:00', end: '00:00', required: 1, isNight: true, isSeniorRequired: false },
+            { id: 's_mil_2', name: '2번초', start: '00:00', end: '02:00', required: 1, isNight: true, isSeniorRequired: false },
+            { id: 's_mil_3', name: '3번초', start: '02:00', end: '04:00', required: 1, isNight: true, isSeniorRequired: false },
+            { id: 's_mil_4', name: '4번초', start: '04:00', end: '06:00', required: 1, isNight: true, isSeniorRequired: false }
           ]
         }
       ],
       rules: {
-        maxShiftsPerDay: 1, limitDailyHours: false, maxDailyHours: 24, noSplitShift: true, noClopen: true, minRestHours: 12,
-        limitConsecutiveDays: true, maxConsecutiveDays: 3, limitWeeklyHours: false, maxWeeklyHours: 60, balanceWeekends: true
+        maxShiftsPerDay: 1, noSplitShift: true, noClopen: false, minRestHours: 8,
+        limitConsecutiveDays: false, maxConsecutiveDays: 6, limitWeeklyHours: false, maxWeeklyHours: 60, balanceWeekends: false,
+        limitDailyHours: false, maxDailyHours: 24,
+        strictEqualShiftCount: true, seniorMandatory: false, seniorJuniorPairing: false,
+        nightRestNextDay: false, limitMinRestDays: true, minRestDaysBetweenShifts: 1
       },
       sampleWorkers: [
-        { id: 'w1', name: '병장 김민수' }, { id: 'w2', name: '상병 이준혁' },
-        { id: 'w3', name: '상병 박지호' }, { id: 'w4', name: '일병 최도윤' },
-        { id: 'w5', name: '일병 정승우' }, { id: 'w6', name: '이병 한동훈' }
+        { id: 'w1', name: '병장 김민수', roleType: 'senior' },
+        { id: 'w2', name: '상병 이준혁', roleType: 'senior' },
+        { id: 'w3', name: '상병 박지호', roleType: 'senior' },
+        { id: 'w4', name: '상병 강태현', roleType: 'senior' },
+        { id: 'w5', name: '일병 최도윤', roleType: 'junior' },
+        { id: 'w6', name: '일병 정승우', roleType: 'junior' },
+        { id: 'w7', name: '일병 조현우', roleType: 'junior' },
+        { id: 'w8', name: '이병 한동훈', roleType: 'junior' }
       ]
     },
     club: {
@@ -2625,26 +2895,40 @@
       scheduleName: '활동·당번 배정표',
       workerInputPlaceholder: '부원 이름 입력 (예: 강하늘)',
       showWageInfo: false,
+      tierLabels: { senior: '선배', junior: '후배' },
+      contextNotice: '각 인원의 근무 횟수가 정확히 같도록 배정합니다. 수업 시간을 3단계에서 \'불가\'로 체크하세요.',
       dayGroups: [
         {
           id: 'g_club_wd',
           name: '활동 일정 (월~금)',
           days: ['mon', 'tue', 'wed', 'thu', 'fri'],
           shifts: [
-            { id: 's_cl_1', name: '1타임 (오전)', start: '10:00', end: '13:00', required: 1 },
-            { id: 's_cl_2', name: '2타임 (오후)', start: '13:00', end: '16:00', required: 1 },
-            { id: 's_cl_3', name: '3타임 (마감)', start: '16:00', end: '19:00', required: 1 }
+            { id: 's_cl_1', name: '1타임 (09~10)', start: '09:00', end: '10:00', required: 1, isNight: false, isSeniorRequired: false },
+            { id: 's_cl_2', name: '2타임 (10~11)', start: '10:00', end: '11:00', required: 1, isNight: false, isSeniorRequired: false },
+            { id: 's_cl_3', name: '3타임 (11~12)', start: '11:00', end: '12:00', required: 1, isNight: false, isSeniorRequired: false },
+            { id: 's_cl_4', name: '4타임 (13~14)', start: '13:00', end: '14:00', required: 1, isNight: false, isSeniorRequired: false },
+            { id: 's_cl_5', name: '5타임 (14~15)', start: '14:00', end: '15:00', required: 1, isNight: false, isSeniorRequired: false },
+            { id: 's_cl_6', name: '6타임 (15~16)', start: '15:00', end: '16:00', required: 1, isNight: false, isSeniorRequired: false },
+            { id: 's_cl_7', name: '7타임 (16~17)', start: '16:00', end: '17:00', required: 1, isNight: false, isSeniorRequired: false }
           ]
         }
       ],
       rules: {
-        maxShiftsPerDay: 2, limitDailyHours: true, maxDailyHours: 6, noSplitShift: true, noClopen: false, minRestHours: 8,
-        limitConsecutiveDays: true, maxConsecutiveDays: 5, limitWeeklyHours: true, maxWeeklyHours: 20, balanceWeekends: false
+        maxShiftsPerDay: 1, noSplitShift: true, noClopen: false, minRestHours: 8,
+        limitConsecutiveDays: false, maxConsecutiveDays: 5, limitWeeklyHours: false, maxWeeklyHours: 20, balanceWeekends: false,
+        limitDailyHours: false, maxDailyHours: 8,
+        strictEqualShiftCount: true, seniorMandatory: false, seniorJuniorPairing: false,
+        nightRestNextDay: false, limitMinRestDays: false, minRestDaysBetweenShifts: 1
       },
       sampleWorkers: [
-        { id: 'w1', name: '강하늘' }, { id: 'w2', name: '서유나' },
-        { id: 'w3', name: '남주혁' }, { id: 'w4', name: '김태리' },
-        { id: 'w5', name: '박보검' }, { id: 'w6', name: '신세경' }
+        { id: 'w1', name: '강하늘', roleType: 'senior' },
+        { id: 'w2', name: '서유나', roleType: 'junior' },
+        { id: 'w3', name: '남주혁', roleType: 'senior' },
+        { id: 'w4', name: '김태리', roleType: 'junior' },
+        { id: 'w5', name: '박보검', roleType: 'senior' },
+        { id: 'w6', name: '신세경', roleType: 'junior' },
+        { id: 'w7', name: '차은우', roleType: 'senior' },
+        { id: 'w8', name: '안유진', roleType: 'junior' }
       ]
     },
     volunteer: {
@@ -2657,26 +2941,35 @@
       scheduleName: '봉사·행사 배치표',
       workerInputPlaceholder: '봉사자/스태프 이름 입력 (예: 정다은)',
       showWageInfo: false,
+      tierLabels: { senior: '리더', junior: '참가자' },
+      contextNotice: '각 조에 리더가 최소 1명 포함되도록 배정합니다.',
       dayGroups: [
         {
           id: 'g_vol_we',
           name: '행사 요일 (토~일)',
           days: ['sat', 'sun'],
           shifts: [
-            { id: 's_vl_1', name: '오전 봉사파트', start: '09:00', end: '13:00', required: 3 },
-            { id: 's_vl_2', name: '오후 봉사파트', start: '13:00', end: '18:00', required: 3 }
+            { id: 's_vl_1', name: '오전 (09~12)', start: '09:00', end: '12:00', required: 3, isNight: false, isSeniorRequired: true },
+            { id: 's_vl_2', name: '오후 (13~17)', start: '13:00', end: '17:00', required: 3, isNight: false, isSeniorRequired: true }
           ]
         }
       ],
       rules: {
-        maxShiftsPerDay: 1, limitDailyHours: true, maxDailyHours: 8, noSplitShift: true, noClopen: true, minRestHours: 11,
-        limitConsecutiveDays: true, maxConsecutiveDays: 2, limitWeeklyHours: true, maxWeeklyHours: 16, balanceWeekends: false
+        maxShiftsPerDay: 2, noSplitShift: false, noClopen: false, minRestHours: 8,
+        limitConsecutiveDays: false, maxConsecutiveDays: 2, limitWeeklyHours: false, maxWeeklyHours: 16, balanceWeekends: false,
+        limitDailyHours: false, maxDailyHours: 8,
+        strictEqualShiftCount: true, seniorMandatory: true, seniorJuniorPairing: false,
+        nightRestNextDay: false, limitMinRestDays: false, minRestDaysBetweenShifts: 1
       },
       sampleWorkers: [
-        { id: 'w1', name: '정다은' }, { id: 'w2', name: '오시은' },
-        { id: 'w3', name: '유재석' }, { id: 'w4', name: '송지효' },
-        { id: 'w5', name: '이광수' }, { id: 'w6', name: '지석진' },
-        { id: 'w7', name: '하동훈' }, { id: 'w8', name: '김종국' }
+        { id: 'w1', name: '정다은', roleType: 'senior' },
+        { id: 'w2', name: '오시은', roleType: 'junior' },
+        { id: 'w3', name: '유재석', roleType: 'senior' },
+        { id: 'w4', name: '송지효', roleType: 'junior' },
+        { id: 'w5', name: '이광수', roleType: 'junior' },
+        { id: 'w6', name: '지석진', roleType: 'junior' },
+        { id: 'w7', name: '하동훈', roleType: 'junior' },
+        { id: 'w8', name: '김종국', roleType: 'junior' }
       ]
     }
   };
@@ -2689,12 +2982,37 @@
     return fallback;
   }
 
+  function getTierLabel(roleType) {
+    if (state && state.tierLabels && state.tierLabels[roleType]) {
+      return state.tierLabels[roleType];
+    }
+    const currentUseCase = (state && state.useCase) ? state.useCase : 'cafe';
+    const vocab = USE_CASE_VOCABULARY[currentUseCase] || USE_CASE_VOCABULARY['cafe'];
+    if (vocab && vocab.tierLabels && vocab.tierLabels[roleType]) {
+      return vocab.tierLabels[roleType];
+    }
+    return roleType === 'senior' ? '숙련' : '신입';
+  }
+
+  function updateTierLabel(roleType, value) {
+    if (!state.tierLabels) state.tierLabels = { senior: '숙련', junior: '신입' };
+    state.tierLabels[roleType] = (value || '').trim() || (roleType === 'senior' ? '숙련' : '신입');
+    saveState();
+    updateDynamicLabels();
+    renderWorkers();
+    renderDayGroups();
+    renderWorkerTabs();
+    renderAvailGrid();
+  }
+
   function updateDynamicLabels() {
     const org = getTerm('orgName', '매장');
     const worker = getTerm('workerName', '근무자');
     const title = getTerm('workerTitle', '알바생');
     const schedule = getTerm('scheduleName', '근무표');
     const placeholder = getTerm('workerInputPlaceholder', '이름 입력');
+    const seniorLabel = getTierLabel('senior');
+    const juniorLabel = getTierLabel('junior');
 
     // Home
     const sub = document.getElementById('homeSubtitle');
@@ -2708,13 +3026,19 @@
     const s2Title = document.getElementById('step2Title');
     if (s2Title) s2Title.textContent = `2단계: ${worker} 명단 등록`;
     const s2Desc = document.getElementById('step2Desc');
-    if (s2Desc) s2Desc.textContent = `${schedule}에 들어갈 ${worker} 이름을 추가하세요.`;
+    if (s2Desc) s2Desc.textContent = `${schedule}에 들어갈 ${worker} 이름을 추가하세요. (구분: ${seniorLabel}/${juniorLabel})`;
     const wInput = document.getElementById('workerNameInput');
     if (wInput) wInput.placeholder = placeholder;
     const s2ListLabel = document.getElementById('step2ListLabel');
     if (s2ListLabel) s2ListLabel.textContent = `등록된 ${worker} 목록`;
     const s2Next = document.getElementById('step2NextBtn');
     if (s2Next) s2Next.textContent = '다음: 가능 시간 체크';
+
+    // Step 2 Role select options
+    const optSenior = document.getElementById('optRoleSenior');
+    if (optSenior) optSenior.textContent = `1번: ${seniorLabel}`;
+    const optJunior = document.getElementById('optRoleJunior');
+    if (optJunior) optJunior.textContent = `2번: ${juniorLabel}`;
 
     // Step 3
     const s3Title = document.getElementById('step3Title');
@@ -2723,36 +3047,36 @@
     if (s3Desc) s3Desc.textContent = `${worker}별로 참여 가능한 요일/타임을 체크하세요. (칸 클릭 시 가능/불가 전환)`;
 
     // Step 4
+    const s4Title = document.getElementById('step4Title');
+    if (s4Title) s4Title.textContent = `4단계: 스마트 배정 규칙 설정`;
     const s4Next = document.getElementById('step4NextBtn');
     if (s4Next) s4Next.textContent = `${schedule} 만들기`;
-    const wageInput = document.getElementById('rule_showWageInfo');
-    if (wageInput) wageInput.checked = (state.showWageInfo !== false);
+
+    const tierInputSenior = document.getElementById('tierLabelSeniorInput');
+    if (tierInputSenior) tierInputSenior.value = seniorLabel;
+    const tierInputJunior = document.getElementById('tierLabelJuniorInput');
+    if (tierInputJunior) tierInputJunior.value = juniorLabel;
 
     // Step 5
     const s5Title = document.getElementById('step5Title');
     if (s5Title) s5Title.textContent = `5단계: 이번 주 ${schedule}`;
-    const s5Badge = document.getElementById('step5HeaderBadge');
-    if (s5Badge) s5Badge.textContent = `${title} 클릭 시 즉시 대타 교체 가능`;
-    const s5Stats = document.getElementById('step5StatsTitle');
-    if (s5Stats) s5Stats.textContent = `${worker}별 주간 ${(state.showWageInfo !== false) ? '근무시간 & ' : ''}배정 통계`;
-    const demoBtn = document.getElementById('demoBannerBtn');
-    if (demoBtn) demoBtn.textContent = `내 ${org} ${schedule} 직접 만들기`;
-    const demoDesc = document.getElementById('demoBannerDesc');
-    if (demoDesc) demoDesc.textContent = `${getTerm('label', '카페')} ${org} 샘플 데이터로 생성된 결과입니다.`;
-    const demoSubDesc = document.getElementById('demoBannerSubDesc');
-    if (demoSubDesc) demoSubDesc.textContent = `${worker} 이름을 누르면 즉시 대타 교체(미세조정)를 시험해 볼 수 있습니다.`;
-    const statsNotice = document.getElementById('statsNoticeWage');
-    if (statsNotice) statsNotice.style.display = (state.showWageInfo !== false) ? 'block' : 'none';
-
+    const s5HeaderBadge = document.getElementById('step5HeaderBadge');
+    if (s5HeaderBadge) s5HeaderBadge.textContent = `${worker} 클릭 시 즉시 대타 교체 가능`;
+    const s5StatsTitle = document.getElementById('step5StatsTitle');
     // Presets active chip highlight in Step 1
     document.querySelectorAll('.btn-preset-chip').forEach(btn => {
       const pId = btn.getAttribute('data-preset');
-      if (pId === state.useCase) {
-        btn.classList.add('active-preset');
+      if (pId === (state.useCase || 'cafe')) {
+        btn.classList.add('active');
       } else {
-        btn.classList.remove('active-preset');
+        btn.classList.remove('active');
       }
     });
+
+    const wageInput = document.getElementById('rule_showWageInfo');
+    if (wageInput) wageInput.checked = (state.showWageInfo !== false);
+    const statsNotice = document.getElementById('statsNoticeWage');
+    if (statsNotice) statsNotice.style.display = (state.showWageInfo !== false) ? 'block' : 'none';
   }
 
   /* ==========================================================================
@@ -2761,14 +3085,16 @@
   let state = {
     useCase: 'cafe',
     showWageInfo: true,
+    tierLabels: { senior: '숙련', junior: '신입' },
     dayGroups: [
       {
         id: 'g_weekday',
         name: '평일 그룹',
         days: ['mon', 'tue', 'wed', 'thu', 'fri'],
         shifts: [
-          { id: 's_wd_1', name: '오픈', start: '09:00', end: '15:00', required: 1 },
-          { id: 's_wd_2', name: '마감', start: '15:00', end: '22:00', required: 1 }
+          { id: 's_wd_1', name: '오픈', start: '08:00', end: '14:00', required: 2, isNight: false, isSeniorRequired: true },
+          { id: 's_wd_2', name: '미들', start: '14:00', end: '18:00', required: 2, isNight: false, isSeniorRequired: false },
+          { id: 's_wd_3', name: '마감', start: '18:00', end: '22:00', required: 2, isNight: false, isSeniorRequired: true }
         ]
       },
       {
@@ -2776,8 +3102,8 @@
         name: '주말 그룹',
         days: ['sat', 'sun'],
         shifts: [
-          { id: 's_we_1', name: '오픈', start: '10:00', end: '16:00', required: 1 },
-          { id: 's_we_2', name: '마감', start: '16:00', end: '21:00', required: 1 }
+          { id: 's_we_1', name: '오픈', start: '10:00', end: '15:00', required: 2, isNight: false, isSeniorRequired: true },
+          { id: 's_we_2', name: '마감', start: '15:00', end: '20:00', required: 2, isNight: false, isSeniorRequired: true }
         ]
       }
     ],
@@ -2792,7 +3118,13 @@
       maxConsecutiveDays: 6,
       limitWeeklyHours: true,
       maxWeeklyHours: 40,
-      balanceWeekends: true
+      balanceWeekends: true,
+      strictEqualShiftCount: false,
+      seniorMandatory: true,
+      seniorJuniorPairing: true,
+      nightRestNextDay: false,
+      limitMinRestDays: false,
+      minRestDaysBetweenShifts: 1
     },
     workers: [],
     availability: {},
@@ -2823,16 +3155,46 @@
         state = JSON.parse(saved);
         if (!state.useCase) state.useCase = 'cafe';
         if (state.showWageInfo === undefined) state.showWageInfo = true;
+        if (!state.tierLabels) {
+          const vocab = USE_CASE_VOCABULARY[state.useCase] || USE_CASE_VOCABULARY['cafe'];
+          state.tierLabels = JSON.parse(JSON.stringify(vocab.tierLabels || { senior: '숙련', junior: '신입' }));
+        }
         if (!state.rules) {
           state.rules = {
             maxShiftsPerDay: 2, limitDailyHours: true, maxDailyHours: 8, noSplitShift: true, noClopen: true, minRestHours: 11,
             limitConsecutiveDays: true, maxConsecutiveDays: 6, limitWeeklyHours: true,
-            maxWeeklyHours: 40, balanceWeekends: true
+            maxWeeklyHours: 40, balanceWeekends: true,
+            strictEqualShiftCount: false, seniorMandatory: false, seniorJuniorPairing: false,
+            nightRestNextDay: false, limitMinRestDays: false, minRestDaysBetweenShifts: 1
           };
         } else {
           if (state.rules.limitDailyHours === undefined) state.rules.limitDailyHours = true;
           if (state.rules.maxDailyHours === undefined) state.rules.maxDailyHours = 8;
+          if (state.rules.strictEqualShiftCount === undefined) state.rules.strictEqualShiftCount = false;
+          if (state.rules.seniorMandatory === undefined) state.rules.seniorMandatory = false;
+          if (state.rules.seniorJuniorPairing === undefined) state.rules.seniorJuniorPairing = false;
+          if (state.rules.nightRestNextDay === undefined) state.rules.nightRestNextDay = false;
+          if (state.rules.limitMinRestDays === undefined) state.rules.limitMinRestDays = false;
+          if (state.rules.minRestDaysBetweenShifts === undefined) state.rules.minRestDaysBetweenShifts = 1;
         }
+
+        // Sanitize workers roleType
+        if (state.workers && Array.isArray(state.workers)) {
+          state.workers.forEach(w => {
+            if (!w.roleType) w.roleType = 'junior';
+          });
+        }
+
+        // Sanitize shifts
+        if (state.dayGroups && Array.isArray(state.dayGroups)) {
+          state.dayGroups.forEach(g => {
+            (g.shifts || []).forEach(s => {
+              if (s.isNight === undefined) s.isNight = false;
+              if (s.isSeniorRequired === undefined) s.isSeniorRequired = false;
+            });
+          });
+        }
+
         return true;
       }
     } catch (e) {
@@ -3144,6 +3506,7 @@
       // Clear sample data and start fresh with current use case
       const vocab = USE_CASE_VOCABULARY[state.useCase] || USE_CASE_VOCABULARY['cafe'];
       state.dayGroups = JSON.parse(JSON.stringify(vocab.dayGroups));
+      state.tierLabels = JSON.parse(JSON.stringify(vocab.tierLabels || { senior: '숙련', junior: '신입' }));
       state.workers = [];
       state.availability = {};
       state.lastSchedule = null;
@@ -3172,15 +3535,16 @@
     const vocab = USE_CASE_VOCABULARY[presetType] || USE_CASE_VOCABULARY['cafe'];
     state.useCase = presetType;
     state.showWageInfo = vocab.showWageInfo;
+    state.tierLabels = JSON.parse(JSON.stringify(vocab.tierLabels || { senior: '숙련', junior: '신입' }));
     state.dayGroups = JSON.parse(JSON.stringify(vocab.dayGroups));
     state.rules = JSON.parse(JSON.stringify(vocab.rules));
-    if (state.workers.length === 0 && vocab.sampleWorkers) {
-      state.workers = JSON.parse(JSON.stringify(vocab.sampleWorkers));
-    }
+    state.workers = JSON.parse(JSON.stringify(vocab.sampleWorkers || []));
     state.availability = {};
     syncAvailabilitySchema();
-    if (state.workers.length > 0 && !currentWorkerTabId) {
+    if (state.workers.length > 0) {
       currentWorkerTabId = state.workers[0].id;
+    } else {
+      currentWorkerTabId = null;
     }
     saveState();
     updateDynamicLabels();
@@ -3589,6 +3953,18 @@
               </div>
             </div>
 
+            <!-- Shift Attributes (Night & Senior Checkboxes) -->
+            <div class="shift-attributes-row">
+              <label class="shift-attr-label" title="22:00~06:00 야간 근무로 지정 (야간수당 안내 및 익일 휴무 규칙 적용)">
+                <input type="checkbox" ${shift.isNight ? 'checked' : ''} onchange="updateGroupShift('${group.id}', '${shift.id}', 'isNight', this.checked)">
+                <span>🌙 야간 (22~06시)</span>
+              </label>
+              <label class="shift-attr-label" title="1번 구분(${getTierLabel('senior')}) 1명 이상 필수 배치">
+                <input type="checkbox" ${shift.isSeniorRequired ? 'checked' : ''} onchange="updateGroupShift('${group.id}', '${shift.id}', 'isSeniorRequired', this.checked)">
+                <span>⭐️ ${getTierLabel('senior')} 필수</span>
+              </label>
+            </div>
+
             <!-- Quick Time Chips (Collapsible) -->
             <div id="quickChips_${chipKey}" class="quick-chips-wrapper" style="display: ${isExpanded ? 'block' : 'none'};">
               <div class="quick-time-chips">
@@ -3644,6 +4020,14 @@
     renderShiftValidationStatus();
   }
 
+  function isNightTimeRange(startStr, endStr) {
+    const s = parseTime(startStr);
+    const e = parseTime(endStr);
+    if (s >= 22 || s < 6 || e <= 6 || e > 22) return true;
+    if (e < s) return true;
+    return false;
+  }
+
   function setQuickShiftTime(groupId, shiftId, field, timeVal) {
     const group = state.dayGroups.find(g => g.id === groupId);
     if (!group) return;
@@ -3651,6 +4035,9 @@
     if (!shift) return;
 
     shift[field] = (timeVal === '00:00' && field === 'end') ? '24:00' : timeVal;
+    if (shift._manualNight === undefined) {
+      shift.isNight = isNightTimeRange(shift.start, shift.end);
+    }
     syncAvailabilitySchema();
     saveState();
     renderDayGroups();
@@ -3663,7 +4050,7 @@
       name: `새 요일 그룹 ${state.dayGroups.length + 1}`,
       days: [],
       shifts: [
-        { id: 's_' + Date.now(), name: '근무타임 1', start: '10:00', end: '18:00', required: 1 }
+        { id: 's_' + Date.now(), name: '근무타임 1', start: '10:00', end: '18:00', required: 1, isNight: false, isSeniorRequired: false }
       ]
     });
     syncAvailabilitySchema();
@@ -3719,7 +4106,9 @@
       name: `근무타임 ${group.shifts.length + 1}`,
       start: '12:00',
       end: '18:00',
-      required: 1
+      required: 1,
+      isNight: false,
+      isSeniorRequired: false
     });
     syncAvailabilitySchema();
     saveState();
@@ -3760,8 +4149,18 @@
     if (shift) {
       if (field === 'start' || field === 'end') {
         value = normalizeTimeInput(value, shift[field] || (field === 'start' ? '09:00' : '15:00'));
+        shift[field] = value;
+        if (shift._manualNight === undefined) {
+          shift.isNight = isNightTimeRange(shift.start, shift.end);
+        }
+      } else if (field === 'isNight') {
+        shift.isNight = !!value;
+        shift._manualNight = true;
+      } else if (field === 'isSeniorRequired') {
+        shift.isSeniorRequired = !!value;
+      } else {
+        shift[field] = value;
       }
-      shift[field] = value;
       syncAvailabilitySchema();
       saveState();
       renderDayGroups();
@@ -3793,16 +4192,33 @@
       return;
     }
 
-    container.innerHTML = state.workers.map(w => `
-      <span class="worker-tag" data-worker-id="${w.id}">
-        <span style="pointer-events: none;">${escapeHtml(w.name)}</span>
-        <button type="button" class="worker-tag-del" onclick="event.preventDefault(); event.stopPropagation(); deleteWorker('${w.id}')" title="${escapeHtml(w.name)} 삭제" aria-label="${escapeHtml(w.name)} 삭제">✕</button>
-      </span>
-    `).join('');
+    container.innerHTML = state.workers.map(w => {
+      const role = w.roleType || 'junior';
+      const label = getTierLabel(role);
+      return `
+        <span class="worker-tag" data-worker-id="${w.id}">
+          <span class="worker-role-badge ${role}" onclick="toggleWorkerRole('${w.id}')" title="클릭하여 구분 전환 (${label})">${label}</span>
+          <span style="pointer-events: none;">${escapeHtml(w.name)}</span>
+          <button type="button" class="worker-tag-del" onclick="event.preventDefault(); event.stopPropagation(); deleteWorker('${w.id}')" title="${escapeHtml(w.name)} 삭제" aria-label="${escapeHtml(w.name)} 삭제">✕</button>
+        </span>
+      `;
+    }).join('');
+  }
+
+  function toggleWorkerRole(workerId) {
+    const w = state.workers.find(item => item.id === workerId);
+    if (!w) return;
+    w.roleType = (w.roleType === 'senior') ? 'junior' : 'senior';
+    saveState();
+    renderWorkers();
+    renderWorkerTabs();
+    renderAvailGrid();
+    showToast(`'${w.name}' 님의 구분을 [${getTierLabel(w.roleType)}](으)로 변경했습니다.`);
   }
 
   function addWorker() {
     const input = document.getElementById('workerNameInput');
+    const roleSelect = document.getElementById('workerRoleSelect');
     const name = input.value.trim();
     if (!name) {
       showToast('근무자 이름을 입력해 주세요.');
@@ -3810,14 +4226,15 @@
       return;
     }
 
+    const roleType = roleSelect ? roleSelect.value : 'junior';
     const newId = 'w_' + Date.now();
-    state.workers.push({ id: newId, name: name });
+    state.workers.push({ id: newId, name: name, roleType: roleType });
     initWorkerAvailability(newId);
 
     input.value = '';
     saveState();
     renderWorkers();
-    showToast(`'${name}' 님이 등록되었습니다.`);
+    showToast(`'${name}' 님(${getTierLabel(roleType)})이 등록되었습니다.`);
     input.focus();
   }
 
@@ -3850,11 +4267,15 @@
 
     if (!bar) return;
 
-    bar.innerHTML = state.workers.map(w => `
-      <button class="worker-tab ${w.id === currentWorkerTabId ? 'active' : ''}" onclick="selectWorkerTab('${w.id}')">
-        ${escapeHtml(w.name)}
-      </button>
-    `).join('');
+    bar.innerHTML = state.workers.map(w => {
+      const role = w.roleType || 'junior';
+      const label = getTierLabel(role);
+      return `
+        <button class="worker-tab ${w.id === currentWorkerTabId ? 'active' : ''}" onclick="selectWorkerTab('${w.id}')">
+          <span class="cell-role-badge ${role}">${label}</span> ${escapeHtml(w.name)}
+        </button>
+      `;
+    }).join('');
   }
 
   function selectWorkerTab(workerId) {
@@ -3988,24 +4409,40 @@
     });
   }
 
-  /* Step 4: Rules Fold & Detail (Section C) */
-  function toggleRulesDetail() {
-    const panel = document.getElementById('rulesDetailPanel');
-    const btn = document.getElementById('btnToggleRules');
+  /* Step 4: Rules Fold & Detail (Basic 1~7 & Advanced 8~12) */
+  function toggleBasicRulesDetail() {
+    const panel = document.getElementById('basicRulesDetailPanel');
+    const btn = document.getElementById('btnToggleBasicRules');
     if (!panel || !btn) return;
 
     if (panel.style.display === 'none' || panel.style.display === '') {
       panel.style.display = 'block';
-      btn.textContent = '규칙 접어두기 ▴';
+      btn.textContent = '기본 규칙 접기 ▴';
     } else {
       panel.style.display = 'none';
-      btn.textContent = '규칙 자세히 설정하기 ▾';
+      btn.textContent = '기본 규칙 설정 ▾';
+    }
+  }
+
+  function toggleAdvancedRulesDetail() {
+    const panel = document.getElementById('advancedRulesDetailPanel');
+    const btn = document.getElementById('btnToggleAdvancedRules');
+    if (!panel || !btn) return;
+
+    if (panel.style.display === 'none' || panel.style.display === '') {
+      panel.style.display = 'block';
+      btn.textContent = '고급 규칙 접기 ▴';
+    } else {
+      panel.style.display = 'none';
+      btn.textContent = '고급 규칙 설정 ▾';
     }
   }
 
   function renderRulesUI() {
     const r = state.rules;
     if (!r) return;
+
+    // Rules 1~7
     const maxShifts = document.getElementById('rule_maxShiftsPerDay');
     if (maxShifts) maxShifts.value = r.maxShiftsPerDay || 2;
     const limitDaily = document.getElementById('rule_limitDailyHours');
@@ -4030,12 +4467,47 @@
     if (balanceWknd) balanceWknd.checked = !!r.balanceWeekends;
     const showWage = document.getElementById('rule_showWageInfo');
     if (showWage) showWage.checked = (state.showWageInfo !== false);
+
+    // Tier Labels
+    const seniorLabel = getTierLabel('senior');
+    const juniorLabel = getTierLabel('junior');
+    const tierSenior = document.getElementById('tierLabelSeniorInput');
+    if (tierSenior) tierSenior.value = seniorLabel;
+    const tierJunior = document.getElementById('tierLabelJuniorInput');
+    if (tierJunior) tierJunior.value = juniorLabel;
+
+    // Rules 8~12
+    const strictEqual = document.getElementById('rule_strictEqualShiftCount');
+    if (strictEqual) strictEqual.checked = !!r.strictEqualShiftCount;
+    const seniorMand = document.getElementById('rule_seniorMandatory');
+    if (seniorMand) seniorMand.checked = !!r.seniorMandatory;
+    const seniorPair = document.getElementById('rule_seniorJuniorPairing');
+    if (seniorPair) seniorPair.checked = !!r.seniorJuniorPairing;
+    const nightRest = document.getElementById('rule_nightRestNextDay');
+    if (nightRest) nightRest.checked = !!r.nightRestNextDay;
+    const limitMinRest = document.getElementById('rule_limitMinRestDays');
+    if (limitMinRest) limitMinRest.checked = !!r.limitMinRestDays;
+    const minRestDays = document.getElementById('rule_minRestDaysBetweenShifts');
+    if (minRestDays) minRestDays.value = r.minRestDaysBetweenShifts || 1;
+
+    // Update Summary Texts
+    const advSummary = document.getElementById('advancedRulesSummaryText');
+    if (advSummary) {
+      const activeAdv = [];
+      if (r.strictEqualShiftCount) activeAdv.push('완전균등 ON');
+      if (r.seniorMandatory) activeAdv.push(`${seniorLabel}필수 ON`);
+      if (r.seniorJuniorPairing) activeAdv.push('짝짓기 ON');
+      if (r.nightRestNextDay) activeAdv.push('야간익일휴무 ON');
+      if (r.limitMinRestDays) activeAdv.push(`최소${r.minRestDaysBetweenShifts || 1}일간격 ON`);
+      advSummary.textContent = activeAdv.length > 0 ? activeAdv.join(' · ') : '선택된 고급 규칙 없음 (기본 OFF)';
+    }
   }
 
   function updateRule(key, value) {
     if (!state.rules) state.rules = {};
     state.rules[key] = value;
     saveState();
+    renderRulesUI();
   }
 
   function updateShowWageInfo(checked) {
@@ -4126,7 +4598,13 @@
       return Math.random() - 0.5;
     });
 
+    // Rule 8: Strict Equal Shift Count Quota
+    const strictQuota = (rules.strictEqualShiftCount && state.workers.length > 0)
+      ? Math.floor(allSlots.length / state.workers.length)
+      : Infinity;
+
     let shortageCount = 0;
+    let extraSlotCount = 0;
 
     allSlots.forEach(slot => {
       const { slotKey, dayId, dayIndex, isWeekend, shift, duration } = slot;
@@ -4134,6 +4612,17 @@
       const currentAssignedInSlot = assignments[dayId][shift.id];
 
       const eligibleCandidates = [];
+      let isBlockedOnlyByStrictQuota = false;
+
+      // Rule 9: Senior Mandatory calculation for this slot
+      const isSeniorShift = shift.isSeniorRequired || (rules.seniorMandatory && (shift.required || 1) >= 2);
+      const assignedIdsSoFar = currentAssignedInSlot.filter(id => id && typeof id === 'string');
+      const seniorCountSoFar = assignedIdsSoFar.filter(id => {
+        const wk = state.workers.find(w => w.id === id);
+        return wk && wk.roleType === 'senior';
+      }).length;
+      const remainingSpotsInShift = (shift.required || 1) - currentAssignedInSlot.length;
+      const mustBeSenior = (isSeniorShift && seniorCountSoFar === 0 && remainingSpotsInShift === 1);
 
       state.workers.forEach(w => {
         const isAvailable = isWorkerAvailable(w.id, dayId, shift.id);
@@ -4158,7 +4647,7 @@
           return;
         }
 
-        // Rule 7: Max daily hours (Section A)
+        // Rule 7: Max daily hours
         if (rules.limitDailyHours) {
           const maxDailyH = rules.maxDailyHours || 8;
           const existingDailyHours = existingShiftsToday.reduce((sum, s) => sum + getShiftDurationHours(s.start, s.end), 0);
@@ -4277,14 +4766,103 @@
           }
         }
 
+        // Rule 9: Senior Mandatory check
+        if (mustBeSenior && (w.roleType !== 'senior')) {
+          diagnostics[slotKey].push({
+            workerName: w.name,
+            reason: `${getTierLabel('senior')} 필수 배치 (${getTierLabel('senior')}만 배정 가능)`
+          });
+          return;
+        }
+
+        // Rule 11: Night Rest Next Day
+        if (rules.nightRestNextDay) {
+          if (dayIndex > 0) {
+            const prevDayId = ALL_DAYS[dayIndex - 1].id;
+            if (wStat.dayShifts[prevDayId] && wStat.dayShifts[prevDayId].some(s => s.isNight)) {
+              diagnostics[slotKey].push({
+                workerName: w.name,
+                reason: '야간 근무 다음 날 휴무 (전날 야간 근무로 오늘 제외)'
+              });
+              return;
+            }
+          }
+          if (shift.isNight && dayIndex < ALL_DAYS.length - 1) {
+            const nextDayId = ALL_DAYS[dayIndex + 1].id;
+            if (wStat.dayShifts[nextDayId] && wStat.dayShifts[nextDayId].length > 0) {
+              diagnostics[slotKey].push({
+                workerName: w.name,
+                reason: '야간 근무 다음 날 휴무 (다음날 이미 근무 배정됨)'
+              });
+              return;
+            }
+          }
+        }
+
+        // Rule 12: Min Rest Days Between Shifts
+        if (rules.limitMinRestDays) {
+          const minGap = rules.minRestDaysBetweenShifts || 1;
+          let hasConflictGap = false;
+          for (let d = Math.max(0, dayIndex - minGap); d <= Math.min(6, dayIndex + minGap); d++) {
+            if (d === dayIndex) continue;
+            if (wStat.dayShifts[ALL_DAYS[d].id] && wStat.dayShifts[ALL_DAYS[d].id].length > 0) {
+              hasConflictGap = true;
+              break;
+            }
+          }
+          if (hasConflictGap) {
+            diagnostics[slotKey].push({
+              workerName: w.name,
+              reason: `배정 간 최소 간격(${minGap}일) 보장 규칙에 의해 제외`
+            });
+            return;
+          }
+        }
+
+        // Rule 8: Strict Equal Shift Count Check
+        if (rules.strictEqualShiftCount && wStat.count >= strictQuota) {
+          isBlockedOnlyByStrictQuota = true;
+          diagnostics[slotKey].push({
+            workerName: w.name,
+            reason: `완전 균등 횟수(${strictQuota}회) 도달로 [추가 배정] 제외`
+          });
+          return;
+        }
+
         eligibleCandidates.push(w);
       });
 
       if (eligibleCandidates.length === 0) {
-        assignments[dayId][shift.id].push(null);
-        shortageCount++;
+        if (rules.strictEqualShiftCount && isBlockedOnlyByStrictQuota) {
+          assignments[dayId][shift.id].push({ isExtra: true });
+          extraSlotCount++;
+        } else {
+          assignments[dayId][shift.id].push(null);
+          shortageCount++;
+        }
       } else {
         eligibleCandidates.sort((a, b) => {
+          // Priority 1: If senior is required in this shift and not yet assigned, prioritize Senior
+          if (isSeniorShift && seniorCountSoFar === 0) {
+            const isSenA = (a.roleType === 'senior') ? 1 : 0;
+            const isSenB = (b.roleType === 'senior') ? 1 : 0;
+            if (isSenA !== isSenB) return isSenB - isSenA;
+          }
+
+          // Priority 2: Rule 10 Senior-Junior Pairing Priority
+          if (rules.seniorJuniorPairing && (shift.required || 1) === 2 && currentAssignedInSlot.length === 1) {
+            const firstAssignedId = currentAssignedInSlot[0];
+            const firstAssigned = state.workers.find(wk => wk.id === firstAssignedId);
+            if (firstAssigned) {
+              const roleA = a.roleType || 'junior';
+              const roleB = b.roleType || 'junior';
+              const firstRole = firstAssigned.roleType || 'junior';
+              const diffA = (roleA !== firstRole) ? 1 : 0;
+              const diffB = (roleB !== firstRole) ? 1 : 0;
+              if (diffA !== diffB) return diffB - diffA; // Prioritize opposite role
+            }
+          }
+
           const statA = workerStats[a.id];
           const statB = workerStats[b.id];
 
@@ -4318,13 +4896,15 @@
     const avgHours = hourList.reduce((a, b) => a + b, 0) / (hourList.length || 1);
     const varianceHours = hourList.reduce((acc, h) => acc + Math.pow(h - avgHours, 2), 0) / (hourList.length || 1);
 
-    const score = (shortageCount * 2000) + varianceHours;
+    const score = (shortageCount * 5000) + (extraSlotCount * 0.1) + varianceHours;
 
     return {
       assignments,
       workerStats,
       diagnostics,
       shortageCount,
+      extraSlotCount,
+      allSlotsCount: allSlots.length,
       score,
       timestamp: new Date()
     };
@@ -4408,20 +4988,105 @@
       timeLabel.textContent = `생성 일시: ${now.getFullYear()}년 ${now.getMonth()+1}월 ${now.getDate()}일 ${now.getHours()}시 ${now.getMinutes()}분`;
     }
 
+    // Dynamic Notices (Strict Equal, Shortage, Context)
+    let noticesHtml = '';
+    const quota = (state.workers.length > 0 && schedule.allSlotsCount)
+      ? Math.floor(schedule.allSlotsCount / state.workers.length)
+      : 0;
+
+    if (state.rules && state.rules.strictEqualShiftCount && (schedule.extraSlotCount > 0)) {
+      noticesHtml += `
+        <div class="strict-equal-notice-banner">
+          ⚖️ 모든 인원에게 <strong>${quota}회</strong>씩 완전 균등하게 배정했습니다. 남은 <strong>${schedule.extraSlotCount}칸</strong>은 <strong>[추가 배정]</strong>을 클릭하여 협의 후 채워주세요.
+        </div>
+      `;
+    }
+
+    const currentVocab = USE_CASE_VOCABULARY[state.useCase] || USE_CASE_VOCABULARY['cafe'];
+    if (currentVocab && currentVocab.contextNotice) {
+      noticesHtml += `
+        <div style="background: #f0f9ff; border: 1px solid #bae6fd; border-radius: var(--radius-sm); padding: 8px 12px; font-size: 12px; color: #0369a1; margin-bottom: 10px; line-height: 1.4;">
+          💡 <strong>${currentVocab.label} 팁:</strong> ${escapeHtml(currentVocab.contextNotice)}
+        </div>
+      `;
+    }
+
     if (shortageNotice) {
-      shortageNotice.style.display = schedule.shortageCount > 0 ? 'block' : 'none';
+      if (schedule.shortageCount > 0) {
+        shortageNotice.style.display = 'block';
+        shortageNotice.innerHTML = `
+          일부 시간대에 지원자가 부족하거나 규칙에 의해 <strong style="color: var(--danger);">인원 부족(${schedule.shortageCount}건)</strong>으로 표시되었습니다. <strong>해당 칸을 클릭하여 다른 인원을 즉시 대타로 배정</strong>할 수 있습니다.
+        `;
+      } else {
+        shortageNotice.style.display = 'none';
+      }
+    }
+
+    // Insert banner above schedule view
+    const viewToggleBar = document.querySelector('.view-toggle-bar');
+    let extraBannerBox = document.getElementById('dynamicScheduleNoticesBox');
+    if (!extraBannerBox && viewToggleBar) {
+      extraBannerBox = document.createElement('div');
+      extraBannerBox.id = 'dynamicScheduleNoticesBox';
+      viewToggleBar.parentNode.insertBefore(extraBannerBox, viewToggleBar);
+    }
+    if (extraBannerBox) {
+      extraBannerBox.innerHTML = noticesHtml;
     }
 
     const activeDays = [];
+    let hasAnyNightShift = false;
+
     ALL_DAYS.forEach(d => {
       const grp = state.dayGroups.find(g => g.days.includes(d.id));
-      if (grp) activeDays.push({ day: d, group: grp });
+      if (grp) {
+        activeDays.push({ day: d, group: grp });
+        if (grp.shifts && grp.shifts.some(s => s.isNight)) hasAnyNightShift = true;
+      }
     });
 
     if (activeDays.length === 0) {
       if (table) table.innerHTML = '<tr><td style="padding: 20px; text-align: center;">영업 요일이 없습니다.</td></tr>';
       if (cardsContainer) cardsContainer.innerHTML = '<div style="padding: 20px; text-align: center; color: var(--gray-500);">영업 요일이 없습니다.</div>';
       return;
+    }
+
+    // Helper to render assigned cell
+    function renderSlotHtml(wId, dayId, shiftId, slotIdx) {
+      if (wId && wId.isExtra) {
+        return `
+          <div class="slot-extra-unfilled" onclick="openSwapWorkerModal('${dayId}', '${shiftId}', ${slotIdx})" title="공통 횟수 균등 배정 후 남은 슬롯 (클릭하여 추가 배정)">
+            [추가 배정] ▾
+          </div>
+        `;
+      } else if (wId === null) {
+        const slotKey = `${dayId}_${shiftId}_${slotIdx}`;
+        const diagList = (schedule.diagnostics && schedule.diagnostics[slotKey]) || [];
+        let tooltipText = '<strong>[제외 및 미배정 사유]</strong><br>';
+        if (diagList.length === 0) {
+          tooltipText += '지원 가능한 근무자 없음 (클릭하여 대타 배정)';
+        } else {
+          diagList.forEach(d => {
+            tooltipText += `• <strong>${escapeHtml(d.workerName)}</strong>: ${escapeHtml(d.reason)}<br>`;
+          });
+        }
+        return `
+          <div class="badge-shortage" onclick="openSwapWorkerModal('${dayId}', '${shiftId}', ${slotIdx})" title="클릭하여 대타 배정">
+            인원 부족 ▾
+            <div class="tooltip-box">${tooltipText}</div>
+          </div>
+        `;
+      } else {
+        const worker = state.workers.find(w => w.id === wId);
+        const role = (worker && worker.roleType) ? worker.roleType : 'junior';
+        const roleLabel = getTierLabel(role);
+        const name = worker ? escapeHtml(worker.name) : '알 수 없음';
+        return `
+          <span class="assigned-badge" onclick="openSwapWorkerModal('${dayId}', '${shiftId}', ${slotIdx})" title="클릭하여 대타 교체">
+            <span class="cell-role-badge ${role}">${roleLabel}</span> ${name} ▾
+          </span>
+        `;
+      }
     }
 
     // 1. Render Desktop/Tablet Grid Table
@@ -4446,40 +5111,22 @@
 
         bodyHtml += `
           <div style="background: white; border: 1px solid var(--gray-200); border-radius: var(--radius-sm); padding: 8px; margin-bottom: 8px; box-shadow: 0 1px 2px rgba(0,0,0,0.03);">
-            <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 6px; border-bottom: 1px dashed var(--gray-200); padding-bottom: 4px;">
-              <strong style="font-size: 13px; color: var(--gray-800);">${escapeHtml(shift.name)}</strong>
+            <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 6px; border-bottom: 1px dashed var(--gray-200); padding-bottom: 4px; flex-wrap: wrap; gap: 2px;">
+              <strong style="font-size: 13px; color: var(--gray-800); display: inline-flex; align-items: center; gap: 3px;">
+                ${escapeHtml(shift.name)}
+                ${shift.isNight ? '<span class="night-shift-badge">🌙 야간</span>' : ''}
+                ${shift.isSeniorRequired ? `<span class="cell-role-badge senior" style="font-size: 9.5px; padding: 0 3px;">⭐️${getTierLabel('senior')}필수</span>` : ''}
+              </strong>
               <span style="font-size: 11px; color: var(--gray-500);">${shift.start}~${shift.end} (${duration}h)</span>
             </div>
             <div style="display: flex; flex-direction: column; gap: 4px;">
         `;
 
         if (assignedIds.length === 0) {
-          bodyHtml += `<span class="badge-shortage" onclick="openSwapWorkerModal('${day.id}', '${shift.id}', 0)" title="클릭하여 알바생 배정">미배정 ▾</span>`;
+          bodyHtml += `<span class="badge-shortage" onclick="openSwapWorkerModal('${day.id}', '${shift.id}', 0)" title="클릭하여 배정">미배정 ▾</span>`;
         } else {
           assignedIds.forEach((wId, slotIdx) => {
-            if (wId === null) {
-              const slotKey = `${day.id}_${shift.id}_${slotIdx}`;
-              const diagList = (schedule.diagnostics && schedule.diagnostics[slotKey]) || [];
-              let tooltipText = '<strong>[제외 및 미배정 사유]</strong><br>';
-              if (diagList.length === 0) {
-                tooltipText += '지원 가능한 근무자 없음 (클릭하여 대타 배정)';
-              } else {
-                diagList.forEach(d => {
-                  tooltipText += `• <strong>${escapeHtml(d.workerName)}</strong>: ${escapeHtml(d.reason)}<br>`;
-                });
-              }
-
-              bodyHtml += `
-                <div class="badge-shortage" onclick="openSwapWorkerModal('${day.id}', '${shift.id}', ${slotIdx})" title="클릭하여 알바생 배정 (대타)">
-                  인원 부족 ▾
-                  <div class="tooltip-box">${tooltipText}</div>
-                </div>
-              `;
-            } else {
-              const worker = state.workers.find(w => w.id === wId);
-              const name = worker ? escapeHtml(worker.name) : '알 수 없음';
-              bodyHtml += `<span class="assigned-badge" onclick="openSwapWorkerModal('${day.id}', '${shift.id}', ${slotIdx})" title="클릭하여 알바생 변경 (대타 교체)">${name} ▾</span>`;
-            }
+            bodyHtml += renderSlotHtml(wId, day.id, shift.id, slotIdx);
           });
         }
 
@@ -4495,7 +5142,7 @@
 
     if (table) table.innerHTML = headerHtml + bodyHtml;
 
-    // 2. Render Mobile-friendly Day Cards View (Section C)
+    // 2. Render Mobile-friendly Day Cards View
     if (cardsContainer) {
       cardsContainer.innerHTML = activeDays.map(({ day, group }) => {
         const shiftsHtml = group.shifts.map(shift => {
@@ -4504,38 +5151,21 @@
 
           let assignedHtml = '';
           if (assignedIds.length === 0) {
-            assignedHtml = `<span class="badge-shortage" onclick="openSwapWorkerModal('${day.id}', '${shift.id}', 0)" title="클릭하여 알바생 배정">미배정 ▾</span>`;
+            assignedHtml = `<span class="badge-shortage" onclick="openSwapWorkerModal('${day.id}', '${shift.id}', 0)" title="클릭하여 배정">미배정 ▾</span>`;
           } else {
             assignedHtml = assignedIds.map((wId, slotIdx) => {
-              if (wId === null) {
-                const slotKey = `${day.id}_${shift.id}_${slotIdx}`;
-                const diagList = (schedule.diagnostics && schedule.diagnostics[slotKey]) || [];
-                let tooltipText = '<strong>[제외 및 미배정 사유]</strong><br>';
-                if (diagList.length === 0) {
-                  tooltipText += '지원 가능한 근무자 없음 (클릭하여 대타 배정)';
-                } else {
-                  diagList.forEach(d => {
-                    tooltipText += `• <strong>${escapeHtml(d.workerName)}</strong>: ${escapeHtml(d.reason)}<br>`;
-                  });
-                }
-                return `
-                  <div class="badge-shortage" onclick="openSwapWorkerModal('${day.id}', '${shift.id}', ${slotIdx})" title="클릭하여 알바생 배정 (대타)">
-                    인원 부족 ▾
-                    <div class="tooltip-box">${tooltipText}</div>
-                  </div>
-                `;
-              } else {
-                const worker = state.workers.find(w => w.id === wId);
-                const name = worker ? escapeHtml(worker.name) : '알 수 없음';
-                return `<span class="assigned-badge" onclick="openSwapWorkerModal('${day.id}', '${shift.id}', ${slotIdx})" title="클릭하여 알바생 변경 (대타 교체)">${name} ▾</span>`;
-              }
+              return renderSlotHtml(wId, day.id, shift.id, slotIdx);
             }).join('');
           }
 
           return `
             <div class="mobile-shift-row">
               <div class="mobile-shift-title-row">
-                <span class="mobile-shift-name">${escapeHtml(shift.name)}</span>
+                <span class="mobile-shift-name" style="display: inline-flex; align-items: center; gap: 3px;">
+                  ${escapeHtml(shift.name)}
+                  ${shift.isNight ? '<span class="night-shift-badge">🌙 야간</span>' : ''}
+                  ${shift.isSeniorRequired ? `<span class="cell-role-badge senior" style="font-size: 9.5px; padding: 0 3px;">⭐️${getTierLabel('senior')}필수</span>` : ''}
+                </span>
                 <span class="mobile-shift-time">${shift.start}~${shift.end} (${duration}h)</span>
               </div>
               <div class="mobile-assigned-workers">
@@ -4559,14 +5189,32 @@
       }).join('');
     }
 
+    // 3. Statutory Night Pay Notice
+    let nightNoticeBox = document.getElementById('nightLegalNoticeBox');
+    if (hasAnyNightShift) {
+      if (!nightNoticeBox) {
+        nightNoticeBox = document.createElement('div');
+        nightNoticeBox.id = 'nightLegalNoticeBox';
+        nightNoticeBox.className = 'night-legal-notice-box';
+        const actionsBar = document.querySelector('.schedule-action-bar');
+        if (actionsBar) actionsBar.parentNode.insertBefore(nightNoticeBox, actionsBar);
+      }
+      nightNoticeBox.style.display = 'block';
+      nightNoticeBox.innerHTML = `
+        🌙 <strong>야간근로 가산수당 안내 (근로기준법 제56조 제3항):</strong><br>
+        오후 10시(22:00)부터 다음 날 오전 6시(06:00) 사이의 근로에 대해서는 통상임금의 <strong>50% 이상을 가산</strong>하여 지급해야 합니다. (5인 이상 사업장 의무 적용)
+      `;
+    } else if (nightNoticeBox) {
+      nightNoticeBox.style.display = 'none';
+    }
+
     setResultView(currentResultView);
 
-    // 3. Render Stats Summary
+    // 4. Render Stats Summary
     if (statsContainer) {
       statsContainer.innerHTML = state.workers.map(w => {
         const stat = schedule.workerStats[w.id] || { count: 0, hours: 0, weekendCount: 0, dayShifts: {} };
 
-        // Compute per-day break and total net work hours (Section D)
         let totalPresenceHours = stat.hours || 0;
         let totalBreakHours = 0;
         let totalNetWorkHours = 0;
@@ -4581,6 +5229,8 @@
           }
         });
 
+        const role = w.roleType || 'junior';
+        const roleLabel = getTierLabel(role);
         const isHolidayPayEligible = (state.showWageInfo !== false) && totalNetWorkHours >= 15;
         const wageBadgeHtml = isHolidayPayEligible ? `<span class="badge-holiday-pay">주휴수당 대상</span>` : '';
         const wageMetricsHtml = (state.showWageInfo !== false) ? `
@@ -4602,7 +5252,10 @@
         return `
           <div class="stat-card">
             <div class="stat-header-row">
-              <span class="stat-name">${escapeHtml(w.name)}</span>
+              <div style="display: flex; align-items: center; gap: 4px;">
+                <span class="cell-role-badge ${role}">${roleLabel}</span>
+                <span class="stat-name">${escapeHtml(w.name)}</span>
+              </div>
               ${wageBadgeHtml}
             </div>
             ${wageMetricsHtml}
@@ -4617,7 +5270,7 @@
   }
 
   /* ==========================================================================
-     MICRO-EDITING / SWAP WORKER (대타 즉시 교체 기능 - Section 4)
+     MICRO-EDITING / SWAP WORKER (대타 즉시 교체 기능)
      ========================================================================== */
   let currentSwapTarget = null; // { dayId, shiftId, slotIdx }
 
@@ -4632,9 +5285,17 @@
     if (!shift) return;
 
     const assignedIds = (schedule.assignments[dayId] && schedule.assignments[dayId][shiftId]) || [];
-    const currentWorkerId = assignedIds[slotIdx];
-    const currentWorker = state.workers.find(w => w.id === currentWorkerId);
-    const currentWorkerName = currentWorker ? escapeHtml(currentWorker.name) : '없음 (인원 부족)';
+    const currentAssignment = assignedIds[slotIdx];
+    const isExtra = currentAssignment && currentAssignment.isExtra;
+    const currentWorkerId = typeof currentAssignment === 'string' ? currentAssignment : null;
+    const currentWorker = currentWorkerId ? state.workers.find(w => w.id === currentWorkerId) : null;
+    
+    let currentWorkerName = '없음 (인원 부족)';
+    if (isExtra) {
+      currentWorkerName = '[추가 배정] (협의 배정용)';
+    } else if (currentWorker) {
+      currentWorkerName = `[${getTierLabel(currentWorker.roleType || 'junior')}] ${escapeHtml(currentWorker.name)}`;
+    }
 
     currentSwapTarget = { dayId, shiftId, slotIdx };
 
@@ -4642,7 +5303,7 @@
     if (infoBox) {
       infoBox.innerHTML = `
         <div><strong>대상 타임:</strong> [${day.name}요일 - ${escapeHtml(grp.name)}] <strong>${escapeHtml(shift.name)}</strong> (${shift.start}~${shift.end})</div>
-        <div style="margin-top: 4px;"><strong>현재 배정:</strong> <span style="color: ${currentWorker ? 'var(--primary)' : 'var(--danger)'}; font-weight: 700;">${currentWorkerName}</span></div>
+        <div style="margin-top: 4px;"><strong>현재 배정:</strong> <span style="color: ${currentWorker ? 'var(--primary)' : '#64748b'}; font-weight: 700;">${currentWorkerName}</span></div>
       `;
     }
 
@@ -4662,13 +5323,15 @@
         };
       });
 
-      // Sort: Available first, then current worker, then by hours ascending
+      // Sort: Available first, then current worker, then by count ascending
       candidates.sort((a, b) => {
         if (a.isAvail !== b.isAvail) return a.isAvail ? -1 : 1;
-        return a.hours - b.hours;
+        return a.count - b.count;
       });
 
       listContainer.innerHTML = candidates.map(c => {
+        const role = c.worker.roleType || 'junior';
+        const roleLabel = getTierLabel(role);
         const statusBadge = c.isAvail
           ? `<span style="color: #059669; font-size: 12px; font-weight: 700;">가능</span>`
           : `<span style="color: #9ca3af; font-size: 12px;">불가</span>`;
@@ -4677,10 +5340,11 @@
         return `
           <button type="button" class="swap-candidate-btn ${c.isCurrent ? 'is-current' : ''}" onclick="applySwapWorker('${c.worker.id}')">
             <div>
+              <span class="cell-role-badge ${role}">${roleLabel}</span>
               <span style="font-size: 14px; font-weight: 700; color: var(--gray-900);">${escapeHtml(c.worker.name)}</span>
               ${currentTag}
               <div style="font-size: 11px; color: var(--gray-500); margin-top: 2px;">
-                현재 주간: ${c.hours.toFixed(1)}h (${c.count}회)
+                현재 배정: ${c.count}회 (${c.hours.toFixed(1)}h)
               </div>
             </div>
             <div style="display: flex; align-items: center; gap: 8px;">
@@ -4756,6 +5420,7 @@
     });
 
     let shortageCount = 0;
+    let extraSlotCount = 0;
 
     ALL_DAYS.forEach((day, dayIndex) => {
       const grp = state.dayGroups.find(g => g.days.includes(day.id));
@@ -4766,9 +5431,11 @@
         const duration = getShiftDurationHours(shift.start, shift.end);
 
         assignedIds.forEach(wId => {
-          if (wId === null) {
+          if (wId && wId.isExtra) {
+            extraSlotCount++;
+          } else if (wId === null) {
             shortageCount++;
-          } else if (workerStats[wId]) {
+          } else if (typeof wId === 'string' && workerStats[wId]) {
             const wStat = workerStats[wId];
             wStat.count++;
             wStat.hours += duration;
@@ -4782,6 +5449,7 @@
 
     schedule.workerStats = workerStats;
     schedule.shortageCount = shortageCount;
+    schedule.extraSlotCount = extraSlotCount;
   }
 
   /* ==========================================================================
@@ -4808,12 +5476,14 @@
       grp.shifts.forEach(shift => {
         const assignedIds = (schedule.assignments[day.id] && schedule.assignments[day.id][shift.id]) || [];
         const names = assignedIds.map(wId => {
+          if (wId && wId.isExtra) return '[추가배정]';
           if (wId === null) return '⚠️인원부족';
           const w = state.workers.find(item => item.id === wId);
-          return w ? w.name : '알수없음';
+          return w ? `[${getTierLabel(w.roleType || 'junior')}] ${w.name}` : '알수없음';
         }).join(', ');
 
-        text += ` • ${shift.name}(${shift.start}~${shift.end}): ${names || '없음'}\n`;
+        const nightTag = shift.isNight ? ' (야간)' : '';
+        text += ` • ${shift.name}${nightTag}(${shift.start}~${shift.end}): ${names || '없음'}\n`;
       });
     });
 
@@ -4835,11 +5505,12 @@
         }
       });
 
+      const roleLabel = getTierLabel(w.roleType || 'junior');
       if (state.showWageInfo !== false) {
         const holidayTag = totalNetWorkHours >= 15 ? ' [주휴수당 대상]' : '';
-        text += ` - ${w.name}: 실근로 ${totalNetWorkHours.toFixed(1)}시간 (체류 ${totalPresenceHours.toFixed(1)}h / 휴게 ${totalBreakHours.toFixed(1)}h 제외, ${stat.count}회)${holidayTag}\n`;
+        text += ` - [${roleLabel}] ${w.name}: 실근로 ${totalNetWorkHours.toFixed(1)}시간 (체류 ${totalPresenceHours.toFixed(1)}h / 휴게 ${totalBreakHours.toFixed(1)}h 제외, ${stat.count}회)${holidayTag}\n`;
       } else {
-        text += ` - ${w.name}: 총 ${totalPresenceHours.toFixed(1)}시간 배정 (${stat.count}회)\n`;
+        text += ` - [${roleLabel}] ${w.name}: 총 ${totalPresenceHours.toFixed(1)}시간 배정 (${stat.count}회)\n`;
       }
     });
 
