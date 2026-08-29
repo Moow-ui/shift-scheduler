@@ -646,67 +646,72 @@
     }
 
     .shift-input-name-compact {
-      width: 100px;
+      width: 84px;
       height: 26px;
       padding: 2px 6px;
       font-size: 12.5px;
       font-weight: 700;
-      border: 1px solid #cbd5e1;
+      border: 1.5px solid #cbd5e1;
       border-radius: 4px;
       background: white;
       color: var(--gray-900);
       outline: none;
+      transition: all 0.15s ease;
     }
     .shift-input-name-compact:focus {
       border-color: var(--primary);
+      background: #eff6ff;
     }
 
     .shift-meta-wrap {
       display: flex;
       align-items: center;
-      gap: 4px;
+      gap: 3px;
     }
 
     .shift-count-box {
       display: flex;
       align-items: center;
       gap: 2px;
-      background: var(--gray-50);
-      border: 1px solid #cbd5e1;
-      border-radius: 4px;
-      padding: 1px 4px;
-      height: 24px;
     }
 
     .shift-input-count {
-      width: 26px;
-      height: 20px;
+      width: 32px;
+      height: 26px;
       padding: 0;
       text-align: center;
-      font-size: 12px;
+      font-size: 13px;
       font-weight: 700;
-      border: none;
-      background: transparent;
+      border: 1.5px solid #cbd5e1;
+      border-radius: 4px;
+      background: white;
+      color: var(--gray-800);
       outline: none;
+      transition: all 0.15s ease;
+    }
+    .shift-input-count:focus {
+      border-color: var(--primary);
+      background: #eff6ff;
     }
 
     .count-unit {
-      font-size: 11px;
+      font-size: 12px;
       font-weight: 600;
-      color: var(--gray-600);
-      padding-right: 1px;
+      color: var(--gray-700);
+      margin-left: 1px;
+      margin-right: 4px;
     }
 
     .btn-toggle-quick-chips-compact {
       background: var(--gray-100);
-      border: 1px solid var(--gray-300);
+      border: 1.5px solid var(--gray-300);
       border-radius: 4px;
       color: var(--gray-600);
       font-size: 11px;
       font-weight: 700;
       cursor: pointer;
-      padding: 0 4px;
-      height: 24px;
+      padding: 0 5px;
+      height: 26px;
       display: inline-flex;
       align-items: center;
       justify-content: center;
@@ -722,12 +727,12 @@
 
     .btn-shift-del-inline {
       background: white;
-      border: 1px solid #cbd5e1;
+      border: 1.5px solid #cbd5e1;
       border-radius: 4px;
       color: var(--gray-400);
       cursor: pointer;
-      padding: 0 4px;
-      height: 24px;
+      padding: 0 5px;
+      height: 26px;
       display: inline-flex;
       align-items: center;
       justify-content: center;
@@ -745,29 +750,30 @@
       align-items: center;
       justify-content: space-between;
       gap: 4px;
+      margin-top: 1px;
     }
 
     .shift-time-inputs-wrap {
       display: flex;
       align-items: center;
-      gap: 3px;
+      gap: 4px;
       flex-wrap: wrap;
     }
 
     .time-sep {
       color: var(--gray-400);
       font-weight: bold;
-      font-size: 11px;
+      font-size: 12px;
     }
 
     .time-input-24h {
-      width: 48px;
-      height: 24px;
-      padding: 0 2px;
-      font-size: 12px;
+      width: 58px;
+      height: 26px;
+      padding: 0 4px;
+      font-size: 13px;
       font-weight: 700;
       text-align: center;
-      border: 1px solid #cbd5e1;
+      border: 1.5px solid #cbd5e1;
       border-radius: 4px;
       background: white;
       color: var(--gray-800);
