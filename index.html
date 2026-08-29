@@ -614,11 +614,11 @@
       box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
     }
 
-    /* Shift Row & Time Picker (Section A - Ultra Compact Streamlined) */
+    /* Shift Row & Time Picker (Section A - Ultra Compact 2-Line / 1-Line) */
     .group-shift-list {
       display: flex;
       flex-direction: column;
-      gap: 6px;
+      gap: 5px;
       margin-bottom: 8px;
     }
 
@@ -627,33 +627,32 @@
       flex-direction: column;
       gap: 4px;
       background: white;
-      padding: 7px 10px;
+      padding: 6px 8px;
       border-radius: var(--radius-sm);
       border: 1px solid #e2e8f0;
-      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
       transition: all 0.15s ease;
     }
     .group-shift-item:hover {
       border-color: #cbd5e1;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
     }
 
-    .shift-compact-main-row {
+    .shift-row-top {
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 6px;
-      flex-wrap: wrap;
     }
 
     .shift-input-name-compact {
-      width: 96px;
-      height: 30px;
-      padding: 3px 6px;
-      font-size: 13px;
+      width: 100px;
+      height: 26px;
+      padding: 2px 6px;
+      font-size: 12.5px;
       font-weight: 700;
-      border: 1.5px solid #cbd5e1;
-      border-radius: var(--radius-sm);
+      border: 1px solid #cbd5e1;
+      border-radius: 4px;
       background: white;
       color: var(--gray-900);
       outline: none;
@@ -662,11 +661,97 @@
       border-color: var(--primary);
     }
 
-    .shift-time-inputs-wrap {
+    .shift-meta-wrap {
       display: flex;
       align-items: center;
       gap: 4px;
-      flex-wrap: nowrap;
+    }
+
+    .shift-count-box {
+      display: flex;
+      align-items: center;
+      gap: 2px;
+      background: var(--gray-50);
+      border: 1px solid #cbd5e1;
+      border-radius: 4px;
+      padding: 1px 4px;
+      height: 24px;
+    }
+
+    .shift-input-count {
+      width: 26px;
+      height: 20px;
+      padding: 0;
+      text-align: center;
+      font-size: 12px;
+      font-weight: 700;
+      border: none;
+      background: transparent;
+      outline: none;
+    }
+
+    .count-unit {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--gray-600);
+      padding-right: 1px;
+    }
+
+    .btn-toggle-quick-chips-compact {
+      background: var(--gray-100);
+      border: 1px solid var(--gray-300);
+      border-radius: 4px;
+      color: var(--gray-600);
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+      padding: 0 4px;
+      height: 24px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1px;
+      touch-action: manipulation;
+      transition: all 0.15s ease;
+    }
+    .btn-toggle-quick-chips-compact:hover {
+      background: var(--primary-light);
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+
+    .btn-shift-del-inline {
+      background: white;
+      border: 1px solid #cbd5e1;
+      border-radius: 4px;
+      color: var(--gray-400);
+      cursor: pointer;
+      padding: 0 4px;
+      height: 24px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.15s ease;
+      touch-action: manipulation;
+    }
+    .btn-shift-del-inline:hover {
+      color: #dc2626;
+      background: #fee2e2;
+      border-color: #f87171;
+    }
+
+    .shift-row-bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 4px;
+    }
+
+    .shift-time-inputs-wrap {
+      display: flex;
+      align-items: center;
+      gap: 3px;
+      flex-wrap: wrap;
     }
 
     .time-sep {
@@ -676,14 +761,14 @@
     }
 
     .time-input-24h {
-      width: 54px;
-      height: 30px;
-      padding: 2px 4px;
-      font-size: 12.5px;
+      width: 48px;
+      height: 24px;
+      padding: 0 2px;
+      font-size: 12px;
       font-weight: 700;
       text-align: center;
-      border: 1.5px solid #cbd5e1;
-      border-radius: var(--radius-sm);
+      border: 1px solid #cbd5e1;
+      border-radius: 4px;
       background: white;
       color: var(--gray-800);
       outline: none;
@@ -702,83 +787,18 @@
       background: #eff6ff;
       color: #1e40af;
       font-weight: 700;
-      font-size: 11px;
-      padding: 2px 5px;
-      border-radius: 4px;
+      font-size: 10.5px;
+      padding: 1px 4px;
+      border-radius: 3px;
       white-space: nowrap;
+      height: 20px;
     }
 
-    .shift-meta-wrap {
-      display: flex;
-      align-items: center;
-      gap: 5px;
-    }
-
-    .shift-count-box {
-      display: flex;
-      align-items: center;
-      gap: 2px;
-    }
-
-    .shift-input-count {
-      width: 38px;
-      height: 30px;
-      padding: 2px 2px;
-      text-align: center;
-      font-size: 13px;
-      font-weight: 700;
-      border: 1.5px solid #cbd5e1;
-      border-radius: var(--radius-sm);
-      background: white;
-    }
-
-    .count-unit {
-      font-size: 12px;
+    .shift-break-subtext {
+      font-size: 10.5px;
+      color: var(--gray-500);
       font-weight: 600;
-      color: var(--gray-700);
-    }
-
-    .btn-toggle-quick-chips-compact {
-      background: var(--gray-100);
-      border: 1px solid var(--gray-300);
-      border-radius: var(--radius-sm);
-      color: var(--gray-600);
-      font-size: 11px;
-      font-weight: 700;
-      cursor: pointer;
-      padding: 2px 5px;
-      height: 30px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 2px;
-      touch-action: manipulation;
-      transition: all 0.15s ease;
-    }
-    .btn-toggle-quick-chips-compact:hover {
-      background: var(--primary-light);
-      border-color: var(--primary);
-      color: var(--primary);
-    }
-
-    .btn-shift-del-inline {
-      background: white;
-      border: 1px solid #cbd5e1;
-      border-radius: var(--radius-sm);
-      color: var(--gray-400);
-      cursor: pointer;
-      padding: 4px 6px;
-      height: 30px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      transition: all 0.15s ease;
-      touch-action: manipulation;
-    }
-    .btn-shift-del-inline:hover {
-      color: #dc2626;
-      background: #fee2e2;
-      border-color: #f87171;
+      white-space: nowrap;
     }
 
     .btn-icon-del {
@@ -799,13 +819,6 @@
       background: #fee2e2;
       border-color: #f87171;
       color: #dc2626;
-    }
-
-    .shift-break-subtext {
-      font-size: 11px;
-      color: var(--gray-500);
-      font-weight: 600;
-      margin-top: 1px;
     }
 
     .btn-toggle-quick-chips {
@@ -3513,15 +3526,8 @@
 
         return `
           <div class="group-shift-item">
-            <div class="shift-compact-main-row">
+            <div class="shift-row-top">
               <input type="text" class="input-text shift-input-name-compact" value="${escapeHtml(shift.name)}" placeholder="타임명" onchange="updateGroupShift('${group.id}', '${shift.id}', 'name', this.value)">
-
-              <div class="shift-time-inputs-wrap">
-                <input type="text" inputmode="numeric" class="time-input-24h" maxlength="5" value="${startVal}" placeholder="09:00" onchange="updateGroupShift('${group.id}', '${shift.id}', 'start', this.value)">
-                <span class="time-sep">~</span>
-                <input type="text" inputmode="numeric" class="time-input-24h" maxlength="5" value="${endVal}" placeholder="15:00" onchange="updateGroupShift('${group.id}', '${shift.id}', 'end', this.value)">
-                <span class="shift-duration-badge">${formatDurationText(duration)}</span>
-              </div>
 
               <div class="shift-meta-wrap">
                 <div class="shift-count-box">
@@ -3533,7 +3539,7 @@
                 </button>
                 ${group.shifts.length > 1 ? `
                   <button type="button" class="btn-shift-del-inline" onclick="deleteGroupShift('${group.id}', '${shift.id}')" title="타임 삭제">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                       <polyline points="3 6 5 6 21 6"></polyline>
                       <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
                       <line x1="10" y1="11" x2="10" y2="17"></line>
@@ -3544,7 +3550,15 @@
               </div>
             </div>
 
-            ${breakText ? `<div class="shift-break-subtext">${breakText}</div>` : ''}
+            <div class="shift-row-bottom">
+              <div class="shift-time-inputs-wrap">
+                <input type="text" inputmode="numeric" class="time-input-24h" maxlength="5" value="${startVal}" placeholder="09:00" onchange="updateGroupShift('${group.id}', '${shift.id}', 'start', this.value)">
+                <span class="time-sep">~</span>
+                <input type="text" inputmode="numeric" class="time-input-24h" maxlength="5" value="${endVal}" placeholder="15:00" onchange="updateGroupShift('${group.id}', '${shift.id}', 'end', this.value)">
+                <span class="shift-duration-badge">${formatDurationText(duration)}</span>
+                ${breakText ? `<span class="shift-break-subtext">${breakText}</span>` : ''}
+              </div>
+            </div>
 
             <!-- Quick Time Chips (Collapsible) -->
             <div id="quickChips_${chipKey}" class="quick-chips-wrapper" style="display: ${isExpanded ? 'block' : 'none'};">
