@@ -404,7 +404,7 @@
     }
     .btn-preset-chip {
       background: white;
-      border: 1px solid var(--gray-300);
+      border: 1.5px solid var(--gray-300);
       border-radius: 20px;
       padding: 6px 12px;
       font-size: 12px;
@@ -418,6 +418,13 @@
       border-color: var(--primary);
       color: var(--primary);
       background: var(--primary-light);
+    }
+    .btn-preset-chip.active-preset {
+      background: #1e40af;
+      color: white;
+      border-color: #1e40af;
+      font-weight: 700;
+      box-shadow: 0 2px 4px rgba(30, 64, 175, 0.25);
     }
 
     .demo-experience-banner {
@@ -1683,7 +1690,7 @@
   <section class="card home-hero" id="homeScreen">
     <span class="home-badge">SMART SCHEDULER</span>
     <h1>알바 근무표 자동 생성기</h1>
-    <p>조건만 입력하면 공평하고 빈틈없는 맞춤 근무표를 자동으로 만듭니다.</p>
+    <p id="homeSubtitle">매장, 교대근무, 당직, 동아리까지 조건만 입력하면 공평하고 빈틈없는 맞춤 배정표를 자동으로 만듭니다.</p>
 
     <div class="home-main-actions">
       <!-- 1. Single Primary Solid Navy Button: Create My Store Schedule (Main Action) -->
@@ -1728,19 +1735,23 @@
   <section class="card" id="step1" style="display: none;">
     <div class="card-header">
       <div>
-        <h2 class="card-title">1단계: 요일 그룹 & 근무 타임 설정</h2>
-        <p class="card-desc">평일과 주말 등 요일별로 근무 시간과 필요 인원을 다르게 설정할 수 있습니다.</p>
+        <h2 class="card-title" id="step1Title">1단계: 요일 그룹 & 근무 타임 설정</h2>
+        <p class="card-desc" id="step1Desc">평일과 주말 등 요일별로 근무 시간과 필요 인원을 다르게 설정할 수 있습니다.</p>
       </div>
       <button class="btn btn-sm btn-outline-secondary" onclick="addDayGroup()">+ 요일 그룹 추가</button>
     </div>
 
-    <!-- 4. Industry Presets (Moved to Step 1 top) -->
+    <!-- 4. Industry & Use-case Presets (Moved to Step 1 top) -->
     <div class="step-presets-box">
-      <div class="step-presets-title">빠른 템플릿으로 시작하기:</div>
+      <div class="step-presets-title">용도별 빠른 템플릿 선택:</div>
       <div class="step-preset-buttons">
-        <button type="button" class="btn-preset-chip" onclick="applyPresetAndStart('convenience')">편의점 (24시간 3교대)</button>
-        <button type="button" class="btn-preset-chip" onclick="applyPresetAndStart('cafe')">카페 (오픈·미들·마감)</button>
-        <button type="button" class="btn-preset-chip" onclick="applyPresetAndStart('restaurant')">음식점 (런치·디너 피크)</button>
+        <button type="button" class="btn-preset-chip" data-preset="convenience" onclick="applyPresetAndStart('convenience')">편의점 (24시간 3교대)</button>
+        <button type="button" class="btn-preset-chip" data-preset="cafe" onclick="applyPresetAndStart('cafe')">카페 (오픈·미들·마감)</button>
+        <button type="button" class="btn-preset-chip" data-preset="restaurant" onclick="applyPresetAndStart('restaurant')">음식점 (런치·디너 피크)</button>
+        <button type="button" class="btn-preset-chip" data-preset="shiftwork" onclick="applyPresetAndStart('shiftwork')">교대근무 (주간·야간·교대)</button>
+        <button type="button" class="btn-preset-chip" data-preset="military" onclick="applyPresetAndStart('military')">군대·당직 (당직·불침번·경계)</button>
+        <button type="button" class="btn-preset-chip" data-preset="club" onclick="applyPresetAndStart('club')">동아리·학생회 (부스·당번·행사)</button>
+        <button type="button" class="btn-preset-chip" data-preset="volunteer" onclick="applyPresetAndStart('volunteer')">봉사·행사 (오전·오후 활동)</button>
       </div>
     </div>
 
@@ -1761,7 +1772,7 @@
 
     <div class="action-footer">
       <button class="btn btn-outline-secondary" onclick="goToHome()">처음으로</button>
-      <button class="btn btn-primary" onclick="goToStep(2)">다음: 근무자 등록</button>
+      <button class="btn btn-primary" id="step1NextBtn" onclick="goToStep(2)">다음: 근무자 등록</button>
     </div>
   </section>
 
@@ -1771,8 +1782,8 @@
   <section class="card" id="step2" style="display: none;">
     <div class="card-header">
       <div>
-        <h2 class="card-title">2단계: 알바 근무자 등록</h2>
-        <p class="card-desc">근무표에 들어갈 알바생 이름을 추가하세요.</p>
+        <h2 class="card-title" id="step2Title">2단계: 근무자 명단 등록</h2>
+        <p class="card-desc" id="step2Desc">근무표에 들어갈 근무자 이름을 추가하세요.</p>
       </div>
       <span id="workerCountBadge" style="font-size: 13px; font-weight: 700; color: var(--gray-600); background: var(--gray-100); padding: 4px 10px; border-radius: 12px;">
         총 0명 등록됨
@@ -1785,19 +1796,19 @@
     </div>
 
     <div style="margin-bottom: 16px;">
-      <label style="font-size: 14px; font-weight: 600; color: var(--gray-700); margin-bottom: 8px; display: block;">등록된 근무자 목록</label>
+      <label id="step2ListLabel" style="font-size: 14px; font-weight: 600; color: var(--gray-700); margin-bottom: 8px; display: block;">등록된 근무자 목록</label>
       <div class="worker-tags" id="workerTagsContainer">
         <!-- Rendered by JS -->
       </div>
     </div>
 
     <p style="font-size: 12px; color: var(--gray-400); margin-top: 14px; line-height: 1.4;">
-      등록된 근무자 명단과 가능 시간표는 브라우저에 자동 보관되어 다음 주에도 그대로 재사용할 수 있습니다.
+      등록된 명단과 가능 시간표는 브라우저에 자동 보관되어 다음 주에도 그대로 재사용할 수 있습니다.
     </p>
 
     <div class="action-footer">
       <button class="btn btn-outline-secondary" onclick="goToStep(1)">이전: 매장 & 타임</button>
-      <button class="btn btn-primary" onclick="goToStep(3)">다음: 가능 시간 체크</button>
+      <button class="btn btn-primary" id="step2NextBtn" onclick="goToStep(3)">다음: 가능 시간 체크</button>
     </div>
   </section>
 
@@ -1807,8 +1818,8 @@
   <section class="card" id="step3" style="display: none;">
     <div class="card-header">
       <div>
-        <h2 class="card-title">3단계: 근무자별 가능 시간 체크</h2>
-        <p class="card-desc">근무자별로 일할 수 있는 요일/타임을 체크하세요. (칸 클릭 시 가능/불가 전환)</p>
+        <h2 class="card-title" id="step3Title">3단계: 근무자별 가능 시간 체크</h2>
+        <p class="card-desc" id="step3Desc">근무자별로 참여 가능한 요일/타임을 체크하세요. (칸 클릭 시 가능/불가 전환)</p>
       </div>
     </div>
 
@@ -1844,7 +1855,7 @@
 
     <div class="action-footer">
       <button class="btn btn-outline-secondary" onclick="goToStep(2)">이전: 근무자 등록</button>
-      <button class="btn btn-primary" onclick="goToStep(4)">다음: 규칙 설정</button>
+      <button class="btn btn-primary" id="step3NextBtn" onclick="goToStep(4)">다음: 규칙 설정</button>
     </div>
   </section>
 
@@ -1854,7 +1865,7 @@
   <section class="card" id="step4" style="display: none;">
     <div class="card-header">
       <div>
-        <h2 class="card-title">4단계: 스마트 배정 규칙 설정</h2>
+        <h2 class="card-title" id="step4Title">4단계: 스마트 배정 규칙 설정</h2>
         <p class="card-desc">검증된 배정 규칙이 기본 적용되어 있어 바로 다음 단계로 넘어가셔도 좋습니다.</p>
       </div>
     </div>
@@ -1989,11 +2000,25 @@
           </label>
         </div>
       </div>
+
+      <!-- Rule 8: 급여 및 주휴수당 정보 표시 -->
+      <div class="rule-item" style="border-top: 1px dashed var(--gray-200); padding-top: 12px; margin-top: 8px;">
+        <div class="rule-info">
+          <div class="rule-title">8. 급여 및 주휴수당 정보 표시</div>
+          <div class="rule-desc">주휴수당 대상(주 15시간 이상) 배지 및 법정 휴게시간을 통계에 표시합니다. (매장/급여 사업장 외에는 끌 수 있습니다)</div>
+        </div>
+        <div class="rule-controls">
+          <label class="switch">
+            <input type="checkbox" id="rule_showWageInfo" checked onchange="updateShowWageInfo(this.checked)">
+            <span class="slider"></span>
+          </label>
+        </div>
+      </div>
     </div>
 
     <div class="action-footer">
       <button class="btn btn-outline-secondary" onclick="goToStep(3)">이전: 가능 시간</button>
-      <button class="btn btn-primary" onclick="generateScheduleAndShow()">근무표 만들기</button>
+      <button class="btn btn-primary" id="step4NextBtn" onclick="generateScheduleAndShow()">근무표 만들기</button>
     </div>
   </section>
 
@@ -2003,10 +2028,10 @@
   <section class="card" id="step5" style="display: none;">
     <div class="card-header">
       <div>
-        <h2 class="card-title">5단계: 이번 주 알바 근무표</h2>
+        <h2 class="card-title" id="step5Title">5단계: 이번 주 알바 근무표</h2>
         <p class="card-desc" id="resultGeneratedTime"></p>
       </div>
-      <div style="font-size: 12px; color: var(--gray-600); font-weight: 600; background: var(--gray-100); padding: 4px 10px; border-radius: 20px;">
+      <div id="step5HeaderBadge" style="font-size: 12px; color: var(--gray-600); font-weight: 600; background: var(--gray-100); padding: 4px 10px; border-radius: 20px;">
         알바생 클릭 시 즉시 대타 교체 가능
       </div>
     </div>
@@ -2016,11 +2041,11 @@
       <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
         <div>
           <strong style="color: #1e3a8a; font-size: 13px;">[예시 체험 모드]</strong>
-          <span style="font-size: 13px; color: #1e40af;">카페 매장 샘플 데이터로 생성된 결과입니다.</span>
-          <div style="font-size: 12px; color: #3b82f6; margin-top: 2px;">알바생 이름을 누르면 즉시 대타 교체(미세조정)를 시험해 볼 수 있습니다.</div>
+          <span style="font-size: 13px; color: #1e40af;" id="demoBannerDesc">카페 매장 샘플 데이터로 생성된 결과입니다.</span>
+          <div style="font-size: 12px; color: #3b82f6; margin-top: 2px;" id="demoBannerSubDesc">근무자 이름을 누르면 즉시 대타 교체(미세조정)를 시험해 볼 수 있습니다.</div>
         </div>
       </div>
-      <button class="btn btn-primary" onclick="confirmExitDemoExperience()" style="margin-left: auto; font-weight: 700; white-space: nowrap; padding: 10px 18px; box-shadow: 0 4px 12px rgba(30, 64, 175, 0.35);">
+      <button class="btn btn-primary" id="demoBannerBtn" onclick="confirmExitDemoExperience()" style="margin-left: auto; font-weight: 700; white-space: nowrap; padding: 10px 18px; box-shadow: 0 4px 12px rgba(30, 64, 175, 0.35);">
         내 매장 근무표 직접 만들기
       </button>
     </div>
@@ -2062,17 +2087,17 @@
     <!-- Workload & Weekly Hours Summary with Holiday Pay (Collapsible by default) -->
     <div style="margin-top: 14px; border-top: 1px solid var(--gray-200); padding-top: 12px;">
       <div style="display: flex; align-items: center; justify-content: space-between; cursor: pointer; user-select: none;" onclick="toggleStatsSection()">
-        <span style="font-size: 13px; font-weight: 700; color: var(--gray-800);">근무자별 주간 근무시간 & 배정 통계</span>
+        <span id="step5StatsTitle" style="font-size: 13px; font-weight: 700; color: var(--gray-800);">근무자별 주간 근무시간 & 배정 통계</span>
         <button type="button" class="btn-toggle-quick-chips" id="btnToggleStats" onclick="event.stopPropagation(); toggleStatsSection();">
-          근무시간 통계 보기 <span id="arrowStats">▾</span>
+          통계 보기 <span id="arrowStats">▾</span>
         </button>
       </div>
       <div id="statsCollapsibleSection" style="display: none; margin-top: 10px;">
         <div class="stats-grid" id="statsContainer">
           <!-- Rendered by JS -->
         </div>
-        <div style="font-size: 11px; color: var(--gray-500); margin-top: 10px; line-height: 1.4;">
-          휴게시간 안내: 근로기준법 제54조(4시간당 30분, 8시간당 1시간)에 따른 최소 기준입니다. 실제 부여 시점은 매장 사정에 맞게 조정하세요.
+        <div id="statsNoticeWage" style="font-size: 11px; color: var(--gray-500); margin-top: 10px; line-height: 1.4;">
+          휴게시간 안내: 근로기준법 제54조(4시간당 30분, 8시간당 1시간)에 따른 최소 기준입니다. 실제 부여 시점은 사업장 사정에 맞게 조정하세요.
         </div>
       </div>
     </div>
@@ -2202,9 +2227,341 @@
   }
 
   /* ==========================================================================
+     USE CASE & TERMINOLOGY DICTIONARY (I18N Architecture)
+     ========================================================================== */
+  const USE_CASE_VOCABULARY = {
+    convenience: {
+      id: 'convenience',
+      label: '편의점',
+      subLabel: '24시간 3교대',
+      orgName: '매장',
+      workerName: '근무자',
+      workerTitle: '알바생',
+      scheduleName: '근무표',
+      workerInputPlaceholder: '근무자 이름 입력 (예: 김철수)',
+      showWageInfo: true,
+      dayGroups: [
+        {
+          id: 'g_all',
+          name: '연중무휴 (월~일)',
+          days: ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'],
+          shifts: [
+            { id: 's_cv_1', name: '오전', start: '07:00', end: '15:00', required: 1 },
+            { id: 's_cv_2', name: '오후', start: '15:00', end: '23:00', required: 1 },
+            { id: 's_cv_3', name: '야간', start: '23:00', end: '07:00', required: 1 }
+          ]
+        }
+      ],
+      rules: {
+        maxShiftsPerDay: 1, limitDailyHours: true, maxDailyHours: 8, noSplitShift: true, noClopen: true, minRestHours: 11,
+        limitConsecutiveDays: true, maxConsecutiveDays: 6, limitWeeklyHours: true, maxWeeklyHours: 40, balanceWeekends: true
+      },
+      sampleWorkers: [
+        { id: 'w1', name: '김철수' }, { id: 'w2', name: '이영희' },
+        { id: 'w3', name: '박민수' }, { id: 'w4', name: '최지은' },
+        { id: 'w5', name: '정우성' }
+      ]
+    },
+    cafe: {
+      id: 'cafe',
+      label: '카페',
+      subLabel: '오픈·미들·마감',
+      orgName: '매장',
+      workerName: '근무자',
+      workerTitle: '알바생',
+      scheduleName: '근무표',
+      workerInputPlaceholder: '근무자 이름 입력 (예: 김민수)',
+      showWageInfo: true,
+      dayGroups: [
+        {
+          id: 'g_wd',
+          name: '평일 (월~금)',
+          days: ['mon', 'tue', 'wed', 'thu', 'fri'],
+          shifts: [
+            { id: 's_cf_1', name: '오픈', start: '08:30', end: '14:30', required: 1 },
+            { id: 's_cf_2', name: '미들', start: '12:00', end: '18:00', required: 1 },
+            { id: 's_cf_3', name: '마감', start: '17:30', end: '22:30', required: 1 }
+          ]
+        },
+        {
+          id: 'g_we',
+          name: '주말 (토~일)',
+          days: ['sat', 'sun'],
+          shifts: [
+            { id: 's_cf_4', name: '오픈', start: '09:00', end: '15:00', required: 1 },
+            { id: 's_cf_5', name: '마감', start: '15:00', end: '21:00', required: 1 }
+          ]
+        }
+      ],
+      rules: {
+        maxShiftsPerDay: 2, limitDailyHours: true, maxDailyHours: 8, noSplitShift: true, noClopen: true, minRestHours: 11,
+        limitConsecutiveDays: true, maxConsecutiveDays: 6, limitWeeklyHours: true, maxWeeklyHours: 40, balanceWeekends: true
+      },
+      sampleWorkers: [
+        { id: 'w1', name: '김민수' }, { id: 'w2', name: '이지은' },
+        { id: 'w3', name: '박서준' }, { id: 'w4', name: '최유진' },
+        { id: 'w5', name: '정다운' }, { id: 'w6', name: '한소희' }
+      ]
+    },
+    restaurant: {
+      id: 'restaurant',
+      label: '음식점',
+      subLabel: '런치·디너 피크',
+      orgName: '매장',
+      workerName: '근무자',
+      workerTitle: '직원·알바',
+      scheduleName: '근무표',
+      workerInputPlaceholder: '근무자 이름 입력 (예: 이영호)',
+      showWageInfo: true,
+      dayGroups: [
+        {
+          id: 'g_wd',
+          name: '평일 (월~금)',
+          days: ['mon', 'tue', 'wed', 'thu', 'fri'],
+          shifts: [
+            { id: 's_rs_1', name: '런치 피크', start: '10:00', end: '15:00', required: 2 },
+            { id: 's_rs_2', name: '디너 피크', start: '17:00', end: '22:00', required: 2 }
+          ]
+        },
+        {
+          id: 'g_we',
+          name: '주말 (토~일)',
+          days: ['sat', 'sun'],
+          shifts: [
+            { id: 's_rs_3', name: '주말 런치', start: '10:30', end: '15:30', required: 2 },
+            { id: 's_rs_4', name: '주말 디너', start: '16:30', end: '22:00', required: 2 }
+          ]
+        }
+      ],
+      rules: {
+        maxShiftsPerDay: 2, limitDailyHours: true, maxDailyHours: 12, noSplitShift: false, noClopen: true, minRestHours: 11,
+        limitConsecutiveDays: true, maxConsecutiveDays: 6, limitWeeklyHours: true, maxWeeklyHours: 40, balanceWeekends: true
+      },
+      sampleWorkers: [
+        { id: 'w1', name: '강호동' }, { id: 'w2', name: '유재석' },
+        { id: 'w3', name: '신동엽' }, { id: 'w4', name: '이수근' },
+        { id: 'w5', name: '하동훈' }, { id: 'w6', name: '김종국' }
+      ]
+    },
+    shiftwork: {
+      id: 'shiftwork',
+      label: '교대근무',
+      subLabel: '주간·야간·교대',
+      orgName: '팀·사업장',
+      workerName: '근무자',
+      workerTitle: '근무자',
+      scheduleName: '교대 근무표',
+      workerInputPlaceholder: '근무자 이름 입력 (예: 박지훈)',
+      showWageInfo: true,
+      dayGroups: [
+        {
+          id: 'g_sw',
+          name: '상시 교대 (월~일)',
+          days: ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'],
+          shifts: [
+            { id: 's_sw_1', name: '주간조', start: '08:00', end: '16:00', required: 2 },
+            { id: 's_sw_2', name: '야간조', start: '16:00', end: '24:00', required: 2 },
+            { id: 's_sw_3', name: '심야조', start: '00:00', end: '08:00', required: 1 }
+          ]
+        }
+      ],
+      rules: {
+        maxShiftsPerDay: 1, limitDailyHours: true, maxDailyHours: 8, noSplitShift: true, noClopen: true, minRestHours: 11,
+        limitConsecutiveDays: true, maxConsecutiveDays: 5, limitWeeklyHours: true, maxWeeklyHours: 40, balanceWeekends: true
+      },
+      sampleWorkers: [
+        { id: 'w1', name: '박지훈' }, { id: 'w2', name: '최선우' },
+        { id: 'w3', name: '정태양' }, { id: 'w4', name: '윤하람' },
+        { id: 'w5', name: '강동원' }, { id: 'w6', name: '문채원' }
+      ]
+    },
+    military: {
+      id: 'military',
+      label: '군대·당직',
+      subLabel: '당직·불침번·경계',
+      orgName: '부대·중대',
+      workerName: '대원·인원',
+      workerTitle: '당직자',
+      scheduleName: '당직·근무 명령서',
+      workerInputPlaceholder: '대원 이름/계급 입력 (예: 상병 김민수)',
+      showWageInfo: false,
+      dayGroups: [
+        {
+          id: 'g_mil_wd',
+          name: '평일 당직 (월~금)',
+          days: ['mon', 'tue', 'wed', 'thu', 'fri'],
+          shifts: [
+            { id: 's_mil_1', name: '주간당직', start: '08:30', end: '17:30', required: 1 },
+            { id: 's_mil_2', name: '야간당직', start: '17:30', end: '08:30', required: 1 },
+            { id: 's_mil_3', name: '불침번/CCTV', start: '22:00', end: '06:00', required: 2 }
+          ]
+        },
+        {
+          id: 'g_mil_we',
+          name: '주말 당직 (토~일)',
+          days: ['sat', 'sun'],
+          shifts: [
+            { id: 's_mil_4', name: '24시간 당직', start: '08:30', end: '08:30', required: 1 },
+            { id: 's_mil_5', name: '불침번/CCTV', start: '22:00', end: '06:00', required: 2 }
+          ]
+        }
+      ],
+      rules: {
+        maxShiftsPerDay: 1, limitDailyHours: false, maxDailyHours: 24, noSplitShift: true, noClopen: true, minRestHours: 12,
+        limitConsecutiveDays: true, maxConsecutiveDays: 3, limitWeeklyHours: false, maxWeeklyHours: 60, balanceWeekends: true
+      },
+      sampleWorkers: [
+        { id: 'w1', name: '병장 김민수' }, { id: 'w2', name: '상병 이준혁' },
+        { id: 'w3', name: '상병 박지호' }, { id: 'w4', name: '일병 최도윤' },
+        { id: 'w5', name: '일병 정승우' }, { id: 'w6', name: '이병 한동훈' }
+      ]
+    },
+    club: {
+      id: 'club',
+      label: '동아리·학생회',
+      subLabel: '부스·당번·행사운영',
+      orgName: '동아리·학생회',
+      workerName: '부원·멤버',
+      workerTitle: '담당자',
+      scheduleName: '활동·당번 배정표',
+      workerInputPlaceholder: '부원 이름 입력 (예: 강하늘)',
+      showWageInfo: false,
+      dayGroups: [
+        {
+          id: 'g_club_wd',
+          name: '활동 일정 (월~금)',
+          days: ['mon', 'tue', 'wed', 'thu', 'fri'],
+          shifts: [
+            { id: 's_cl_1', name: '1타임 (오전)', start: '10:00', end: '13:00', required: 1 },
+            { id: 's_cl_2', name: '2타임 (오후)', start: '13:00', end: '16:00', required: 1 },
+            { id: 's_cl_3', name: '3타임 (마감)', start: '16:00', end: '19:00', required: 1 }
+          ]
+        }
+      ],
+      rules: {
+        maxShiftsPerDay: 2, limitDailyHours: true, maxDailyHours: 6, noSplitShift: true, noClopen: false, minRestHours: 8,
+        limitConsecutiveDays: true, maxConsecutiveDays: 5, limitWeeklyHours: true, maxWeeklyHours: 20, balanceWeekends: false
+      },
+      sampleWorkers: [
+        { id: 'w1', name: '강하늘' }, { id: 'w2', name: '서유나' },
+        { id: 'w3', name: '남주혁' }, { id: 'w4', name: '김태리' },
+        { id: 'w5', name: '박보검' }, { id: 'w6', name: '신세경' }
+      ]
+    },
+    volunteer: {
+      id: 'volunteer',
+      label: '봉사·행사',
+      subLabel: '오전·오후 봉사활동',
+      orgName: '봉사단·운영팀',
+      workerName: '봉사자·스태프',
+      workerTitle: '봉사자',
+      scheduleName: '봉사·행사 배치표',
+      workerInputPlaceholder: '봉사자/스태프 이름 입력 (예: 정다은)',
+      showWageInfo: false,
+      dayGroups: [
+        {
+          id: 'g_vol_we',
+          name: '행사 요일 (토~일)',
+          days: ['sat', 'sun'],
+          shifts: [
+            { id: 's_vl_1', name: '오전 봉사파트', start: '09:00', end: '13:00', required: 3 },
+            { id: 's_vl_2', name: '오후 봉사파트', start: '13:00', end: '18:00', required: 3 }
+          ]
+        }
+      ],
+      rules: {
+        maxShiftsPerDay: 1, limitDailyHours: true, maxDailyHours: 8, noSplitShift: true, noClopen: true, minRestHours: 11,
+        limitConsecutiveDays: true, maxConsecutiveDays: 2, limitWeeklyHours: true, maxWeeklyHours: 16, balanceWeekends: false
+      },
+      sampleWorkers: [
+        { id: 'w1', name: '정다은' }, { id: 'w2', name: '오시은' },
+        { id: 'w3', name: '유재석' }, { id: 'w4', name: '송지효' },
+        { id: 'w5', name: '이광수' }, { id: 'w6', name: '지석진' },
+        { id: 'w7', name: '하동훈' }, { id: 'w8', name: '김종국' }
+      ]
+    }
+  };
+
+  function getTerm(key, fallback = '') {
+    const currentUseCase = (state && state.useCase) ? state.useCase : 'cafe';
+    const vocab = USE_CASE_VOCABULARY[currentUseCase] || USE_CASE_VOCABULARY['cafe'];
+    if (vocab && vocab[key] !== undefined) return vocab[key];
+    if (USE_CASE_VOCABULARY['cafe'] && USE_CASE_VOCABULARY['cafe'][key] !== undefined) return USE_CASE_VOCABULARY['cafe'][key];
+    return fallback;
+  }
+
+  function updateDynamicLabels() {
+    const org = getTerm('orgName', '매장');
+    const worker = getTerm('workerName', '근무자');
+    const title = getTerm('workerTitle', '알바생');
+    const schedule = getTerm('scheduleName', '근무표');
+    const placeholder = getTerm('workerInputPlaceholder', '이름 입력');
+
+    // Home
+    const sub = document.getElementById('homeSubtitle');
+    if (sub) sub.textContent = '매장, 교대근무, 당직, 동아리까지 조건만 입력하면 공평하고 빈틈없는 맞춤 배정표를 자동으로 만듭니다.';
+
+    // Step 1
+    const s1Next = document.getElementById('step1NextBtn');
+    if (s1Next) s1Next.textContent = `다음: ${worker} 등록`;
+
+    // Step 2
+    const s2Title = document.getElementById('step2Title');
+    if (s2Title) s2Title.textContent = `2단계: ${worker} 명단 등록`;
+    const s2Desc = document.getElementById('step2Desc');
+    if (s2Desc) s2Desc.textContent = `${schedule}에 들어갈 ${worker} 이름을 추가하세요.`;
+    const wInput = document.getElementById('workerNameInput');
+    if (wInput) wInput.placeholder = placeholder;
+    const s2ListLabel = document.getElementById('step2ListLabel');
+    if (s2ListLabel) s2ListLabel.textContent = `등록된 ${worker} 목록`;
+    const s2Next = document.getElementById('step2NextBtn');
+    if (s2Next) s2Next.textContent = '다음: 가능 시간 체크';
+
+    // Step 3
+    const s3Title = document.getElementById('step3Title');
+    if (s3Title) s3Title.textContent = `3단계: ${worker}별 가능 시간 체크`;
+    const s3Desc = document.getElementById('step3Desc');
+    if (s3Desc) s3Desc.textContent = `${worker}별로 참여 가능한 요일/타임을 체크하세요. (칸 클릭 시 가능/불가 전환)`;
+
+    // Step 4
+    const s4Next = document.getElementById('step4NextBtn');
+    if (s4Next) s4Next.textContent = `${schedule} 만들기`;
+    const wageInput = document.getElementById('rule_showWageInfo');
+    if (wageInput) wageInput.checked = (state.showWageInfo !== false);
+
+    // Step 5
+    const s5Title = document.getElementById('step5Title');
+    if (s5Title) s5Title.textContent = `5단계: 이번 주 ${schedule}`;
+    const s5Badge = document.getElementById('step5HeaderBadge');
+    if (s5Badge) s5Badge.textContent = `${title} 클릭 시 즉시 대타 교체 가능`;
+    const s5Stats = document.getElementById('step5StatsTitle');
+    if (s5Stats) s5Stats.textContent = `${worker}별 주간 ${(state.showWageInfo !== false) ? '근무시간 & ' : ''}배정 통계`;
+    const demoBtn = document.getElementById('demoBannerBtn');
+    if (demoBtn) demoBtn.textContent = `내 ${org} ${schedule} 직접 만들기`;
+    const demoDesc = document.getElementById('demoBannerDesc');
+    if (demoDesc) demoDesc.textContent = `${getTerm('label', '카페')} ${org} 샘플 데이터로 생성된 결과입니다.`;
+    const demoSubDesc = document.getElementById('demoBannerSubDesc');
+    if (demoSubDesc) demoSubDesc.textContent = `${worker} 이름을 누르면 즉시 대타 교체(미세조정)를 시험해 볼 수 있습니다.`;
+    const statsNotice = document.getElementById('statsNoticeWage');
+    if (statsNotice) statsNotice.style.display = (state.showWageInfo !== false) ? 'block' : 'none';
+
+    // Presets active chip highlight in Step 1
+    document.querySelectorAll('.btn-preset-chip').forEach(btn => {
+      const pId = btn.getAttribute('data-preset');
+      if (pId === state.useCase) {
+        btn.classList.add('active-preset');
+      } else {
+        btn.classList.remove('active-preset');
+      }
+    });
+  }
+
+  /* ==========================================================================
      APPLICATION STATE
      ========================================================================== */
   let state = {
+    useCase: 'cafe',
+    showWageInfo: true,
     dayGroups: [
       {
         id: 'g_weekday',
@@ -2265,6 +2622,8 @@
       const saved = localStorage.getItem(MAIN_STORAGE_KEY);
       if (saved) {
         state = JSON.parse(saved);
+        if (!state.useCase) state.useCase = 'cafe';
+        if (state.showWageInfo === undefined) state.showWageInfo = true;
         if (!state.rules) {
           state.rules = {
             maxShiftsPerDay: 2, limitDailyHours: true, maxDailyHours: 8, noSplitShift: true, noClopen: true, minRestHours: 11,
@@ -2426,6 +2785,9 @@
   }
 
   function runDemoExperience() {
+    state.useCase = 'cafe';
+    state.showWageInfo = true;
+
     // 1. Setup realistic Cafe store sample with guaranteed 100% coverage
     state.dayGroups = [
       {
@@ -2549,7 +2911,7 @@
     const demoBanner = document.getElementById('demoExperienceBanner');
     if (demoBanner) demoBanner.style.display = 'flex';
 
-    showToast('예시 체험용 카페 근무표가 생성되었습니다. (알바생 이름을 눌러 대타 교체를 시험해보세요)');
+    showToast('예시 체험용 카페 근무표가 생성되었습니다. (근무자 이름을 눌러 대타 교체를 시험해보세요)');
   }
 
   function confirmExitDemoExperience() {
@@ -2574,39 +2936,19 @@
     if (demoBanner) demoBanner.style.display = 'none';
 
     if (choice === 'clear') {
-      // Clear sample data and start fresh
-      state.dayGroups = [
-        {
-          id: 'group_' + Date.now(),
-          name: '평일 그룹',
-          days: ['mon', 'tue', 'wed', 'thu', 'fri'],
-          shifts: [
-            { id: 'shift_1', name: '오픈', start: '09:00', end: '15:00', required: 1 },
-            { id: 'shift_2', name: '마감', start: '15:00', end: '22:00', required: 1 }
-          ]
-        }
-      ];
+      // Clear sample data and start fresh with current use case
+      const vocab = USE_CASE_VOCABULARY[state.useCase] || USE_CASE_VOCABULARY['cafe'];
+      state.dayGroups = JSON.parse(JSON.stringify(vocab.dayGroups));
       state.workers = [];
       state.availability = {};
       state.lastSchedule = null;
-      state.rules = {
-        maxShiftsPerDay: 2,
-        limitDailyHours: true,
-        maxDailyHours: 8,
-        noSplitShift: true,
-        noClopen: true,
-        minRestHours: 11,
-        limitConsecutiveDays: true,
-        maxConsecutiveDays: 6,
-        limitWeeklyHours: true,
-        maxWeeklyHours: 40,
-        balanceWeekends: true
-      };
+      state.rules = JSON.parse(JSON.stringify(vocab.rules));
       currentWorkerTabId = null;
       saveState();
+      updateDynamicLabels();
       renderAll();
       goToStep(1);
-      showToast('✨ 예시 데이터가 초기화되었습니다. 내 매장 정보를 입력해 보세요!');
+      showToast(`✨ 예시 데이터가 초기화되었습니다. 내 ${getTerm('orgName', '매장')} 정보를 입력해 보세요!`);
     } else if (choice === 'keep') {
       // Keep sample as editable template
       goToStep(1);
@@ -2617,108 +2959,26 @@
   function applyPresetAndStart(presetType) {
     applyPresetData(presetType);
     goToStep(1);
-    showToast(`'${presetType === 'convenience' ? '편의점' : presetType === 'cafe' ? '카페' : '음식점'}' 프리셋이 세팅되었습니다.`);
+    const vocab = USE_CASE_VOCABULARY[presetType] || USE_CASE_VOCABULARY['cafe'];
+    showToast(`'${vocab.label}' 템플릿이 적용되었습니다.`);
   }
 
   function applyPresetData(presetType) {
-    if (presetType === 'convenience') {
-      state.dayGroups = [
-        {
-          id: 'g_all',
-          name: '연중무휴 (월~일)',
-          days: ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'],
-          shifts: [
-            { id: 's_cv_1', name: '오전', start: '07:00', end: '15:00', required: 1 },
-            { id: 's_cv_2', name: '오후', start: '15:00', end: '23:00', required: 1 },
-            { id: 's_cv_3', name: '야간', start: '23:00', end: '07:00', required: 1 }
-          ]
-        }
-      ];
-      state.rules = {
-        maxShiftsPerDay: 1, limitDailyHours: true, maxDailyHours: 8, noSplitShift: true, noClopen: true, minRestHours: 11,
-        limitConsecutiveDays: true, maxConsecutiveDays: 6, limitWeeklyHours: true,
-        maxWeeklyHours: 40, balanceWeekends: true
-      };
-      if (state.workers.length === 0) {
-        state.workers = [
-          { id: 'w1', name: '김철수' }, { id: 'w2', name: '이영희' },
-          { id: 'w3', name: '박민수' }, { id: 'w4', name: '최지은' },
-          { id: 'w5', name: '정우성' }
-        ];
-      }
-    } else if (presetType === 'cafe') {
-      state.dayGroups = [
-        {
-          id: 'g_wd',
-          name: '평일 그룹',
-          days: ['mon', 'tue', 'wed', 'thu', 'fri'],
-          shifts: [
-            { id: 's_cf_1', name: '오픈', start: '08:00', end: '14:00', required: 2 },
-            { id: 's_cf_2', name: '미들', start: '12:00', end: '18:00', required: 1 },
-            { id: 's_cf_3', name: '마감', start: '17:00', end: '23:00', required: 2 }
-          ]
-        },
-        {
-          id: 'g_we',
-          name: '주말 그룹',
-          days: ['sat', 'sun'],
-          shifts: [
-            { id: 's_cf_4', name: '오픈', start: '09:00', end: '15:00', required: 2 },
-            { id: 's_cf_5', name: '마감', start: '15:00', end: '22:00', required: 2 }
-          ]
-        }
-      ];
-      state.rules = {
-        maxShiftsPerDay: 2, limitDailyHours: true, maxDailyHours: 8, noSplitShift: true, noClopen: true, minRestHours: 11,
-        limitConsecutiveDays: true, maxConsecutiveDays: 6, limitWeeklyHours: true,
-        maxWeeklyHours: 40, balanceWeekends: true
-      };
-      if (state.workers.length === 0) {
-        state.workers = [
-          { id: 'w1', name: '김민수' }, { id: 'w2', name: '이지은' },
-          { id: 'w3', name: '박서준' }, { id: 'w4', name: '최유진' },
-          { id: 'w5', name: '정다운' }, { id: 'w6', name: '한소희' }
-        ];
-      }
-    } else if (presetType === 'restaurant') {
-      state.dayGroups = [
-        {
-          id: 'g_wd',
-          name: '평일 그룹',
-          days: ['mon', 'tue', 'wed', 'thu', 'fri'],
-          shifts: [
-            { id: 's_rs_1', name: '런치 피크', start: '10:00', end: '15:00', required: 2 },
-            { id: 's_rs_2', name: '디너 피크', start: '17:00', end: '22:00', required: 3 }
-          ]
-        },
-        {
-          id: 'g_we',
-          name: '주말 그룹',
-          days: ['sat', 'sun'],
-          shifts: [
-            { id: 's_rs_3', name: '주말 풀타임', start: '11:00', end: '22:00', required: 3 }
-          ]
-        }
-      ];
-      state.rules = {
-        maxShiftsPerDay: 2, limitDailyHours: true, maxDailyHours: 12, noSplitShift: false, noClopen: true, minRestHours: 11,
-        limitConsecutiveDays: true, maxConsecutiveDays: 6, limitWeeklyHours: true,
-        maxWeeklyHours: 40, balanceWeekends: true
-      };
-      if (state.workers.length === 0) {
-        state.workers = [
-          { id: 'w1', name: '강호동' }, { id: 'w2', name: '유재석' },
-          { id: 'w3', name: '신동엽' }, { id: 'w4', name: '이수근' },
-          { id: 'w5', name: '하동훈' }, { id: 'w6', name: '김종국' }
-        ];
-      }
+    const vocab = USE_CASE_VOCABULARY[presetType] || USE_CASE_VOCABULARY['cafe'];
+    state.useCase = presetType;
+    state.showWageInfo = vocab.showWageInfo;
+    state.dayGroups = JSON.parse(JSON.stringify(vocab.dayGroups));
+    state.rules = JSON.parse(JSON.stringify(vocab.rules));
+    if (state.workers.length === 0 && vocab.sampleWorkers) {
+      state.workers = JSON.parse(JSON.stringify(vocab.sampleWorkers));
     }
-
+    state.availability = {};
     syncAvailabilitySchema();
     if (state.workers.length > 0 && !currentWorkerTabId) {
       currentWorkerTabId = state.workers[0].id;
     }
     saveState();
+    updateDynamicLabels();
     renderAll();
   }
 
@@ -2999,6 +3259,7 @@
      RENDER FUNCTIONS
      ========================================================================== */
   function renderAll() {
+    updateDynamicLabels();
     renderDayGroups();
     renderRulesUI();
     renderWorkers();
@@ -3490,12 +3751,23 @@
     if (maxWeekly) maxWeekly.value = r.maxWeeklyHours || 40;
     const balanceWknd = document.getElementById('rule_balanceWeekends');
     if (balanceWknd) balanceWknd.checked = !!r.balanceWeekends;
+    const showWage = document.getElementById('rule_showWageInfo');
+    if (showWage) showWage.checked = (state.showWageInfo !== false);
   }
 
   function updateRule(key, value) {
     if (!state.rules) state.rules = {};
     state.rules[key] = value;
     saveState();
+  }
+
+  function updateShowWageInfo(checked) {
+    state.showWageInfo = checked;
+    saveState();
+    updateDynamicLabels();
+    if (state.lastSchedule) {
+      renderScheduleResult(state.lastSchedule);
+    }
   }
 
   /* ==========================================================================
@@ -4032,15 +4304,9 @@
           }
         });
 
-        // Holiday Pay rule: Net work hours >= 15h
-        const isHolidayPayEligible = totalNetWorkHours >= 15;
-
-        return `
-          <div class="stat-card">
-            <div class="stat-header-row">
-              <span class="stat-name">${escapeHtml(w.name)}</span>
-              ${isHolidayPayEligible ? `<span class="badge-holiday-pay">주휴수당 대상</span>` : ''}
-            </div>
+        const isHolidayPayEligible = (state.showWageInfo !== false) && totalNetWorkHours >= 15;
+        const wageBadgeHtml = isHolidayPayEligible ? `<span class="badge-holiday-pay">주휴수당 대상</span>` : '';
+        const wageMetricsHtml = (state.showWageInfo !== false) ? `
             <div class="stat-metrics">
               <span>실근로시간 (휴게제외)</span>
               <span class="stat-highlight">${totalNetWorkHours.toFixed(1)}<span style="font-size: 13px; font-weight: normal; color: var(--gray-500);">시간</span></span>
@@ -4049,6 +4315,20 @@
               <span>총 체류시간: <strong>${totalPresenceHours.toFixed(1)}시간</strong></span>
               <span style="color: var(--gray-400);">(휴게 ${totalBreakHours.toFixed(1)}h)</span>
             </div>
+        ` : `
+            <div class="stat-metrics">
+              <span>총 배정·참여 시간</span>
+              <span class="stat-highlight">${totalPresenceHours.toFixed(1)}<span style="font-size: 13px; font-weight: normal; color: var(--gray-500);">시간</span></span>
+            </div>
+        `;
+
+        return `
+          <div class="stat-card">
+            <div class="stat-header-row">
+              <span class="stat-name">${escapeHtml(w.name)}</span>
+              ${wageBadgeHtml}
+            </div>
+            ${wageMetricsHtml}
             <div class="stat-metrics" style="font-size: 12px; color: var(--gray-500); border-top: 1px dashed var(--gray-200); padding-top: 4px; margin-top: 2px;">
               <span>배정 횟수: <strong>${stat.count}회</strong></span>
               <span>(주말 ${stat.weekendCount}회)</span>
@@ -4237,7 +4517,9 @@
     }
 
     const schedule = state.lastSchedule;
-    let text = `📅 [이번 주 알바 근무표]\n`;
+    const scheduleName = getTerm('scheduleName', '근무표');
+    const workerName = getTerm('workerName', '근무자');
+    let text = `📅 [이번 주 ${scheduleName}]\n`;
     text += `━━━━━━━━━━━━━━━━━━\n`;
 
     ALL_DAYS.forEach(day => {
@@ -4259,7 +4541,7 @@
     });
 
     text += `\n━━━━━━━━━━━━━━━━━━\n`;
-    text += `📊 [주간 근무시간 및 배정 통계]\n`;
+    text += `📊 [${workerName}별 주간 배정 통계]\n`;
     state.workers.forEach(w => {
       const stat = schedule.workerStats[w.id] || { count: 0, hours: 0, dayShifts: {} };
       let totalPresenceHours = stat.hours || 0;
@@ -4276,8 +4558,12 @@
         }
       });
 
-      const holidayTag = totalNetWorkHours >= 15 ? ' [주휴수당 대상]' : '';
-      text += ` - ${w.name}: 실근로 ${totalNetWorkHours.toFixed(1)}시간 (체류 ${totalPresenceHours.toFixed(1)}h / 휴게 ${totalBreakHours.toFixed(1)}h 제외, ${stat.count}회)${holidayTag}\n`;
+      if (state.showWageInfo !== false) {
+        const holidayTag = totalNetWorkHours >= 15 ? ' [주휴수당 대상]' : '';
+        text += ` - ${w.name}: 실근로 ${totalNetWorkHours.toFixed(1)}시간 (체류 ${totalPresenceHours.toFixed(1)}h / 휴게 ${totalBreakHours.toFixed(1)}h 제외, ${stat.count}회)${holidayTag}\n`;
+      } else {
+        text += ` - ${w.name}: 총 ${totalPresenceHours.toFixed(1)}시간 배정 (${stat.count}회)\n`;
+      }
     });
 
     text += `\n---\n근무표 자동 생성: https://shift-scheduler.moow-ui.workers.dev\n`;
