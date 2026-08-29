@@ -391,40 +391,55 @@
       padding: 12px 14px;
       margin-bottom: 16px;
     }
+    .step-presets-box {
+      background: #f8fafc;
+      border: 1.5px solid #cbd5e1;
+      border-radius: var(--radius-md);
+      padding: 12px 14px;
+      margin-bottom: 16px;
+    }
     .step-presets-title {
-      font-size: 12px;
+      font-size: 13px;
       font-weight: 700;
-      color: var(--gray-600);
+      color: var(--gray-700);
       margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
     }
     .step-preset-buttons {
       display: flex;
-      gap: 8px;
+      gap: 6px;
       flex-wrap: wrap;
     }
     .btn-preset-chip {
       background: white;
-      border: 1.5px solid var(--gray-300);
+      border: 1.5px solid #cbd5e1;
       border-radius: 20px;
       padding: 6px 12px;
       font-size: 12px;
       font-weight: 600;
       color: var(--gray-700);
       cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.03);
       transition: all 0.15s ease;
       touch-action: manipulation;
     }
     .btn-preset-chip:hover {
       border-color: var(--primary);
       color: var(--primary);
-      background: var(--primary-light);
+      background: #eff6ff;
+      transform: translateY(-1px);
     }
     .btn-preset-chip.active-preset {
       background: #1e40af;
       color: white;
       border-color: #1e40af;
       font-weight: 700;
-      box-shadow: 0 2px 4px rgba(30, 64, 175, 0.25);
+      box-shadow: 0 2px 5px rgba(30, 64, 175, 0.28);
     }
 
     .demo-experience-banner {
@@ -508,11 +523,12 @@
        STEP 1: Store & Shifts (Section A & E)
        ========================================================================== */
     .day-group-card {
-      background: var(--gray-50);
-      border: 1px solid var(--gray-200);
+      background: #f8fafc;
+      border: 1.5px solid #cbd5e1;
       border-radius: var(--radius-md);
       padding: 16px;
       margin-bottom: 16px;
+      box-shadow: 0 2px 6px rgba(15, 23, 42, 0.04);
     }
 
     .day-group-header {
@@ -525,17 +541,17 @@
     }
 
     .day-group-name-input {
-      font-size: 15px;
+      font-size: 14px;
       font-weight: 700;
       color: var(--gray-900);
       background: white;
-      border: 1px solid var(--gray-300);
+      border: 1.5px solid #cbd5e1;
       border-radius: var(--radius-sm);
       padding: 6px 10px;
-      width: 180px;
+      width: 150px;
     }
 
-    /* Day toggle chips */
+    /* Day toggle chips (Single-character compact buttons) */
     .day-buttons-row {
       display: flex;
       flex-wrap: wrap;
@@ -544,29 +560,32 @@
     }
 
     .day-toggle-btn {
-      padding: 8px 12px;
-      border-radius: var(--radius-md);
+      padding: 6px 10px;
+      min-width: 34px;
+      text-align: center;
+      border-radius: 8px;
       font-size: 13px;
-      font-weight: 600;
+      font-weight: 700;
       cursor: pointer;
       transition: all 0.15s ease;
       display: inline-flex;
+      justify-content: center;
       align-items: center;
-      gap: 4px;
       user-select: none;
       background: white;
-      color: var(--gray-600);
-      border: 1.5px solid var(--gray-300);
+      color: var(--gray-700);
+      border: 1.5px solid #cbd5e1;
     }
     .day-toggle-btn:hover {
       border-color: var(--primary);
       color: var(--primary);
+      background: #eff6ff;
     }
     .day-toggle-btn.selected {
       background: var(--primary) !important;
       color: white !important;
       border-color: var(--primary-hover) !important;
-      font-weight: 700;
+      font-weight: 800;
       box-shadow: 0 2px 4px rgba(37, 99, 235, 0.25);
     }
     .day-toggle-btn.other-group {
@@ -591,21 +610,31 @@
       background: white;
       padding: 12px 14px;
       border-radius: var(--radius-sm);
-      border: none;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+      border: 1px solid #e2e8f0;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
     }
 
     .shift-top-row {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      gap: 10px;
+      gap: 8px;
       flex-wrap: wrap;
     }
 
-    .shift-input-name {
-      flex: 1;
-      min-width: 140px;
+    .shift-input-name-compact {
+      width: 110px;
+      padding: 6px 8px;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .shift-input-count {
+      width: 48px;
+      padding: 6px 4px;
+      text-align: center;
+      font-size: 13px;
+      font-weight: 700;
     }
 
     /* Formatted Time Inputs & Quick Chips */
@@ -1745,13 +1774,13 @@
     <div class="step-presets-box">
       <div class="step-presets-title">용도별 빠른 템플릿 선택:</div>
       <div class="step-preset-buttons">
-        <button type="button" class="btn-preset-chip" data-preset="convenience" onclick="applyPresetAndStart('convenience')">편의점 (24시간 3교대)</button>
-        <button type="button" class="btn-preset-chip" data-preset="cafe" onclick="applyPresetAndStart('cafe')">카페 (오픈·미들·마감)</button>
-        <button type="button" class="btn-preset-chip" data-preset="restaurant" onclick="applyPresetAndStart('restaurant')">음식점 (런치·디너 피크)</button>
-        <button type="button" class="btn-preset-chip" data-preset="shiftwork" onclick="applyPresetAndStart('shiftwork')">교대근무 (주간·야간·교대)</button>
-        <button type="button" class="btn-preset-chip" data-preset="military" onclick="applyPresetAndStart('military')">군대·당직 (당직·불침번·경계)</button>
-        <button type="button" class="btn-preset-chip" data-preset="club" onclick="applyPresetAndStart('club')">동아리·학생회 (부스·당번·행사)</button>
-        <button type="button" class="btn-preset-chip" data-preset="volunteer" onclick="applyPresetAndStart('volunteer')">봉사·행사 (오전·오후 활동)</button>
+        <button type="button" class="btn-preset-chip" data-preset="convenience" onclick="applyPresetAndStart('convenience')">🏪 편의점 (24시간 3교대)</button>
+        <button type="button" class="btn-preset-chip" data-preset="cafe" onclick="applyPresetAndStart('cafe')">☕ 카페 (오픈·미들·마감)</button>
+        <button type="button" class="btn-preset-chip" data-preset="restaurant" onclick="applyPresetAndStart('restaurant')">🍽️ 음식점 (런치·디너 피크)</button>
+        <button type="button" class="btn-preset-chip" data-preset="shiftwork" onclick="applyPresetAndStart('shiftwork')">🔄 교대근무 (주간·야간·교대)</button>
+        <button type="button" class="btn-preset-chip" data-preset="military" onclick="applyPresetAndStart('military')">🛡️ 군대·당직 (당직·불침번·경계)</button>
+        <button type="button" class="btn-preset-chip" data-preset="club" onclick="applyPresetAndStart('club')">🎓 동아리·학생회 (부스·당번·행사)</button>
+        <button type="button" class="btn-preset-chip" data-preset="volunteer" onclick="applyPresetAndStart('volunteer')">🤝 봉사·행사 (오전·오후 활동)</button>
       </div>
     </div>
 
@@ -3280,7 +3309,7 @@
     if (!container) return;
 
     container.innerHTML = state.dayGroups.map((group) => {
-      // Day buttons
+      // Day buttons (Compact 1-character buttons)
       const dayButtonsHtml = ALL_DAYS.map(day => {
         const isAssignedToThis = group.days.includes(day.id);
         const assignedGroup = state.dayGroups.find(g => g.days.includes(day.id));
@@ -3290,13 +3319,13 @@
           <button type="button"
                   class="day-toggle-btn ${isAssignedToThis ? 'selected' : ''} ${isAssignedOther ? 'other-group' : ''}"
                   onclick="toggleDayInGroup('${group.id}', '${day.id}')"
-                  title="${isAssignedOther ? `${assignedGroup.name}에 배정됨 (클릭 시 이동)` : ''}">
-            ${day.name}요일
+                  title="${isAssignedOther ? `${assignedGroup.name}에 배정됨 (클릭 시 이동)` : `${day.name}요일`}">
+            ${day.name}
           </button>
         `;
       }).join('');
 
-      // Shift items with native time input + collapsible quick time chips + duration + break time notice
+      // Shift items with compact time name, compact count (no '필요' text), and native time input
       const shiftListHtml = group.shifts.map(shift => {
         const startVal = shift.start || '09:00';
         const endVal = shift.end || '15:00';
@@ -3321,19 +3350,16 @@
         return `
           <div class="group-shift-item">
             <div class="shift-top-row">
-              <div class="shift-input-name">
-                <input type="text" class="input-text" style="width: 100%; font-weight: 700;" value="${escapeHtml(shift.name)}" placeholder="타임 이름 (예: 오픈, 미들, 마감)" onchange="updateGroupShift('${group.id}', '${shift.id}', 'name', this.value)">
-              </div>
-              <div style="display: flex; align-items: center; gap: 8px;">
+              <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+                <input type="text" class="input-text shift-input-name-compact" value="${escapeHtml(shift.name)}" placeholder="타임명" onchange="updateGroupShift('${group.id}', '${shift.id}', 'name', this.value)">
                 <div style="display: flex; align-items: center; gap: 4px;">
-                  <span style="font-size: 12px; color: var(--gray-600); font-weight: 600;">필요:</span>
                   <input type="number" class="input-text shift-input-count" min="1" max="20" value="${shift.required || 1}" onchange="updateGroupShift('${group.id}', '${shift.id}', 'required', parseInt(this.value)||1)">
-                  <span style="font-size: 12px; color: var(--gray-600);">명</span>
+                  <span style="font-size: 13px; font-weight: 600; color: var(--gray-700);">명</span>
                 </div>
-                ${group.shifts.length > 1 ? `
-                  <button type="button" class="btn-outline-del" onclick="deleteGroupShift('${group.id}', '${shift.id}')">삭제</button>
-                ` : ''}
               </div>
+              ${group.shifts.length > 1 ? `
+                <button type="button" class="btn-outline-del" onclick="deleteGroupShift('${group.id}', '${shift.id}')">삭제</button>
+              ` : ''}
             </div>
 
             <div class="time-selector-box">
