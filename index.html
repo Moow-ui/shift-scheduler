@@ -766,25 +766,26 @@
       font-size: 12px;
     }
 
-    .time-input-24h {
-      width: 58px;
+    .time-select-24h {
+      width: 68px;
       height: 26px;
       padding: 0 4px;
-      font-size: 13px;
+      font-size: 12.5px;
       font-weight: 700;
       text-align: center;
       border: 1.5px solid #cbd5e1;
       border-radius: 4px;
       background: white;
       color: var(--gray-800);
+      cursor: pointer;
       outline: none;
       font-family: inherit;
       transition: all 0.15s ease;
     }
-    .time-input-24h:focus {
+    .time-select-24h:focus {
       border-color: var(--primary);
       box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.15);
-      background: #eff6ff;
+      background-color: #eff6ff;
     }
 
     .shift-duration-badge {
@@ -3485,6 +3486,24 @@
     }
   }
 
+  const TIME_OPTIONS_24H = [
+    '00:00', '00:30', '01:00', '01:30', '02:00', '02:30', '03:00', '03:30',
+    '04:00', '04:30', '05:00', '05:30', '06:00', '06:30', '07:00', '07:30',
+    '08:00', '08:30', '09:00', '09:30', '10:00', '10:30', '11:00', '11:30',
+    '12:00', '12:30', '13:00', '13:30', '14:00', '14:30', '15:00', '15:30',
+    '16:00', '16:30', '17:00', '17:30', '18:00', '18:30', '19:00', '19:30',
+    '20:00', '20:30', '21:00', '21:30', '22:00', '22:30', '23:00', '23:30', '24:00'
+  ];
+
+  function renderTimeSelectOptions(selectedVal) {
+    let options = [...TIME_OPTIONS_24H];
+    if (selectedVal && !options.includes(selectedVal)) {
+      options.push(selectedVal);
+      options.sort();
+    }
+    return options.map(t => `<option value="${t}" ${t === selectedVal ? 'selected' : ''}>${t}</option>`).join('');
+  }
+
   /* Step 1: Day Groups & Shifts (Section A) */
   function renderDayGroups() {
     const container = document.getElementById('dayGroupsContainer');
@@ -3558,9 +3577,13 @@
 
             <div class="shift-row-bottom">
               <div class="shift-time-inputs-wrap">
-                <input type="text" inputmode="numeric" class="time-input-24h" maxlength="5" value="${startVal}" placeholder="09:00" onchange="updateGroupShift('${group.id}', '${shift.id}', 'start', this.value)">
+                <select class="time-select-24h" onchange="updateGroupShift('${group.id}', '${shift.id}', 'start', this.value)">
+                  ${renderTimeSelectOptions(startVal)}
+                </select>
                 <span class="time-sep">~</span>
-                <input type="text" inputmode="numeric" class="time-input-24h" maxlength="5" value="${endVal}" placeholder="15:00" onchange="updateGroupShift('${group.id}', '${shift.id}', 'end', this.value)">
+                <select class="time-select-24h" onchange="updateGroupShift('${group.id}', '${shift.id}', 'end', this.value)">
+                  ${renderTimeSelectOptions(endVal)}
+                </select>
                 <span class="shift-duration-badge">${formatDurationText(duration)}</span>
                 ${breakText ? `<span class="shift-break-subtext">${breakText}</span>` : ''}
               </div>
