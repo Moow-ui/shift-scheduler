@@ -2690,8 +2690,11 @@
     const slots = getSlots();
     if (slots[slotName]) {
       state = JSON.parse(JSON.stringify(slots[slotName]));
+      if (!state.useCase) state.useCase = 'cafe';
+      if (state.showWageInfo === undefined) state.showWageInfo = true;
       syncAvailabilitySchema();
       saveState();
+      updateDynamicLabels();
       renderAll();
       showToast(`'${slotName}' 설정을 불러왔습니다.`);
       goToStep(1);
@@ -2702,7 +2705,7 @@
     const input = document.getElementById('slotSaveNameInput');
     const name = input.value.trim();
     if (!name) {
-      showToast('저장할 매장 이름을 입력해 주세요.');
+      showToast('저장할 이름을 입력해 주세요.');
       input.focus();
       return;
     }
@@ -2733,8 +2736,11 @@
         const loaded = JSON.parse(e.target.result);
         if (loaded && loaded.dayGroups) {
           state = loaded;
+          if (!state.useCase) state.useCase = 'cafe';
+          if (state.showWageInfo === undefined) state.showWageInfo = true;
           syncAvailabilitySchema();
           saveState();
+          updateDynamicLabels();
           renderAll();
           showToast('📂 백업 파일을 성공적으로 불러왔습니다!');
           goToStep(1);
