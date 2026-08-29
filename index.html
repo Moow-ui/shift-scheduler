@@ -646,21 +646,63 @@
     }
 
     .time-input-native {
-      padding: 8px 10px;
-      font-size: 14px;
+      padding: 4px 6px;
+      font-size: 13px;
       font-weight: 700;
       border: 1.5px solid var(--gray-300);
       border-radius: var(--radius-sm);
       background: white;
       color: var(--gray-800);
       outline: none;
-      min-height: 44px;
+      height: 32px;
+      min-height: 32px;
+      max-width: 90px;
       cursor: pointer;
       font-family: inherit;
     }
     .time-input-native:focus {
       border-color: var(--primary);
       box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.15);
+    }
+
+    .btn-icon-del {
+      background: none;
+      border: 1.5px solid #cbd5e1;
+      border-radius: var(--radius-sm);
+      padding: 4px 8px;
+      font-size: 13px;
+      cursor: pointer;
+      line-height: 1;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.15s ease;
+      touch-action: manipulation;
+    }
+    .btn-icon-del:hover {
+      background: #fee2e2;
+      border-color: #fca5a5;
+    }
+
+    .btn-shift-del-corner {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      background: none;
+      border: none;
+      font-size: 14px;
+      cursor: pointer;
+      opacity: 0.6;
+      padding: 4px;
+      border-radius: 4px;
+      line-height: 1;
+      transition: all 0.15s ease;
+      touch-action: manipulation;
+    }
+    .btn-shift-del-corner:hover {
+      opacity: 1;
+      background: #fee2e2;
+      transform: scale(1.1);
     }
 
     .btn-toggle-quick-chips {
@@ -1770,10 +1812,15 @@
       <button class="btn btn-sm btn-outline-secondary" onclick="addDayGroup()">+ 요일 그룹 추가</button>
     </div>
 
-    <!-- 4. Industry & Use-case Presets (Moved to Step 1 top) -->
+    <!-- 4. Industry & Use-case Presets (Folded by Default) -->
     <div class="step-presets-box">
-      <div class="step-presets-title">용도별 빠른 템플릿 선택:</div>
-      <div class="step-preset-buttons">
+      <div style="display: flex; align-items: center; justify-content: space-between; cursor: pointer;" onclick="toggleStepPresets()">
+        <span class="step-presets-title" style="margin-bottom: 0;">⚡ 용도별 빠른 템플릿 선택</span>
+        <button type="button" class="btn btn-sm btn-outline-secondary" id="btnTogglePresets" style="font-size: 11px; padding: 3px 8px;" onclick="event.stopPropagation(); toggleStepPresets();">
+          템플릿 열기 ▾
+        </button>
+      </div>
+      <div id="stepPresetsPanel" class="step-preset-buttons" style="display: none; margin-top: 10px;">
         <button type="button" class="btn-preset-chip" data-preset="convenience" onclick="applyPresetAndStart('convenience')">🏪 편의점 (24시간 3교대)</button>
         <button type="button" class="btn-preset-chip" data-preset="cafe" onclick="applyPresetAndStart('cafe')">☕ 카페 (오픈·미들·마감)</button>
         <button type="button" class="btn-preset-chip" data-preset="restaurant" onclick="applyPresetAndStart('restaurant')">🍽️ 음식점 (런치·디너 피크)</button>
@@ -3303,6 +3350,19 @@
     renderHomeSlotSelect();
   }
 
+  function toggleStepPresets() {
+    const panel = document.getElementById('stepPresetsPanel');
+    const btn = document.getElementById('btnTogglePresets');
+    if (!panel || !btn) return;
+    if (panel.style.display === 'none' || panel.style.display === '') {
+      panel.style.display = 'flex';
+      btn.textContent = '템플릿 접기 ▴';
+    } else {
+      panel.style.display = 'none';
+      btn.textContent = '템플릿 열기 ▾';
+    }
+  }
+
   /* Step 1: Day Groups & Shifts (Section A) */
   function renderDayGroups() {
     const container = document.getElementById('dayGroupsContainer');
@@ -3325,7 +3385,7 @@
         `;
       }).join('');
 
-      // Shift items with compact time name, compact count (no '필요' text), and native time input
+      // Shift items with compact time name, compact count (no '필요' text), trash icon in corner, and compact time input
       const shiftListHtml = group.shifts.map(shift => {
         const startVal = shift.start || '09:00';
         const endVal = shift.end || '15:00';
@@ -3348,8 +3408,11 @@
         const isExpanded = expandedQuickChips.has(chipKey);
 
         return `
-          <div class="group-shift-item">
-            <div class="shift-top-row">
+          <div class="group-shift-item" style="position: relative;">
+            ${group.shifts.length > 1 ? `
+              <button type="button" class="btn-shift-del-corner" onclick="deleteGroupShift('${group.id}', '${shift.id}')" title="타임 삭제">🗑️</button>
+            ` : ''}
+            <div class="shift-top-row" style="padding-right: ${group.shifts.length > 1 ? '26px' : '0'};">
               <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
                 <input type="text" class="input-text shift-input-name-compact" value="${escapeHtml(shift.name)}" placeholder="타임명" onchange="updateGroupShift('${group.id}', '${shift.id}', 'name', this.value)">
                 <div style="display: flex; align-items: center; gap: 4px;">
@@ -3357,17 +3420,14 @@
                   <span style="font-size: 13px; font-weight: 600; color: var(--gray-700);">명</span>
                 </div>
               </div>
-              ${group.shifts.length > 1 ? `
-                <button type="button" class="btn-outline-del" onclick="deleteGroupShift('${group.id}', '${shift.id}')">삭제</button>
-              ` : ''}
             </div>
 
             <div class="time-selector-box">
-              <div style="display: flex; align-items: center; gap: 6px; flex-wrap: wrap;">
+              <div style="display: flex; align-items: center; gap: 4px; flex-wrap: wrap;">
                 <input type="time" class="time-input-native" step="1800" value="${startVal}" onchange="updateGroupShift('${group.id}', '${shift.id}', 'start', this.value)">
-                <span style="color: var(--gray-400); font-weight: bold;">~</span>
+                <span style="color: var(--gray-400); font-weight: bold; font-size: 12px;">~</span>
                 <input type="time" class="time-input-native" step="1800" value="${endVal === '24:00' ? '00:00' : endVal}" onchange="updateGroupShift('${group.id}', '${shift.id}', 'end', this.value === '00:00' ? '24:00' : this.value)">
-                <span class="shift-duration-badge">${formatDurationText(duration)}</span>
+                <span class="shift-duration-badge" style="padding: 2px 6px; font-size: 11px;">${formatDurationText(duration)}</span>
                 <span style="font-size: 11px; color: var(--gray-500); font-weight: 600; white-space: nowrap;">${breakText}</span>
               </div>
             </div>
@@ -3396,14 +3456,11 @@
       return `
         <div class="day-group-card">
           <div class="day-group-header">
-            <div style="display: flex; align-items: center; gap: 8px;">
+            <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
               <input type="text" class="day-group-name-input" value="${escapeHtml(group.name)}" onchange="updateGroupName('${group.id}', this.value)" placeholder="그룹 이름">
-              <span style="font-size: 12px; color: var(--gray-500);">${group.days.length}개 요일 배정됨</span>
-            </div>
-            <div style="display: flex; gap: 6px;">
               <button type="button" class="btn btn-sm btn-outline-secondary" onclick="addGroupShift('${group.id}')">+ 타임 추가</button>
               ${state.dayGroups.length > 1 ? `
-                <button type="button" class="btn btn-sm btn-outline-secondary" style="color: var(--gray-500); border-color: var(--gray-300);" onclick="deleteDayGroup('${group.id}')">그룹 삭제</button>
+                <button type="button" class="btn-icon-del" onclick="deleteDayGroup('${group.id}')" title="그룹 삭제">🗑️</button>
               ` : ''}
             </div>
           </div>
@@ -3416,7 +3473,7 @@
           </div>
 
           <div>
-            <div style="font-size: 12px; font-weight: 700; color: var(--gray-600); margin-bottom: 6px;">근무 타임 및 필요 인원:</div>
+            <div style="font-size: 12px; font-weight: 700; color: var(--gray-600); margin-bottom: 6px;">근무 타임:</div>
             <div class="group-shift-list">
               ${shiftListHtml}
             </div>
