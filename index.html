@@ -2841,7 +2841,7 @@
       <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
         <div>
           <strong style="color: #1e3a8a; font-size: 13px;">[예시 체험 모드]</strong>
-          <span style="font-size: 13px; color: #1e40af;" id="demoBannerDesc">카페 매장 샘플 데이터로 생성된 결과입니다.</span>
+          <span style="font-size: 13px; color: #1e40af;" id="demoBannerDesc">대형 카페 매장 샘플 데이터 (총 15명)로 생성된 결과입니다.</span>
           <div style="font-size: 12px; color: #3b82f6; margin-top: 2px;" id="demoBannerSubDesc">근무자 이름을 누르면 즉시 대타 교체(미세조정)를 시험해 볼 수 있습니다.</div>
         </div>
       </div>
@@ -3883,16 +3883,16 @@
     state.useCase = 'cafe';
     state.showWageInfo = true;
 
-    // 1. Setup realistic Cafe store sample with guaranteed 100% coverage
+    // 1. Setup realistic 15-worker Large Cafe store sample
     state.dayGroups = [
       {
         id: 'g_wd',
         name: '평일 (월~금)',
         days: ['mon', 'tue', 'wed', 'thu', 'fri'],
         shifts: [
-          { id: 's_cf_1', name: '오픈', start: '08:30', end: '14:30', required: 1 },
-          { id: 's_cf_2', name: '미들', start: '12:00', end: '18:00', required: 1 },
-          { id: 's_cf_3', name: '마감', start: '17:30', end: '22:30', required: 1 }
+          { id: 's_cf_1', name: '오픈', start: '08:00', end: '14:00', required: 2, isNight: false, isSeniorRequired: true },
+          { id: 's_cf_2', name: '미들', start: '13:00', end: '18:00', required: 2, isNight: false, isSeniorRequired: false },
+          { id: 's_cf_3', name: '마감', start: '17:30', end: '22:30', required: 2, isNight: false, isSeniorRequired: true }
         ]
       },
       {
@@ -3900,93 +3900,92 @@
         name: '주말 (토~일)',
         days: ['sat', 'sun'],
         shifts: [
-          { id: 's_cf_4', name: '오픈', start: '09:00', end: '15:00', required: 1 },
-          { id: 's_cf_5', name: '마감', start: '15:00', end: '21:00', required: 1 }
+          { id: 's_cf_4', name: '오픈', start: '09:00', end: '15:00', required: 3, isNight: false, isSeniorRequired: true },
+          { id: 's_cf_5', name: '미들', start: '13:00', end: '18:00', required: 2, isNight: false, isSeniorRequired: false },
+          { id: 's_cf_6', name: '마감', start: '17:30', end: '22:30', required: 3, isNight: false, isSeniorRequired: true }
         ]
       }
     ];
 
     state.workers = [
-      { id: 'w1', name: '김민수' },
-      { id: 'w2', name: '이지은' },
-      { id: 'w3', name: '박서준' },
-      { id: 'w4', name: '최유진' },
-      { id: 'w5', name: '정다운' },
-      { id: 'w6', name: '한소희' }
+      { id: 'w1', name: '김민수', roleType: 'senior' },
+      { id: 'w2', name: '이지은', roleType: 'senior' },
+      { id: 'w3', name: '박서준', roleType: 'senior' },
+      { id: 'w4', name: '최유진', roleType: 'senior' },
+      { id: 'w5', name: '정다운', roleType: 'senior' },
+      { id: 'w6', name: '강태오', roleType: 'senior' },
+      { id: 'w7', name: '한소희', roleType: 'junior' },
+      { id: 'w8', name: '윤도현', roleType: 'junior' },
+      { id: 'w9', name: '송중기', roleType: 'junior' },
+      { id: 'w10', name: '배수지', roleType: 'junior' },
+      { id: 'w11', name: '임윤아', roleType: 'junior' },
+      { id: 'w12', name: '남주혁', roleType: 'junior' },
+      { id: 'w13', name: '안효섭', roleType: 'junior' },
+      { id: 'w14', name: '신세경', roleType: 'junior' },
+      { id: 'w15', name: '조보아', roleType: 'junior' }
     ];
 
     state.rules = {
-      maxShiftsPerDay: 2,
+      maxShiftsPerDay: 1,
       limitDailyHours: true,
       maxDailyHours: 8,
       noSplitShift: true,
       noClopen: true,
       minRestHours: 11,
       limitConsecutiveDays: true,
-      maxConsecutiveDays: 6,
+      maxConsecutiveDays: 5,
       limitWeeklyHours: true,
       maxWeeklyHours: 40,
-      balanceWeekends: true
+      balanceWeekends: true,
+      strictEqualShiftCount: false,
+      seniorMandatory: true,
+      seniorJuniorPairing: true,
+      nightRestNextDay: false,
+      limitMinRestDays: false,
+      minRestDaysBetweenShifts: 1
     };
 
-    // Balanced realistic availability matrix ensuring zero shortages
-    state.availability = {
-      w1: {
-        mon: { s_cf_1: true, s_cf_2: true, s_cf_3: false },
-        tue: { s_cf_1: true, s_cf_2: true, s_cf_3: false },
-        wed: { s_cf_1: true, s_cf_2: true, s_cf_3: false },
-        thu: { s_cf_1: true, s_cf_2: true, s_cf_3: false },
-        fri: { s_cf_1: true, s_cf_2: true, s_cf_3: false },
-        sat: { s_cf_4: false, s_cf_5: false },
-        sun: { s_cf_4: false, s_cf_5: false }
-      },
-      w2: {
-        mon: { s_cf_1: true, s_cf_2: true, s_cf_3: true },
-        tue: { s_cf_1: true, s_cf_2: true, s_cf_3: true },
-        wed: { s_cf_1: true, s_cf_2: true, s_cf_3: true },
-        thu: { s_cf_1: true, s_cf_2: true, s_cf_3: true },
-        fri: { s_cf_1: true, s_cf_2: true, s_cf_3: false },
-        sat: { s_cf_4: true, s_cf_5: true },
-        sun: { s_cf_4: true, s_cf_5: true }
-      },
-      w3: {
-        mon: { s_cf_1: false, s_cf_2: false, s_cf_3: true },
-        tue: { s_cf_1: false, s_cf_2: false, s_cf_3: true },
-        wed: { s_cf_1: false, s_cf_2: true, s_cf_3: true },
-        thu: { s_cf_1: false, s_cf_2: true, s_cf_3: true },
-        fri: { s_cf_1: false, s_cf_2: false, s_cf_3: true },
-        sat: { s_cf_4: true, s_cf_5: true },
-        sun: { s_cf_4: true, s_cf_5: true }
-      },
-      w4: {
-        mon: { s_cf_1: false, s_cf_2: true, s_cf_3: true },
-        tue: { s_cf_1: false, s_cf_2: true, s_cf_3: true },
-        wed: { s_cf_1: false, s_cf_2: true, s_cf_3: true },
-        thu: { s_cf_1: false, s_cf_2: true, s_cf_3: true },
-        fri: { s_cf_1: false, s_cf_2: true, s_cf_3: true },
-        sat: { s_cf_4: false, s_cf_5: true },
-        sun: { s_cf_4: false, s_cf_5: true }
-      },
-      w5: {
-        mon: { s_cf_1: true, s_cf_2: true, s_cf_3: false },
-        tue: { s_cf_1: true, s_cf_2: true, s_cf_3: false },
-        wed: { s_cf_1: true, s_cf_2: true, s_cf_3: false },
-        thu: { s_cf_1: true, s_cf_2: true, s_cf_3: false },
-        fri: { s_cf_1: true, s_cf_2: true, s_cf_3: false },
-        sat: { s_cf_4: true, s_cf_5: false },
-        sun: { s_cf_4: true, s_cf_5: false }
-      },
-      w6: {
-        mon: { s_cf_1: false, s_cf_2: false, s_cf_3: true },
-        tue: { s_cf_1: false, s_cf_2: false, s_cf_3: true },
-        wed: { s_cf_1: false, s_cf_2: false, s_cf_3: true },
-        thu: { s_cf_1: false, s_cf_2: false, s_cf_3: true },
-        fri: { s_cf_1: false, s_cf_2: false, s_cf_3: true },
-        sat: { s_cf_4: true, s_cf_5: true },
-        sun: { s_cf_4: true, s_cf_5: true }
-      }
-    };
+    // Realistic availability matrix for 15 workers ensuring 0 shortages
+    const availability = {};
+    const days = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'];
+    const wdShifts = ['s_cf_1', 's_cf_2', 's_cf_3'];
+    const weShifts = ['s_cf_4', 's_cf_5', 's_cf_6'];
+    const profiles = [
+      { wd: [1, 1, 0], we: [1, 1, 0], wdDays: ['mon', 'tue', 'wed', 'thu', 'fri'], weDays: ['sat'] },
+      { wd: [1, 1, 0], we: [1, 1, 0], wdDays: ['mon', 'tue', 'wed', 'thu', 'fri'], weDays: ['sun'] },
+      { wd: [0, 1, 1], we: [1, 1, 0], wdDays: ['mon', 'tue', 'wed', 'thu', 'fri'], weDays: ['sat', 'sun'] },
+      { wd: [0, 1, 1], we: [0, 1, 1], wdDays: ['mon', 'tue', 'wed', 'thu', 'fri'], weDays: ['sat'] },
+      { wd: [1, 0, 1], we: [0, 1, 1], wdDays: ['mon', 'wed', 'thu', 'fri'], weDays: ['sun'] },
+      { wd: [0, 0, 1], we: [0, 1, 1], wdDays: ['mon', 'tue', 'wed', 'thu', 'fri'], weDays: ['sat', 'sun'] },
+      { wd: [1, 1, 0], we: [0, 0, 0], wdDays: ['mon', 'tue', 'wed', 'thu', 'fri'], weDays: [] },
+      { wd: [0, 1, 1], we: [0, 0, 0], wdDays: ['mon', 'tue', 'wed', 'thu', 'fri'], weDays: [] },
+      { wd: [1, 1, 1], we: [1, 1, 0], wdDays: ['mon', 'wed', 'fri'], weDays: ['sat', 'sun'] },
+      { wd: [1, 1, 1], we: [1, 1, 1], wdDays: ['tue', 'thu'], weDays: ['sat', 'sun'] },
+      { wd: [0, 1, 1], we: [1, 1, 0], wdDays: ['mon', 'tue', 'wed', 'thu', 'fri'], weDays: ['sat'] },
+      { wd: [1, 1, 1], we: [1, 1, 1], wdDays: ['wed', 'thu', 'fri'], weDays: ['sat', 'sun'] },
+      { wd: [1, 1, 1], we: [1, 1, 1], wdDays: ['mon', 'tue', 'wed'], weDays: ['sat', 'sun'] },
+      { wd: [0, 1, 1], we: [0, 1, 1], wdDays: ['tue', 'wed', 'thu'], weDays: ['sat', 'sun'] },
+      { wd: [1, 1, 0], we: [1, 1, 1], wdDays: ['mon', 'thu', 'fri'], weDays: ['sat', 'sun'] }
+    ];
 
+    state.workers.forEach((w, idx) => {
+      const p = profiles[idx];
+      availability[w.id] = {};
+      days.forEach(d => {
+        availability[w.id][d] = {};
+        if (['sat', 'sun'].includes(d)) {
+          weShifts.forEach((sId, sIdx) => {
+            availability[w.id][d][sId] = p.weDays.includes(d) && (p.we[sIdx] === 1);
+          });
+        } else {
+          wdShifts.forEach((sId, sIdx) => {
+            availability[w.id][d][sId] = p.wdDays.includes(d) && (p.wd[sIdx] === 1);
+          });
+        }
+      });
+    });
+
+    state.availability = availability;
     currentWorkerTabId = 'w1';
     syncAvailabilitySchema();
 
@@ -4006,7 +4005,7 @@
     const demoBanner = document.getElementById('demoExperienceBanner');
     if (demoBanner) demoBanner.style.display = 'flex';
 
-    showToast('예시 체험용 카페 근무표가 생성되었습니다. (근무자 이름을 눌러 대타 교체를 시험해보세요)');
+    showToast('총 15명 규모의 대형 매장 예시 근무표가 생성되었습니다. (근무자 이름을 눌러 대타 교체를 시험해보세요)');
   }
 
   function confirmExitDemoExperience() {
