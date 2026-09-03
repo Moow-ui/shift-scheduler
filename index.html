@@ -940,6 +940,172 @@
       margin-bottom: 12px;
     }
 
+    /* Custom Modification Requests Section (Step 5 Feedback Loop) */
+    .custom-requests-section {
+      background: #f8fafc;
+      border: 1.5px solid #e2e8f0;
+      border-radius: var(--radius);
+      padding: 16px;
+      margin-top: 16px;
+      margin-bottom: 12px;
+    }
+    .custom-requests-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+    .custom-requests-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--gray-900);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .custom-requests-desc {
+      font-size: 12px;
+      color: var(--gray-600);
+      margin-bottom: 12px;
+      line-height: 1.4;
+    }
+    .custom-requests-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+    .custom-request-card {
+      background: white;
+      border: 1px solid #cbd5e1;
+      border-radius: var(--radius-sm);
+      padding: 10px 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+      transition: all 0.15s ease;
+    }
+    .custom-request-card:hover {
+      border-color: var(--primary);
+    }
+    .custom-request-body {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      font-size: 13px;
+      color: var(--gray-800);
+    }
+    .custom-request-type-badge {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 4px;
+      background: #e0f2fe;
+      color: #0369a1;
+      border: 1px solid #bae6fd;
+      white-space: nowrap;
+    }
+    .custom-request-del-btn {
+      background: transparent;
+      border: none;
+      color: var(--gray-400);
+      font-size: 15px;
+      cursor: pointer;
+      padding: 4px 6px;
+      border-radius: 4px;
+      line-height: 1;
+      transition: all 0.15s;
+    }
+    .custom-request-del-btn:hover {
+      background: #fee2e2;
+      color: #dc2626;
+    }
+    .custom-request-empty {
+      background: white;
+      border: 1px dashed #cbd5e1;
+      border-radius: var(--radius-sm);
+      padding: 18px;
+      text-align: center;
+      font-size: 13px;
+      color: var(--gray-500);
+    }
+    .btn-rebuild-with-requests {
+      background: linear-gradient(135deg, var(--primary) 0%, #2563eb 100%);
+      color: white;
+      font-weight: 700;
+      border: none;
+      border-radius: var(--radius-sm);
+      padding: 11px 16px;
+      font-size: 13.5px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      box-shadow: 0 2px 4px rgba(37,99,235,0.2);
+      transition: all 0.15s ease;
+      width: 100%;
+    }
+    .btn-rebuild-with-requests:hover {
+      background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%);
+      box-shadow: 0 3px 6px rgba(37,99,235,0.3);
+    }
+    .custom-request-applied-banner {
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      border-radius: var(--radius-sm);
+      padding: 12px 14px;
+      font-size: 12.5px;
+      color: #166534;
+      line-height: 1.5;
+      margin-bottom: 12px;
+    }
+    .custom-request-conflict-banner {
+      background: #fffbeb;
+      border: 1px solid #fde68a;
+      border-radius: var(--radius-sm);
+      padding: 12px 14px;
+      font-size: 12.5px;
+      color: #92400e;
+      line-height: 1.5;
+      margin-bottom: 12px;
+    }
+    .req-form-group {
+      margin-bottom: 12px;
+    }
+    .req-form-label {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--gray-700);
+      margin-bottom: 5px;
+      display: block;
+    }
+    .req-checkbox-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .req-check-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 12px;
+      background: white;
+      border: 1px solid var(--gray-300);
+      border-radius: 4px;
+      padding: 4px 8px;
+      cursor: pointer;
+      user-select: none;
+    }
+    .req-check-label:hover {
+      border-color: var(--primary);
+    }
+
     .btn-icon-del {
       background: white;
       border: 1.5px solid #cbd5e1;
@@ -2528,6 +2694,28 @@
       <button class="btn btn-sm btn-outline-secondary" onclick="window.print()">인쇄 / PDF</button>
     </div>
 
+    <!-- Custom Modification Requests Section (Step 5 Feedback Loop) -->
+    <div class="custom-requests-section" id="customRequestsSection">
+      <div class="custom-requests-header">
+        <div class="custom-requests-title">
+          <span>🔄 이 근무표를 고치고 싶으신가요?</span>
+          <span id="customRequestsCountBadge" style="font-size: 11px; font-weight: normal; background: #e2e8f0; color: #475569; padding: 2px 6px; border-radius: 4px;">요청 0건</span>
+        </div>
+        <button type="button" class="btn btn-sm btn-primary" onclick="openAddRequestModal()">+ 요청 추가</button>
+      </div>
+      <p class="custom-requests-desc">
+        특정 요일 제외, 횟수 조절, 분리/동반, 고정 배정 등 마음에 들지 않는 조건을 등록하고 즉시 다시 배정할 수 있습니다.
+      </p>
+
+      <div id="customRequestsList" class="custom-requests-list">
+        <!-- Rendered by JS -->
+      </div>
+
+      <button type="button" class="btn-rebuild-with-requests" id="btnRebuildWithRequests" onclick="rebuildScheduleWithRequests()">
+        ✨ 요청 반영해서 다시 짜기
+      </button>
+    </div>
+
     <!-- Workload & Weekly Hours Summary with Holiday Pay (Collapsible by default) -->
     <div style="margin-top: 14px; border-top: 1px solid var(--gray-200); padding-top: 12px;">
       <div style="display: flex; align-items: center; justify-content: space-between; cursor: pointer; user-select: none;" onclick="toggleStatsSection()">
@@ -2616,6 +2804,150 @@
       <button class="btn btn-sm btn-danger-outline" onclick="applySwapWorker(null)">미배정(공석)으로 비우기</button>
       <button class="btn btn-sm btn-outline-secondary" onclick="closeSwapWorkerModal()">닫기</button>
     </div>
+  </div>
+</div>
+
+<!-- Custom Modification Request Add/Edit Modal -->
+<div id="addRequestModal" class="modal-overlay" style="display: none;" onclick="handleAddRequestModalOverlay(event)">
+  <div class="modal-card" style="max-width: 480px;">
+    <div class="modal-header">
+      <h3 style="font-size: 15px; font-weight: 700; color: var(--gray-900);">근무표 수정 요청 추가</h3>
+      <button class="modal-close-btn" onclick="closeAddRequestModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="req-form-group">
+        <label class="req-form-label">요청 종류 선택:</label>
+        <select id="reqTypeSelect" class="input-text" style="width: 100%; font-size: 13.5px; font-weight: 600;" onchange="handleReqTypeChange()">
+          <option value="exclude_shifts">1) 특정 요일/타임에서 제외</option>
+          <option value="limit_count">2) 근무 횟수 조정 (최소/최대)</option>
+          <option value="separate_pair">3) 두 사람 분리 (동시 배정 금지)</option>
+          <option value="together_pair">4) 두 사람 동반 (동시 배정 우선)</option>
+          <option value="fixed_assignment">5) 고정 배정 (반드시 이 자리에)</option>
+          <option value="leave_empty">6) 특정 칸 비우기 ([추가 배정]화)</option>
+        </select>
+      </div>
+
+      <!-- Form for Type 1: exclude_shifts -->
+      <div id="reqForm_exclude_shifts" class="req-type-subform">
+        <div class="req-form-group">
+          <label class="req-form-label">대상 근무자:</label>
+          <select id="reqExclude_workerSelect" class="input-text" style="width: 100%;"></select>
+        </div>
+        <div class="req-form-group">
+          <label class="req-form-label">제외할 요일 선택 (복수 선택):</label>
+          <div id="reqExclude_daysGrid" class="req-checkbox-grid"></div>
+        </div>
+        <div class="req-form-group">
+          <label class="req-form-label">제외할 타임 (비워두면 선택한 요일 '전체'):</label>
+          <div id="reqExclude_shiftsGrid" class="req-checkbox-grid"></div>
+        </div>
+      </div>
+
+      <!-- Form for Type 2: limit_count -->
+      <div id="reqForm_limit_count" class="req-type-subform" style="display: none;">
+        <div class="req-form-group">
+          <label class="req-form-label">대상 근무자:</label>
+          <select id="reqLimit_workerSelect" class="input-text" style="width: 100%;"></select>
+        </div>
+        <div class="req-form-group" style="display: flex; gap: 8px;">
+          <div style="flex: 1;">
+            <label class="req-form-label">조건 유형:</label>
+            <select id="reqLimit_modeSelect" class="input-text" style="width: 100%;">
+              <option value="max">최대 N회 이하</option>
+              <option value="min">최소 N회 이상</option>
+            </select>
+          </div>
+          <div style="width: 100px;">
+            <label class="req-form-label">횟수 (회):</label>
+            <input type="number" id="reqLimit_countInput" class="input-text" style="width: 100%;" min="0" max="20" value="2">
+          </div>
+        </div>
+      </div>
+
+      <!-- Form for Type 3: separate_pair -->
+      <div id="reqForm_separate_pair" class="req-type-subform" style="display: none;">
+        <div class="req-form-group">
+          <label class="req-form-label">근무자 1:</label>
+          <select id="reqSeparate_worker1Select" class="input-text" style="width: 100%;"></select>
+        </div>
+        <div class="req-form-group">
+          <label class="req-form-label">근무자 2 (함께 배정되지 않음):</label>
+          <select id="reqSeparate_worker2Select" class="input-text" style="width: 100%;"></select>
+        </div>
+      </div>
+
+      <!-- Form for Type 4: together_pair -->
+      <div id="reqForm_together_pair" class="req-type-subform" style="display: none;">
+        <div class="req-form-group">
+          <label class="req-form-label">근무자 1:</label>
+          <select id="reqTogether_worker1Select" class="input-text" style="width: 100%;"></select>
+        </div>
+        <div class="req-form-group">
+          <label class="req-form-label">근무자 2 (가능하면 같은 타임에 함께 배정):</label>
+          <select id="reqTogether_worker2Select" class="input-text" style="width: 100%;"></select>
+        </div>
+      </div>
+
+      <!-- Form for Type 5: fixed_assignment -->
+      <div id="reqForm_fixed_assignment" class="req-type-subform" style="display: none;">
+        <div class="req-form-group">
+          <label class="req-form-label">고정할 근무자:</label>
+          <select id="reqFixed_workerSelect" class="input-text" style="width: 100%;"></select>
+        </div>
+        <div class="req-form-group" style="display: flex; gap: 8px;">
+          <div style="flex: 1;">
+            <label class="req-form-label">요일:</label>
+            <select id="reqFixed_daySelect" class="input-text" style="width: 100%;" onchange="handleReqFixedDayChange()"></select>
+          </div>
+          <div style="flex: 1;">
+            <label class="req-form-label">타임:</label>
+            <select id="reqFixed_shiftSelect" class="input-text" style="width: 100%;"></select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Form for Type 6: leave_empty -->
+      <div id="reqForm_leave_empty" class="req-type-subform" style="display: none;">
+        <div class="req-form-group" style="display: flex; gap: 8px;">
+          <div style="flex: 1;">
+            <label class="req-form-label">비울 요일:</label>
+            <select id="reqEmpty_daySelect" class="input-text" style="width: 100%;" onchange="handleReqEmptyDayChange()"></select>
+          </div>
+          <div style="flex: 1;">
+            <label class="req-form-label">비울 타임:</label>
+            <select id="reqEmpty_shiftSelect" class="input-text" style="width: 100%;"></select>
+          </div>
+        </div>
+        <p style="font-size: 11.5px; color: var(--gray-500); margin-top: 4px;">
+          해당 칸은 자동 배정에서 제외되고 [추가 배정] 슬롯으로 비워둡니다.
+        </p>
+      </div>
+    </div>
+    <div style="display: flex; justify-content: flex-end; gap: 8px; margin-top: 14px; border-top: 1px solid var(--gray-200); padding-top: 12px;">
+      <button type="button" class="btn btn-sm btn-outline-secondary" onclick="closeAddRequestModal()">취소</button>
+      <button type="button" class="btn btn-sm btn-primary" onclick="submitCustomRequest()">요청 추가하기</button>
+    </div>
+  </div>
+</div>
+
+<!-- Next Week Confirmation Modal -->
+<div id="nextWeekConfirmModal" class="modal-overlay" style="display: none;" onclick="handleNextWeekModalOverlay(event)">
+  <div class="modal-card" style="max-width: 420px; text-align: center;">
+    <h3 style="font-size: 16px; font-weight: 700; color: var(--gray-900); margin-bottom: 6px; margin-top: 6px;">다음 주 근무표 만들기</h3>
+    <p id="nextWeekModalDesc" style="font-size: 13px; color: var(--gray-600); line-height: 1.5; margin-bottom: 18px;">
+      현재 등록된 수정 요청이 있습니다. 다음 주 근무표 생성 시 어떻게 할까요?
+    </p>
+    <div style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 14px;">
+      <button type="button" class="btn btn-primary" style="padding: 12px; font-size: 13.5px; font-weight: 700;" onclick="executeNextWeekSchedule(true)">
+        기존 수정 요청 유지하고 다음 주 만들기
+      </button>
+      <button type="button" class="btn btn-outline-secondary" style="padding: 12px; font-size: 13.5px; font-weight: 600;" onclick="executeNextWeekSchedule(false)">
+        수정 요청 초기화하고 새로 만들기
+      </button>
+    </div>
+    <button type="button" class="btn btn-sm btn-outline-secondary" style="border: none; color: var(--gray-400); font-size: 12px; cursor: pointer; padding: 6px;" onclick="closeNextWeekModal()">
+      취소
+    </button>
   </div>
 </div>
 
@@ -3128,7 +3460,9 @@
     },
     workers: [],
     availability: {},
-    lastSchedule: null
+    lastSchedule: null,
+    customRequests: [],
+    lastAppliedReport: null
   };
 
   let currentWorkerTabId = null;
@@ -3155,6 +3489,12 @@
         state = JSON.parse(saved);
         if (!state.useCase) state.useCase = 'cafe';
         if (state.showWageInfo === undefined) state.showWageInfo = true;
+        if (!state.customRequests || !Array.isArray(state.customRequests)) {
+          state.customRequests = [];
+        }
+        if (state.lastAppliedReport === undefined) {
+          state.lastAppliedReport = null;
+        }
         if (!state.tierLabels) {
           const vocab = USE_CASE_VOCABULARY[state.useCase] || USE_CASE_VOCABULARY['cafe'];
           state.tierLabels = JSON.parse(JSON.stringify(vocab.tierLabels || { senior: '숙련', junior: '신입' }));
@@ -3510,6 +3850,8 @@
       state.workers = [];
       state.availability = {};
       state.lastSchedule = null;
+      state.customRequests = [];
+      state.lastAppliedReport = null;
       state.rules = JSON.parse(JSON.stringify(vocab.rules));
       currentWorkerTabId = null;
       saveState();
@@ -3540,6 +3882,8 @@
     state.rules = JSON.parse(JSON.stringify(vocab.rules));
     state.workers = JSON.parse(JSON.stringify(vocab.sampleWorkers || []));
     state.availability = {};
+    state.customRequests = [];
+    state.lastAppliedReport = null;
     syncAvailabilitySchema();
     if (state.workers.length > 0) {
       currentWorkerTabId = state.workers[0].id;
@@ -3835,6 +4179,7 @@
     renderWorkerTabs();
     renderAvailGrid();
     renderHomeSlotSelect();
+    renderCustomRequests();
   }
 
   function toggleStepPresets() {
@@ -4531,12 +4876,16 @@
     let bestResult = null;
     let bestScore = Infinity;
 
-    for (let sim = 0; sim < 60; sim++) {
+    for (let sim = 0; sim < 80; sim++) {
       const result = simulateScheduleOnce();
       if (result.score < bestScore) {
         bestScore = result.score;
         bestResult = result;
       }
+    }
+
+    if (bestResult) {
+      validateCustomRequests(bestResult);
     }
 
     return bestResult;
@@ -4561,6 +4910,14 @@
       });
     });
 
+    const customRequests = state.customRequests || [];
+    const excludeReqs = customRequests.filter(r => r.type === 'exclude_shifts');
+    const limitReqs = customRequests.filter(r => r.type === 'limit_count');
+    const separateReqs = customRequests.filter(r => r.type === 'separate_pair');
+    const togetherReqs = customRequests.filter(r => r.type === 'together_pair');
+    const fixedReqs = customRequests.filter(r => r.type === 'fixed_assignment');
+    const emptyReqs = customRequests.filter(r => r.type === 'leave_empty');
+
     const allSlots = [];
     ALL_DAYS.forEach((day, dayIndex) => {
       const grp = state.dayGroups.find(g => g.days.includes(day.id));
@@ -4576,7 +4933,14 @@
           return isWorkerAvailable(w.id, day.id, shift.id);
         });
 
+        // Fixed requests and empty requests for this shift
+        const fixedForThisShift = fixedReqs.filter(r => r.dayId === day.id && r.shiftId === shift.id);
+        const isEmptyRequested = emptyReqs.some(r => r.dayId === day.id && r.shiftId === shift.id);
+
         for (let i = 0; i < required; i++) {
+          const fixedWorkerId = (i < fixedForThisShift.length) ? fixedForThisShift[i].workerId : null;
+          const isSlotEmptyReq = (i === 0 && isEmptyRequested);
+
           allSlots.push({
             slotKey: `${day.id}_${shift.id}_${i}`,
             dayId: day.id,
@@ -4586,7 +4950,9 @@
             shift: shift,
             shiftIndex: shiftIndex,
             duration: duration,
-            candidateCount: availableWorkers.length
+            fixedWorkerId: fixedWorkerId,
+            isRequestedEmpty: isSlotEmptyReq,
+            candidateCount: isSlotEmptyReq ? -1 : (fixedWorkerId ? 0 : availableWorkers.length)
           });
         }
       });
@@ -4607,9 +4973,40 @@
     let extraSlotCount = 0;
 
     allSlots.forEach(slot => {
-      const { slotKey, dayId, dayIndex, isWeekend, shift, duration } = slot;
+      const { slotKey, dayId, dayIndex, isWeekend, shift, duration, fixedWorkerId, isRequestedEmpty } = slot;
       diagnostics[slotKey] = [];
       const currentAssignedInSlot = assignments[dayId][shift.id];
+
+      // Custom Request Type 6: Leave Empty
+      if (isRequestedEmpty) {
+        assignments[dayId][shift.id].push({ isExtra: true, requested: true });
+        extraSlotCount++;
+        return;
+      }
+
+      // Custom Request Type 5: Fixed Assignment
+      if (fixedWorkerId) {
+        const fixedWorker = state.workers.find(w => w.id === fixedWorkerId);
+        if (fixedWorker) {
+          const isAvail = isWorkerAvailable(fixedWorker.id, dayId, shift.id);
+          const notYetInSlot = !currentAssignedInSlot.includes(fixedWorker.id);
+          if (isAvail && notYetInSlot) {
+            assignments[dayId][shift.id].push(fixedWorker.id);
+            const wStat = workerStats[fixedWorker.id];
+            wStat.count++;
+            wStat.hours += duration;
+            if (isWeekend) wStat.weekendCount++;
+            wStat.daysAssigned.add(dayIndex);
+            wStat.dayShifts[dayId].push(shift);
+            return;
+          } else {
+            diagnostics[slotKey].push({
+              workerName: fixedWorker.name,
+              reason: `고정 배정 실패 (${isAvail ? '동일 타임 중복' : '3단계 불가 설정'})`
+            });
+          }
+        }
+      }
 
       const eligibleCandidates = [];
       let isBlockedOnlyByStrictQuota = false;
@@ -4637,8 +5034,38 @@
           return;
         }
 
+        // Custom Request Type 1: exclude_shifts
+        const isExcludedByReq = excludeReqs.some(r => {
+          if (r.workerId !== w.id) return false;
+          if (!r.days || !r.days.includes(dayId)) return false;
+          if (!r.shiftIds || r.shiftIds.length === 0 || r.shiftIds.includes(shift.id)) return true;
+          return false;
+        });
+        if (isExcludedByReq) {
+          diagnostics[slotKey].push({ workerName: w.name, reason: '수정 요청: 제외 지정' });
+          return;
+        }
+
+        // Custom Request Type 3: separate_pair
+        const hasSeparateConflict = separateReqs.some(r => {
+          if (r.workerId1 === w.id && currentAssignedInSlot.includes(r.workerId2)) return true;
+          if (r.workerId2 === w.id && currentAssignedInSlot.includes(r.workerId1)) return true;
+          return false;
+        });
+        if (hasSeparateConflict) {
+          diagnostics[slotKey].push({ workerName: w.name, reason: '수정 요청: 2인 분리 지정 (동시 배정 금지)' });
+          return;
+        }
+
         const wStat = workerStats[w.id];
         const existingShiftsToday = wStat.dayShifts[dayId];
+
+        // Custom Request Type 2: limit_count (max)
+        const maxLimitReq = limitReqs.find(r => r.workerId === w.id && r.mode === 'max');
+        if (maxLimitReq && wStat.count >= maxLimitReq.count) {
+          diagnostics[slotKey].push({ workerName: w.name, reason: `수정 요청: 최대 ${maxLimitReq.count}회 초과` });
+          return;
+        }
 
         // Rule 1: Max shifts per day
         const maxDailyShifts = rules.maxShiftsPerDay || 2;
@@ -4842,14 +5269,32 @@
         }
       } else {
         eligibleCandidates.sort((a, b) => {
-          // Priority 1: If senior is required in this shift and not yet assigned, prioritize Senior
+          // Custom Request Type 4: together_pair Priority
+          if (togetherReqs.length > 0 && currentAssignedInSlot.length > 0) {
+            const isTogetherA = togetherReqs.some(r => (r.workerId1 === a.id && currentAssignedInSlot.includes(r.workerId2)) || (r.workerId2 === a.id && currentAssignedInSlot.includes(r.workerId1))) ? 1 : 0;
+            const isTogetherB = togetherReqs.some(r => (r.workerId1 === b.id && currentAssignedInSlot.includes(r.workerId2)) || (r.workerId2 === b.id && currentAssignedInSlot.includes(r.workerId1))) ? 1 : 0;
+            if (isTogetherA !== isTogetherB) return isTogetherB - isTogetherA;
+          }
+
+          // Custom Request Type 2: limit_count (min) Priority Boost
+          if (limitReqs.length > 0) {
+            const minReqA = limitReqs.find(r => r.workerId === a.id && r.mode === 'min');
+            const minReqB = limitReqs.find(r => r.workerId === b.id && r.mode === 'min');
+            const statA_cnt = workerStats[a.id].count;
+            const statB_cnt = workerStats[b.id].count;
+            const needsMinA = (minReqA && statA_cnt < minReqA.count) ? 1 : 0;
+            const needsMinB = (minReqB && statB_cnt < minReqB.count) ? 1 : 0;
+            if (needsMinA !== needsMinB) return needsMinB - needsMinA;
+          }
+
+          // Priority: If senior is required in this shift and not yet assigned, prioritize Senior
           if (isSeniorShift && seniorCountSoFar === 0) {
             const isSenA = (a.roleType === 'senior') ? 1 : 0;
             const isSenB = (b.roleType === 'senior') ? 1 : 0;
             if (isSenA !== isSenB) return isSenB - isSenA;
           }
 
-          // Priority 2: Rule 10 Senior-Junior Pairing Priority
+          // Priority: Rule 10 Senior-Junior Pairing Priority
           if (rules.seniorJuniorPairing && (shift.required || 1) === 2 && currentAssignedInSlot.length === 1) {
             const firstAssignedId = currentAssignedInSlot[0];
             const firstAssigned = state.workers.find(wk => wk.id === firstAssignedId);
@@ -4908,6 +5353,449 @@
       score,
       timestamp: new Date()
     };
+  }
+
+  function validateCustomRequests(result) {
+    const customRequests = state.customRequests || [];
+    const appliedList = [];
+    const unfulfilledList = [];
+
+    customRequests.forEach(req => {
+      const readableText = getHumanReadableRequestText(req);
+
+      if (req.type === 'exclude_shifts') {
+        let violationCount = 0;
+        (req.days || []).forEach(dId => {
+          const dayAssignments = result.assignments[dId] || {};
+          Object.keys(dayAssignments).forEach(sId => {
+            if (!req.shiftIds || req.shiftIds.length === 0 || req.shiftIds.includes(sId)) {
+              if ((dayAssignments[sId] || []).includes(req.workerId)) violationCount++;
+            }
+          });
+        });
+        if (violationCount === 0) {
+          appliedList.push(readableText);
+        } else {
+          unfulfilledList.push(`'${readableText}' (대체 인원 부족 등으로 ${violationCount}회 배정됨)`);
+        }
+      } else if (req.type === 'limit_count') {
+        const stat = result.workerStats[req.workerId] || { count: 0 };
+        if (req.mode === 'max') {
+          if (stat.count <= req.count) {
+            appliedList.push(readableText + ` (현재 ${stat.count}회)`);
+          } else {
+            unfulfilledList.push(`'${readableText}'는 반영하지 못했습니다. (필수 인원 부족으로 ${stat.count}회 배정됨)`);
+          }
+        } else if (req.mode === 'min') {
+          if (stat.count >= req.count) {
+            appliedList.push(readableText + ` (현재 ${stat.count}회)`);
+          } else {
+            let availCount = 0;
+            ALL_DAYS.forEach(d => {
+              const grp = state.dayGroups.find(g => g.days.includes(d.id));
+              if (grp) {
+                grp.shifts.forEach(s => {
+                  if (isWorkerAvailable(req.workerId, d.id, s.id)) availCount++;
+                });
+              }
+            });
+            unfulfilledList.push(`'${readableText}'는 반영하지 못했습니다. (가능 시간 총 ${availCount}칸 중 ${stat.count}회 배정됨)`);
+          }
+        }
+      } else if (req.type === 'separate_pair') {
+        let togetherCount = 0;
+        ALL_DAYS.forEach(d => {
+          const dayAssignments = result.assignments[d.id] || {};
+          Object.keys(dayAssignments).forEach(sId => {
+            const list = dayAssignments[sId] || [];
+            if (list.includes(req.workerId1) && list.includes(req.workerId2)) {
+              togetherCount++;
+            }
+          });
+        });
+        if (togetherCount === 0) {
+          appliedList.push(readableText);
+        } else {
+          unfulfilledList.push(`'${readableText}' (대체 근무자가 없어 ${togetherCount}개 타임에서 함께 배정됨)`);
+        }
+      } else if (req.type === 'together_pair') {
+        appliedList.push(readableText);
+      } else if (req.type === 'fixed_assignment') {
+        const assignedList = (result.assignments[req.dayId] && result.assignments[req.dayId][req.shiftId]) || [];
+        if (assignedList.includes(req.workerId)) {
+          appliedList.push(readableText);
+        } else {
+          const isAvail = isWorkerAvailable(req.workerId, req.dayId, req.shiftId);
+          unfulfilledList.push(`'${readableText}'는 반영하지 못했습니다. (${isAvail ? '타 규칙 충돌' : '3단계에서 불가로 설정됨'})`);
+        }
+      } else if (req.type === 'leave_empty') {
+        const assignedList = (result.assignments[req.dayId] && result.assignments[req.dayId][req.shiftId]) || [];
+        const hasEmpty = assignedList.some(item => !item || (typeof item === 'object' && item.isExtra));
+        if (hasEmpty) {
+          appliedList.push(readableText);
+        } else {
+          appliedList.push(readableText);
+        }
+      }
+    });
+
+    result.appliedRequests = appliedList;
+    result.unfulfilledRequests = unfulfilledList;
+  }
+
+  /* ==========================================================================
+     CUSTOM MODIFICATION REQUESTS (Step 5 Feedback Loop)
+     ========================================================================== */
+  function renderCustomRequests() {
+    const listContainer = document.getElementById('customRequestsList');
+    const countBadge = document.getElementById('customRequestsCountBadge');
+    if (!listContainer) return;
+
+    const requests = state.customRequests || [];
+    if (countBadge) countBadge.textContent = `요청 ${requests.length}건`;
+
+    if (requests.length === 0) {
+      listContainer.innerHTML = `
+        <div class="custom-request-empty">
+          등록된 수정 요청이 없습니다. <strong>[+ 요청 추가]</strong>를 눌러 원하는 조건을 지정하세요.
+        </div>
+      `;
+      return;
+    }
+
+    listContainer.innerHTML = requests.map((req, idx) => {
+      const badge = getTypeBadgeLabel(req.type);
+      const text = getHumanReadableRequestText(req);
+      return `
+        <div class="custom-request-card">
+          <div class="custom-request-body">
+            <span class="custom-request-type-badge">${escapeHtml(badge)}</span>
+            <span>${escapeHtml(text)}</span>
+          </div>
+          <button type="button" class="custom-request-del-btn" onclick="deleteCustomRequest(${idx})" title="요청 삭제" aria-label="요청 삭제">✕</button>
+        </div>
+      `;
+    }).join('');
+  }
+
+  function getTypeBadgeLabel(type) {
+    switch (type) {
+      case 'exclude_shifts': return '제외';
+      case 'limit_count': return '횟수 조절';
+      case 'separate_pair': return '2인 분리';
+      case 'together_pair': return '2인 동반';
+      case 'fixed_assignment': return '고정 배정';
+      case 'leave_empty': return '칸 비우기';
+      default: return '요청';
+    }
+  }
+
+  function getHumanReadableRequestText(req) {
+    if (!req) return '';
+    switch (req.type) {
+      case 'exclude_shifts': {
+        const w = state.workers.find(item => item.id === req.workerId);
+        const wName = w ? w.name : '근무자';
+        const dayNames = (req.days || []).map(d => (ALL_DAYS.find(ad => ad.id === d)?.name || d) + '요일').join(', ');
+        let shiftDesc = '전체';
+        if (req.shiftIds && req.shiftIds.length > 0) {
+          const shiftNames = [];
+          state.dayGroups.forEach(g => {
+            (g.shifts || []).forEach(s => {
+              if (req.shiftIds.includes(s.id) && !shiftNames.includes(s.name)) {
+                shiftNames.push(s.name);
+              }
+            });
+          });
+          if (shiftNames.length > 0) shiftDesc = shiftNames.join(', ');
+        }
+        return `${wName}님을 ${dayNames} (${shiftDesc})에서 제외`;
+      }
+      case 'limit_count': {
+        const w = state.workers.find(item => item.id === req.workerId);
+        const wName = w ? w.name : '근무자';
+        const modeText = req.mode === 'min' ? `최소 ${req.count}회 이상` : `최대 ${req.count}회 이하`;
+        return `${wName}님 근무 횟수 ${modeText}`;
+      }
+      case 'separate_pair': {
+        const w1 = state.workers.find(item => item.id === req.workerId1)?.name || '근무자1';
+        const w2 = state.workers.find(item => item.id === req.workerId2)?.name || '근무자2';
+        return `${w1}님과 ${w2}님 같은 타임 분리 (동시 배정 금지)`;
+      }
+      case 'together_pair': {
+        const w1 = state.workers.find(item => item.id === req.workerId1)?.name || '근무자1';
+        const w2 = state.workers.find(item => item.id === req.workerId2)?.name || '근무자2';
+        return `${w1}님과 ${w2}님 같은 타임 동반 배정 우선`;
+      }
+      case 'fixed_assignment': {
+        const w = state.workers.find(item => item.id === req.workerId)?.name || '근무자';
+        const dayName = (ALL_DAYS.find(ad => ad.id === req.dayId)?.name || req.dayId) + '요일';
+        let shiftName = '';
+        state.dayGroups.forEach(g => {
+          (g.shifts || []).forEach(s => {
+            if (s.id === req.shiftId) shiftName = s.name;
+          });
+        });
+        return `${w}님을 ${dayName} ${shiftName}에 고정 배정`;
+      }
+      case 'leave_empty': {
+        const dayName = (ALL_DAYS.find(ad => ad.id === req.dayId)?.name || req.dayId) + '요일';
+        let shiftName = '';
+        state.dayGroups.forEach(g => {
+          (g.shifts || []).forEach(s => {
+            if (s.id === req.shiftId) shiftName = s.name;
+          });
+        });
+        return `${dayName} ${shiftName} 칸을 [추가 배정]으로 비워둠`;
+      }
+      default:
+        return '기타 요청';
+    }
+  }
+
+  function openAddRequestModal() {
+    if (state.workers.length === 0) {
+      showToast('⚠️ 먼저 근무자를 등록해 주세요.');
+      return;
+    }
+
+    // Populate worker dropdowns
+    const workerOptions = state.workers.map(w => {
+      const role = getTierLabel(w.roleType || 'junior');
+      return `<option value="${w.id}">[${role}] ${escapeHtml(w.name)}</option>`;
+    }).join('');
+
+    const selectIds = [
+      'reqExclude_workerSelect', 'reqLimit_workerSelect',
+      'reqSeparate_worker1Select', 'reqSeparate_worker2Select',
+      'reqTogether_worker1Select', 'reqTogether_worker2Select',
+      'reqFixed_workerSelect'
+    ];
+    selectIds.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.innerHTML = workerOptions;
+    });
+
+    if (state.workers.length >= 2) {
+      const sep2 = document.getElementById('reqSeparate_worker2Select');
+      if (sep2) sep2.value = state.workers[1].id;
+      const tog2 = document.getElementById('reqTogether_worker2Select');
+      if (tog2) tog2.value = state.workers[1].id;
+    }
+
+    // Populate days grid for exclude
+    const daysGrid = document.getElementById('reqExclude_daysGrid');
+    if (daysGrid) {
+      daysGrid.innerHTML = ALL_DAYS.map(d => {
+        const grp = state.dayGroups.find(g => g.days.includes(d.id));
+        if (!grp) return '';
+        return `
+          <label class="req-check-label">
+            <input type="checkbox" name="reqExclude_day" value="${d.id}">
+            <span>${d.name}요일</span>
+          </label>
+        `;
+      }).join('');
+    }
+
+    // Populate shifts grid for exclude
+    const shiftsGrid = document.getElementById('reqExclude_shiftsGrid');
+    if (shiftsGrid) {
+      const uniqueShifts = [];
+      state.dayGroups.forEach(g => {
+        (g.shifts || []).forEach(s => {
+          if (!uniqueShifts.some(us => us.id === s.id)) {
+            uniqueShifts.push(s);
+          }
+        });
+      });
+      shiftsGrid.innerHTML = uniqueShifts.map(s => `
+        <label class="req-check-label">
+          <input type="checkbox" name="reqExclude_shift" value="${s.id}">
+          <span>${escapeHtml(s.name)} (${s.start}~${s.end})</span>
+        </label>
+      `).join('');
+    }
+
+    // Populate day selects for fixed and empty
+    const activeDays = ALL_DAYS.filter(d => state.dayGroups.some(g => g.days.includes(d.id)));
+    const dayOpts = activeDays.map(d => `<option value="${d.id}">${d.name}요일</option>`).join('');
+
+    const fixedDay = document.getElementById('reqFixed_daySelect');
+    if (fixedDay) {
+      fixedDay.innerHTML = dayOpts;
+      handleReqFixedDayChange();
+    }
+
+    const emptyDay = document.getElementById('reqEmpty_daySelect');
+    if (emptyDay) {
+      emptyDay.innerHTML = dayOpts;
+      handleReqEmptyDayChange();
+    }
+
+    const modal = document.getElementById('addRequestModal');
+    if (modal) modal.style.display = 'flex';
+  }
+
+  function closeAddRequestModal() {
+    const modal = document.getElementById('addRequestModal');
+    if (modal) modal.style.display = 'none';
+  }
+
+  function handleAddRequestModalOverlay(e) {
+    if (e.target && e.target.id === 'addRequestModal') {
+      closeAddRequestModal();
+    }
+  }
+
+  function handleReqTypeChange() {
+    const select = document.getElementById('reqTypeSelect');
+    if (!select) return;
+    const type = select.value;
+
+    const subforms = document.querySelectorAll('.req-type-subform');
+    subforms.forEach(f => f.style.display = 'none');
+
+    const targetForm = document.getElementById(`reqForm_${type}`);
+    if (targetForm) targetForm.style.display = 'block';
+  }
+
+  function handleReqFixedDayChange() {
+    const daySelect = document.getElementById('reqFixed_daySelect');
+    const shiftSelect = document.getElementById('reqFixed_shiftSelect');
+    if (!daySelect || !shiftSelect) return;
+    const dayId = daySelect.value;
+    const grp = state.dayGroups.find(g => g.days.includes(dayId));
+    if (grp) {
+      shiftSelect.innerHTML = grp.shifts.map(s => `<option value="${s.id}">${escapeHtml(s.name)} (${s.start}~${s.end})</option>`).join('');
+    } else {
+      shiftSelect.innerHTML = '';
+    }
+  }
+
+  function handleReqEmptyDayChange() {
+    const daySelect = document.getElementById('reqEmpty_daySelect');
+    const shiftSelect = document.getElementById('reqEmpty_shiftSelect');
+    if (!daySelect || !shiftSelect) return;
+    const dayId = daySelect.value;
+    const grp = state.dayGroups.find(g => g.days.includes(dayId));
+    if (grp) {
+      shiftSelect.innerHTML = grp.shifts.map(s => `<option value="${s.id}">${escapeHtml(s.name)} (${s.start}~${s.end})</option>`).join('');
+    } else {
+      shiftSelect.innerHTML = '';
+    }
+  }
+
+  function submitCustomRequest() {
+    const typeSelect = document.getElementById('reqTypeSelect');
+    if (!typeSelect) return;
+    const type = typeSelect.value;
+
+    let newReq = { id: 'req_' + Date.now(), type: type };
+
+    if (type === 'exclude_shifts') {
+      const workerId = document.getElementById('reqExclude_workerSelect')?.value;
+      const checkedDays = Array.from(document.querySelectorAll('input[name="reqExclude_day"]:checked')).map(el => el.value);
+      const checkedShifts = Array.from(document.querySelectorAll('input[name="reqExclude_shift"]:checked')).map(el => el.value);
+
+      if (!workerId) {
+        showToast('근무자를 선택해 주세요.');
+        return;
+      }
+      if (checkedDays.length === 0) {
+        showToast('제외할 요일을 1개 이상 선택해 주세요.');
+        return;
+      }
+      newReq.workerId = workerId;
+      newReq.days = checkedDays;
+      newReq.shiftIds = checkedShifts;
+    } else if (type === 'limit_count') {
+      const workerId = document.getElementById('reqLimit_workerSelect')?.value;
+      const mode = document.getElementById('reqLimit_modeSelect')?.value || 'max';
+      const count = parseInt(document.getElementById('reqLimit_countInput')?.value, 10);
+      if (!workerId) {
+        showToast('근무자를 선택해 주세요.');
+        return;
+      }
+      if (isNaN(count) || count < 0) {
+        showToast('근무 횟수를 0 이상의 숫자로 입력해 주세요.');
+        return;
+      }
+      newReq.workerId = workerId;
+      newReq.mode = mode;
+      newReq.count = count;
+    } else if (type === 'separate_pair') {
+      const w1 = document.getElementById('reqSeparate_worker1Select')?.value;
+      const w2 = document.getElementById('reqSeparate_worker2Select')?.value;
+      if (!w1 || !w2 || w1 === w2) {
+        showToast('서로 다른 2명의 근무자를 선택해 주세요.');
+        return;
+      }
+      newReq.workerId1 = w1;
+      newReq.workerId2 = w2;
+    } else if (type === 'together_pair') {
+      const w1 = document.getElementById('reqTogether_worker1Select')?.value;
+      const w2 = document.getElementById('reqTogether_worker2Select')?.value;
+      if (!w1 || !w2 || w1 === w2) {
+        showToast('서로 다른 2명의 근무자를 선택해 주세요.');
+        return;
+      }
+      newReq.workerId1 = w1;
+      newReq.workerId2 = w2;
+    } else if (type === 'fixed_assignment') {
+      const workerId = document.getElementById('reqFixed_workerSelect')?.value;
+      const dayId = document.getElementById('reqFixed_daySelect')?.value;
+      const shiftId = document.getElementById('reqFixed_shiftSelect')?.value;
+      if (!workerId || !dayId || !shiftId) {
+        showToast('근무자, 요일, 타임을 모두 선택해 주세요.');
+        return;
+      }
+      newReq.workerId = workerId;
+      newReq.dayId = dayId;
+      newReq.shiftId = shiftId;
+    } else if (type === 'leave_empty') {
+      const dayId = document.getElementById('reqEmpty_daySelect')?.value;
+      const shiftId = document.getElementById('reqEmpty_shiftSelect')?.value;
+      if (!dayId || !shiftId) {
+        showToast('요일과 타임을 모두 선택해 주세요.');
+        return;
+      }
+      newReq.dayId = dayId;
+      newReq.shiftId = shiftId;
+    }
+
+    if (!state.customRequests) state.customRequests = [];
+    state.customRequests.push(newReq);
+    saveState();
+    renderCustomRequests();
+    closeAddRequestModal();
+    showToast('✨ 수정 요청이 추가되었습니다. \'[요청 반영해서 다시 짜기]\'를 눌러 적용하세요.');
+  }
+
+  function deleteCustomRequest(index) {
+    if (!state.customRequests) return;
+    state.customRequests.splice(index, 1);
+    saveState();
+    renderCustomRequests();
+    showToast('수정 요청이 삭제되었습니다.');
+  }
+
+  function rebuildScheduleWithRequests() {
+    if (state.workers.length === 0) {
+      showToast('근무자가 1명 이상 등록되어 있어야 합니다.');
+      return;
+    }
+
+    const schedule = generateSchedule();
+    if (!schedule) {
+      alert('조건 충돌로 인해 근무표를 생성할 수 없습니다. 기존 근무표를 유지합니다.');
+      return;
+    }
+
+    state.lastSchedule = schedule;
+    saveState();
+    renderScheduleResult(schedule);
+    showToast('✨ 수정 요청을 반영하여 근무표를 다시 생성했습니다.');
   }
 
   /* ==========================================================================
@@ -4972,6 +5860,34 @@
   }
 
   function generateNextWeekSchedule() {
+    if (state.customRequests && state.customRequests.length > 0) {
+      const modal = document.getElementById('nextWeekConfirmModal');
+      const desc = document.getElementById('nextWeekModalDesc');
+      if (desc) desc.textContent = `현재 등록된 수정 요청 ${state.customRequests.length}건이 있습니다. 다음 주 근무표 생성 시 어떻게 할까요?`;
+      if (modal) modal.style.display = 'flex';
+    } else {
+      executeNextWeekSchedule(false);
+    }
+  }
+
+  function closeNextWeekModal() {
+    const modal = document.getElementById('nextWeekConfirmModal');
+    if (modal) modal.style.display = 'none';
+  }
+
+  function handleNextWeekModalOverlay(e) {
+    if (e.target && e.target.id === 'nextWeekConfirmModal') {
+      closeNextWeekModal();
+    }
+  }
+
+  function executeNextWeekSchedule(keepRequests) {
+    closeNextWeekModal();
+    if (!keepRequests) {
+      state.customRequests = [];
+      saveState();
+      renderCustomRequests();
+    }
     showToast('새로운 다음 주 근무표를 생성합니다...');
     generateScheduleAndShow();
   }
@@ -4988,8 +5904,31 @@
       timeLabel.textContent = `생성 일시: ${now.getFullYear()}년 ${now.getMonth()+1}월 ${now.getDate()}일 ${now.getHours()}시 ${now.getMinutes()}분`;
     }
 
-    // Dynamic Notices (Strict Equal, Shortage, Context)
+    // Dynamic Notices (Applied Custom Requests, Unfulfilled Warnings, Strict Equal, Shortage, Context)
     let noticesHtml = '';
+
+    if (schedule.appliedRequests && schedule.appliedRequests.length > 0) {
+      noticesHtml += `
+        <div class="custom-request-applied-banner">
+          <strong>✨ 수정 요청 ${schedule.appliedRequests.length}건을 반영해 다시 짰습니다:</strong>
+          <div style="margin-top: 5px; padding-left: 4px;">
+            ${schedule.appliedRequests.map(r => `• ${escapeHtml(r)}`).join('<br>')}
+          </div>
+        </div>
+      `;
+    }
+
+    if (schedule.unfulfilledRequests && schedule.unfulfilledRequests.length > 0) {
+      noticesHtml += `
+        <div class="custom-request-conflict-banner">
+          <strong>⚠️ 일부 요청은 조건 충돌로 완전히 반영하지 못했습니다:</strong>
+          <div style="margin-top: 5px; padding-left: 4px;">
+            ${schedule.unfulfilledRequests.map(r => `• ${escapeHtml(r)}`).join('<br>')}
+          </div>
+        </div>
+      `;
+    }
+
     const quota = (state.workers.length > 0 && schedule.allSlotsCount)
       ? Math.floor(schedule.allSlotsCount / state.workers.length)
       : 0;
@@ -5033,6 +5972,8 @@
     if (extraBannerBox) {
       extraBannerBox.innerHTML = noticesHtml;
     }
+
+    renderCustomRequests();
 
     const activeDays = [];
     let hasAnyNightShift = false;
