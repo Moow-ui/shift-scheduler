@@ -1653,6 +1653,50 @@
     /* ==========================================================================
        STEP 5: Result Screen & Storage Tools (Section D)
        ========================================================================== */
+    .schedule-tables-wrapper {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      width: 100%;
+      margin-top: 10px;
+    }
+
+    .daygroup-table-card {
+      background: white;
+      border: 1.5px solid var(--gray-200);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+    }
+
+    .daygroup-header-bar {
+      background: var(--gray-100);
+      padding: 9px 14px;
+      border-bottom: 1px solid var(--gray-200);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 13.5px;
+      font-weight: 700;
+      color: var(--gray-800);
+    }
+    .daygroup-header-bar.weekend {
+      background: #fef2f2;
+      color: #b91c1c;
+      border-bottom-color: #fee2e2;
+    }
+    .daygroup-header-title {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .daygroup-days-summary {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--gray-600);
+      margin-left: 4px;
+    }
+
     .table-container {
       overflow-x: auto;
       -webkit-overflow-scrolling: touch;
@@ -1665,14 +1709,12 @@
 
     .schedule-table {
       width: 100%;
-      min-width: 800px;
+      min-width: 600px;
       border-collapse: separate;
       border-spacing: 0;
       table-layout: auto;
       font-size: 13px;
-      border: 1px solid var(--gray-200);
-      border-radius: var(--radius-md);
-      overflow: hidden;
+      border: none;
     }
     .schedule-table th, .schedule-table td {
       border-right: 1px solid var(--gray-200);
@@ -2827,11 +2869,9 @@
       <!-- Rendered by JS -->
     </div>
 
-    <!-- Result Schedule Table View (Desktop & Tablet) -->
-    <div class="table-container" id="scheduleTableContainer" style="display: none;">
-      <table class="schedule-table" id="scheduleResultTable">
-        <!-- Rendered by JS -->
-      </table>
+    <!-- Result Schedule Table View (Desktop & Tablet: Group-by-Group Y-Axis) -->
+    <div id="scheduleTableContainer" class="schedule-tables-wrapper" style="display: none;">
+      <!-- Rendered by JS -->
     </div>
 
     <!-- Schedule Action Buttons (Positioned below the schedule) -->
@@ -6199,87 +6239,88 @@
     }
   }
 
-  // 1. Render Desktop/Tablet Grid Table with Y-Axis Time Columns
-  const unifiedRows = [];
-  state.dayGroups.forEach(grp => {
-    (grp.shifts || []).forEach((shift, sIdx) => {
-      let existing = unifiedRows.find(r => r.name === shift.name);
-      if (!existing) {
-        const duration = getShiftDurationHours(shift.start, shift.end);
-        unifiedRows.push({
-          name: shift.name,
-          start: shift.start,
-          end: shift.end,
-          duration: duration,
-          isNight: shift.isNight,
-          isSeniorRequired: shift.isSeniorRequired
-        });
-      } else {
-        if (shift.isNight) existing.isNight = true;
-        if (shift.isSeniorRequired) existing.isSeniorRequired = true;
+  // 1. Render Desktop/Tablet Grid Tables (Group-by-Group Y-Axis)
+  const tableContainer = document.getElementById('scheduleTableContainer');
+  if (tableContainer) {
+    const activeGroups = [];
+    state.dayGroups.forEach(grp => {
+      const daysInGroup = (grp.days || []).map(dId => ALL_DAYS.find(ad => ad.id === dId)).filter(Boolean);
+      if (daysInGroup.length > 0 && grp.shifts && grp.shifts.length > 0) {
+        activeGroups.push({ group: grp, days: daysInGroup });
       }
     });
-  });
 
-  let headerHtml = '<thead><tr>';
-  headerHtml += '<th class="time-axis-header">시간대 / 구분</th>';
-  activeDays.forEach(({ day, group }) => {
-    headerHtml += `
-      <th class="${day.isWeekend ? 'weekend-col' : ''}">
-        ${day.name}요일
-        <div style="font-size: 11px; font-weight: normal; opacity: 0.85;">${escapeHtml(group.name)}</div>
-      </th>
-    `;
-  });
-  headerHtml += '</tr></thead>';
+    if (activeGroups.length === 0) {
+      tableContainer.innerHTML = '<div style="padding: 20px; text-align: center; color: var(--gray-500);">영업 요일이 없습니다.</div>';
+    } else {
+      tableContainer.innerHTML = activeGroups.map(({ group, days }) => {
+        const isWeekendGroup = days.every(d => d.isWeekend);
+        const daysSummary = days.map(d => d.name + '요일').join(', ');
 
-  let bodyHtml = '<tbody>';
-  unifiedRows.forEach((row, rIdx) => {
-    const themeClass = getShiftThemeClass(row.name, rIdx, unifiedRows.length);
-    bodyHtml += '<tr>';
-
-    // Y-axis header
-    bodyHtml += `
-      <th class="time-axis-cell ${themeClass}">
-        <div class="time-axis-name">
-          ${escapeHtml(row.name)}
-          ${row.isNight ? '<span class="night-shift-badge" style="font-size:9px; padding:0 3px;">🌙</span>' : ''}
-        </div>
-        <div class="time-axis-time">${row.start}~${row.end}</div>
-        <div class="time-axis-dur">(${row.duration}h)</div>
-        ${row.isSeniorRequired ? `<div style="margin-top: 3px;"><span class="cell-role-badge senior" style="font-size: 9px; padding: 0 3px;">⭐️${getTierLabel('senior')}필수</span></div>` : ''}
-      </th>
-    `;
-
-    // Day columns for this shift
-    activeDays.forEach(({ day, group }) => {
-      const shiftInDay = (group.shifts || []).find(s => s.name === row.name);
-      if (!shiftInDay) {
-        bodyHtml += `
-          <td class="schedule-grid-cell inactive">
-            <span class="empty-shift-dash">-</span>
-          </td>
+        let tableHtml = `
+          <div class="daygroup-table-card">
+            <div class="daygroup-header-bar ${isWeekendGroup ? 'weekend' : ''}">
+              <div class="daygroup-header-title">
+                <span>📅 ${escapeHtml(group.name)}</span>
+                <span class="daygroup-days-summary">(${daysSummary})</span>
+              </div>
+              <span style="font-size: 11.5px; font-weight: normal; opacity: 0.85;">타임 ${group.shifts.length}개</span>
+            </div>
+            <div style="overflow-x: auto; -webkit-overflow-scrolling: touch;">
+              <table class="schedule-table">
+                <thead>
+                  <tr>
+                    <th class="time-axis-header" style="width: 125px; min-width: 125px;">시간대 / 구분</th>
+                    ${days.map(d => `<th class="${d.isWeekend ? 'weekend-col' : ''}">${d.name}요일</th>`).join('')}
+                  </tr>
+                </thead>
+                <tbody>
         `;
-      } else {
-        const assignedIds = (schedule.assignments[day.id] && schedule.assignments[day.id][shiftInDay.id]) || [];
-        bodyHtml += `<td class="schedule-grid-cell ${themeClass}">`;
-        bodyHtml += `<div class="cell-worker-list">`;
-        if (assignedIds.length === 0) {
-          bodyHtml += `<div class="badge-shortage" onclick="openSwapWorkerModal('${day.id}', '${shiftInDay.id}', 0)" title="클릭하여 배정"><span>미배정</span> <span style="font-size:10px;">▾</span></div>`;
-        } else {
-          assignedIds.forEach((wId, slotIdx) => {
-            bodyHtml += renderSlotHtml(wId, day.id, shiftInDay.id, slotIdx);
+
+        group.shifts.forEach((shift, sIdx) => {
+          const duration = getShiftDurationHours(shift.start, shift.end);
+          const themeClass = getShiftThemeClass(shift.name, sIdx, group.shifts.length);
+
+          tableHtml += `
+            <tr>
+              <th class="time-axis-cell ${themeClass}">
+                <div class="time-axis-name">
+                  ${escapeHtml(shift.name)}
+                  ${shift.isNight ? '<span class="night-shift-badge" style="font-size:9px; padding:0 3px;">🌙</span>' : ''}
+                </div>
+                <div class="time-axis-time">${shift.start}~${shift.end}</div>
+                <div class="time-axis-dur">(${duration}h)</div>
+                ${shift.isSeniorRequired ? `<div style="margin-top: 3px;"><span class="cell-role-badge senior" style="font-size: 9px; padding: 0 3px;">⭐️${getTierLabel('senior')}필수</span></div>` : ''}
+              </th>
+          `;
+
+          days.forEach(d => {
+            const assignedIds = (schedule.assignments[d.id] && schedule.assignments[d.id][shift.id]) || [];
+            tableHtml += `<td class="schedule-grid-cell ${themeClass}">`;
+            tableHtml += `<div class="cell-worker-list">`;
+            if (assignedIds.length === 0) {
+              tableHtml += `<div class="badge-shortage" onclick="openSwapWorkerModal('${d.id}', '${shift.id}', 0)" title="클릭하여 배정"><span>미배정</span> <span style="font-size:10px;">▾</span></div>`;
+            } else {
+              assignedIds.forEach((wId, slotIdx) => {
+                tableHtml += renderSlotHtml(wId, d.id, shift.id, slotIdx);
+              });
+            }
+            tableHtml += `</div></td>`;
           });
-        }
-        bodyHtml += `</div></td>`;
-      }
-    });
 
-    bodyHtml += '</tr>';
-  });
-  bodyHtml += '</tbody>';
+          tableHtml += `</tr>`;
+        });
 
-  if (table) table.innerHTML = headerHtml + bodyHtml;
+        tableHtml += `
+                </tbody>
+              </table>
+            </div>
+          </div>
+        `;
+        return tableHtml;
+      }).join('');
+    }
+  }
 
   // 2. Render Mobile-friendly Day Cards View with Pastel Accent
   if (cardsContainer) {
