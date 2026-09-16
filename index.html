@@ -219,11 +219,13 @@
     }
 
     /* ==========================================================================
-       START / HOME SCREEN (Section B)
+       START / HOME SCREEN (Landing Page: First-Time vs Returning Visitor)
        ========================================================================== */
     .home-hero {
       text-align: center;
-      padding: 32px 16px 20px 16px;
+      padding: 24px 16px 20px 16px;
+      max-width: 720px;
+      margin: 0 auto;
     }
 
     .home-badge {
@@ -234,24 +236,143 @@
       font-weight: 700;
       padding: 3px 12px;
       border-radius: 20px;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
       letter-spacing: 0.5px;
+    }
+    .home-badge.return {
+      background: #ecfdf5;
+      color: #059669;
     }
 
     .home-hero h1 {
       font-size: 24px;
       font-weight: 800;
       color: var(--gray-900);
-      margin-bottom: 8px;
+      margin-bottom: 6px;
       letter-spacing: -0.5px;
     }
 
-    .home-hero p {
+    .home-subtitle {
       font-size: 14px;
       color: var(--gray-600);
-      max-width: 440px;
-      margin: 0 auto 20px auto;
+      max-width: 480px;
+      margin: 0 auto 10px auto;
       line-height: 1.5;
+    }
+
+    /* Landing Preview Card (Read-only, Compact) */
+    .landing-preview-card {
+      background: white;
+      border: 1.5px solid var(--gray-200);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      margin: 12px auto 16px auto;
+      max-width: 640px;
+      width: 100%;
+      text-align: left;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    }
+    .landing-preview-header {
+      background: #f8fafc;
+      padding: 7px 12px;
+      border-bottom: 1px solid var(--gray-200);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--gray-800);
+    }
+    .landing-preview-label {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .landing-preview-badge {
+      font-size: 10.5px;
+      font-weight: 600;
+      color: #64748b;
+      background: #e2e8f0;
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+    .landing-preview-date {
+      font-size: 11px;
+      font-weight: normal;
+      color: var(--gray-500);
+    }
+    .landing-preview-wrapper {
+      overflow-x: auto;
+      overflow-y: hidden;
+      -webkit-overflow-scrolling: touch;
+      max-height: 230px;
+      background: white;
+    }
+    .landing-preview-wrapper .schedule-table {
+      min-width: 480px;
+      font-size: 11.5px;
+      border-collapse: collapse;
+      width: 100%;
+      border: none;
+    }
+    .landing-preview-wrapper .time-axis-header {
+      font-size: 11px;
+      padding: 5px 4px;
+      width: 95px;
+      min-width: 95px;
+    }
+    .landing-preview-wrapper .time-axis-cell {
+      padding: 4px 6px;
+      font-size: 11px;
+    }
+    .landing-preview-wrapper .time-axis-name {
+      font-size: 11.5px;
+      font-weight: 700;
+    }
+    .landing-preview-wrapper .time-axis-time {
+      font-size: 10px;
+    }
+    .landing-preview-wrapper .time-axis-dur {
+      font-size: 9.5px;
+    }
+    .landing-preview-wrapper .schedule-table th,
+    .landing-preview-wrapper .schedule-table td {
+      padding: 5px 6px;
+    }
+    .landing-preview-wrapper .schedule-grid-cell {
+      padding: 4px 5px;
+    }
+    .landing-preview-wrapper .assigned-badge {
+      cursor: default;
+      padding: 3px 6px;
+      font-size: 11px;
+      border-color: #cbd5e1;
+      background: #f8fafc;
+      box-shadow: none;
+    }
+    .landing-preview-wrapper .assigned-badge:hover {
+      border-color: #cbd5e1;
+      box-shadow: none;
+      background: #f8fafc;
+    }
+    .landing-preview-wrapper .worker-badge-arrow {
+      display: none;
+    }
+    .landing-preview-wrapper .worker-badge-name {
+      font-size: 11.5px;
+      font-weight: 800;
+    }
+    .landing-preview-wrapper .cell-role-badge {
+      font-size: 9px;
+      padding: 1px 4px;
+    }
+    .landing-preview-empty {
+      padding: 30px 16px;
+      text-align: center;
+      color: var(--gray-600);
+      font-size: 13.5px;
+      font-weight: 600;
+      background: #f8fafc;
     }
 
     .home-main-actions {
@@ -259,14 +380,14 @@
       flex-direction: column;
       align-items: center;
       gap: 10px;
-      max-width: 340px;
-      margin: 0 auto 16px auto;
+      max-width: 380px;
+      margin: 0 auto 12px auto;
       width: 100%;
     }
 
     .btn-start-new {
       width: 100%;
-      padding: 16px 24px;
+      padding: 15px 24px;
       font-size: 16px;
       font-weight: 800;
       background: #1e40af;
@@ -290,95 +411,64 @@
       transform: scale(0.98);
     }
 
-    .btn-demo-highlight {
+    .btn-demo-secondary {
       width: 100%;
-      padding: 14px 20px;
-      font-size: 14px;
+      padding: 12px 20px;
+      font-size: 14.5px;
       font-weight: 700;
-      background: #fffbeb;
-      color: #b45309;
-      border: 1.5px solid #f59e0b;
+      background: white;
+      color: var(--gray-700);
+      border: 1.5px solid var(--gray-300);
       border-radius: var(--radius-lg);
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 6px;
-      box-shadow: 0 2px 6px rgba(217, 119, 6, 0.12);
-      transition: all 0.2s ease;
+      transition: all 0.15s ease;
       touch-action: manipulation;
     }
-    .btn-demo-highlight:hover {
-      background: #fef3c7;
-      border-color: #d97706;
-      color: #92400e;
-      transform: translateY(-1px);
-      box-shadow: 0 4px 10px rgba(217, 119, 6, 0.18);
+    .btn-demo-secondary:hover {
+      background: var(--gray-50);
+      border-color: var(--gray-400);
+      color: var(--gray-900);
     }
-    .btn-demo-highlight:active {
+    .btn-demo-secondary:active {
       transform: scale(0.98);
     }
 
-    .btn-demo-link {
+    .landing-sub-links {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 2px;
+      margin-bottom: 6px;
+      flex-wrap: wrap;
+    }
+    .btn-sub-link {
       background: none;
       border: none;
-      color: var(--gray-600);
-      font-size: 13px;
-      font-weight: 600;
+      color: var(--gray-500);
+      font-size: 12.5px;
       cursor: pointer;
-      padding: 6px 12px;
       text-decoration: underline;
-      text-underline-offset: 4px;
-      transition: color 0.15s ease;
+      text-underline-offset: 3px;
+      padding: 2px 4px;
       touch-action: manipulation;
     }
-    .btn-demo-link:hover {
+    .btn-sub-link:hover {
       color: var(--primary);
     }
-
-    /* Saved Data Area (Only shown when saved data actually exists) */
-    .home-saved-area {
-      border-top: 1px solid var(--gray-200);
-      padding-top: 14px;
-      margin-top: 10px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 8px;
-      width: 100%;
-    }
-
-    .btn-resume-subtle {
-      width: 100%;
-      padding: 9px 14px;
-      font-size: 13px;
-      font-weight: 700;
-      background: white;
-      color: var(--gray-700);
-      border: 1.5px solid var(--gray-300);
-      border-radius: var(--radius-md);
-      cursor: pointer;
-      transition: all 0.15s;
-    }
-    .btn-resume-subtle:hover {
-      border-color: var(--primary);
-      color: var(--primary);
-      background: var(--primary-light);
-    }
-
-    .home-saved-slots-row {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      width: 100%;
+    .sub-link-dot {
+      color: var(--gray-400);
       font-size: 12px;
-      color: var(--gray-600);
     }
 
     .home-footer-note {
       font-size: 12px;
       color: var(--gray-400);
-      margin-top: 14px;
+      margin-top: 12px;
       margin-bottom: 0;
       line-height: 1.4;
     }
@@ -2367,47 +2457,76 @@
   </nav>
 
   <!-- =========================================================================
-       START / HOME SCREEN (Section B)
+       START / HOME SCREEN (Landing Page: First-Time vs Returning Visitor)
        ========================================================================= -->
   <section class="card home-hero" id="homeScreen">
-    <span class="home-badge">SMART SCHEDULER</span>
-    <h1>알바 근무표 자동 생성기</h1>
-    <p id="homeSubtitle">매장, 교대근무, 당직, 동아리까지 조건만 입력하면 공평하고 빈틈없는 맞춤 배정표를 자동으로 만듭니다.</p>
+    <!-- View 1: First-Time Visitor Screen (처음 방문자 화면) -->
+    <div id="firstTimeVisitorView">
+      <span class="home-badge">무료 · 회원가입 없음</span>
+      <h1>알바 근무표 자동 생성기</h1>
+      <p class="home-subtitle">조건만 입력하면, 이런 근무표가 1분 만에 나옵니다.</p>
 
-    <div class="home-main-actions">
-      <!-- 1. Single Primary Solid Navy Button: Create My Store Schedule (Main Action) -->
-      <button class="btn-start-new" onclick="startNewSession()">
-        내 매장 근무표 만들기
-      </button>
-
-      <!-- 2. Distinct Highlighted Accent Button: Demo Preview (Warm Amber/Gold highlight) -->
-      <button class="btn-demo-highlight" onclick="runDemoExperience()">
-        예시 근무표 1초 만에 보고 느낌잡기
-      </button>
-      <div style="font-size: 12px; color: var(--gray-500); margin-top: -4px; margin-bottom: 6px;">
-        카페 샘플 데이터로 완성된 결과를 바로 확인
+      <!-- Preview Card -->
+      <div class="landing-preview-card">
+        <div class="landing-preview-header">
+          <span class="landing-preview-label">예시 · 동네 카페 (알바 5명, 1주)</span>
+          <span class="landing-preview-badge">미리보기</span>
+        </div>
+        <div class="landing-preview-wrapper" id="firstTimePreviewContainer">
+          <!-- Rendered via JS from DEMO_PREVIEW_DATA (Read-only) -->
+        </div>
       </div>
 
-      <!-- 3. Saved Data Section (Only visible if saved data actually exists) -->
-      <div id="homeSavedDataArea" class="home-saved-area" style="display: none;">
-        <button id="btnResume" class="btn-resume-subtle" onclick="resumePreviousSession()">
-          지난번 작업 이어서 하기
+      <!-- Action Buttons -->
+      <div class="home-main-actions">
+        <button class="btn-start-new" onclick="startNewSession()">
+          내 매장 근무표 만들기
         </button>
-
-        <div id="homeSlotSelectContainer" class="home-saved-slots-row" style="display: none;">
-          <select id="homeSlotSelect" class="select-box" style="flex: 1; font-size: 12px; padding: 6px 8px;" onchange="handleHomeSlotSelect(this.value)">
-            <option value="">-- 저장된 매장 불러오기 --</option>
-          </select>
+        <button class="btn-demo-secondary" onclick="runDemoExperience()">
+          예시 직접 눌러보기
+        </button>
+        <div class="landing-sub-links">
+          <button type="button" class="btn-sub-link" onclick="resumePreviousSession()">지난번 작업 이어서 하기</button>
+          <span class="sub-link-dot">·</span>
+          <button type="button" class="btn-sub-link" onclick="document.getElementById('homeImportFileInput').click()">백업 파일 불러오기</button>
         </div>
-
-        <button type="button" class="btn-demo-link" style="font-size: 12px; color: var(--gray-500); padding: 2px 8px;" onclick="document.getElementById('homeImportFileInput').click()">
-          백업 파일 불러오기
-        </button>
-        <input type="file" id="homeImportFileInput" style="display: none;" accept=".json" onchange="importConfigFile(event)">
       </div>
     </div>
 
-    <!-- 5. 1 Concise Line Footer Note without emojis -->
+    <!-- View 2: Returning Visitor Screen (재방문자 화면) -->
+    <div id="returningVisitorView" style="display: none;">
+      <span class="home-badge return">다시 오셨네요</span>
+      <h1>지난번 근무표가 저장돼 있어요</h1>
+      <p class="home-subtitle">이어서 수정하거나, 다음 주 근무표를 바로 만드세요.</p>
+
+      <!-- Preview Card -->
+      <div class="landing-preview-card">
+        <div class="landing-preview-header">
+          <span class="landing-preview-label" id="returningPreviewTitle">내 매장 근무표</span>
+          <span class="landing-preview-date" id="returningPreviewDate" style="display: none;"></span>
+        </div>
+        <div class="landing-preview-wrapper" id="returningPreviewContainer">
+          <!-- Rendered via JS from state.lastSchedule -->
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="home-main-actions">
+        <button class="btn-start-new" onclick="resumePreviousSession()">
+          이어서 수정하기
+        </button>
+        <button class="btn-demo-secondary" id="btnMakeNextWeek" onclick="generateNextWeekSchedule()">
+          같은 인원으로 다음 주 만들기
+        </button>
+        <div class="landing-sub-links">
+          <button type="button" class="btn-sub-link" onclick="startNewSession()">새 매장으로 처음부터</button>
+          <span class="sub-link-dot">·</span>
+          <button type="button" class="btn-sub-link" onclick="document.getElementById('homeImportFileInput').click()">백업 파일 불러오기</button>
+        </div>
+      </div>
+    </div>
+
+    <input type="file" id="homeImportFileInput" style="display: none;" accept=".json" onchange="importConfigFile(event)">
     <p class="home-footer-note">회원가입 없이 무료로 사용하며, 입력한 데이터는 내 브라우저에만 안전하게 보관됩니다.</p>
   </section>
 
@@ -3274,12 +3393,12 @@
         nightRestNextDay: false, limitMinRestDays: false, minRestDaysBetweenShifts: 1
       },
       sampleWorkers: [
-        { id: 'w1', name: '김민수', roleType: 'senior' },
-        { id: 'w2', name: '이지은', roleType: 'junior' },
-        { id: 'w3', name: '박서준', roleType: 'senior' },
-        { id: 'w4', name: '최유진', roleType: 'junior' },
-        { id: 'w5', name: '정다운', roleType: 'senior' },
-        { id: 'w6', name: '한소희', roleType: 'junior' }
+        { id: 'w1', name: '민지', roleType: 'senior' },
+        { id: 'w2', name: '준호', roleType: 'junior' },
+        { id: 'w3', name: '서연', roleType: 'senior' },
+        { id: 'w4', name: '하늘', roleType: 'junior' },
+        { id: 'w5', name: '도윤', roleType: 'senior' },
+        { id: 'w6', name: '수아', roleType: 'junior' }
       ]
     },
     restaurant: {
@@ -3313,12 +3432,12 @@
         nightRestNextDay: false, limitMinRestDays: false, minRestDaysBetweenShifts: 1
       },
       sampleWorkers: [
-        { id: 'w1', name: '강호동', roleType: 'senior' },
-        { id: 'w2', name: '유재석', roleType: 'junior' },
-        { id: 'w3', name: '신동엽', roleType: 'senior' },
-        { id: 'w4', name: '이수근', roleType: 'junior' },
-        { id: 'w5', name: '하동훈', roleType: 'senior' },
-        { id: 'w6', name: '김종국', roleType: 'junior' }
+        { id: 'w1', name: '진수', roleType: 'senior' },
+        { id: 'w2', name: '민우', roleType: 'junior' },
+        { id: 'w3', name: '성훈', roleType: 'senior' },
+        { id: 'w4', name: '정우', roleType: 'junior' },
+        { id: 'w5', name: '영민', roleType: 'senior' },
+        { id: 'w6', name: '지안', roleType: 'junior' }
       ]
     },
     shiftwork: {
@@ -3352,14 +3471,14 @@
         nightRestNextDay: true, limitMinRestDays: false, minRestDaysBetweenShifts: 1
       },
       sampleWorkers: [
-        { id: 'w1', name: '박지훈', roleType: 'senior' },
-        { id: 'w2', name: '최선우', roleType: 'junior' },
-        { id: 'w3', name: '정태양', roleType: 'senior' },
-        { id: 'w4', name: '윤하람', roleType: 'junior' },
-        { id: 'w5', name: '강동원', roleType: 'senior' },
-        { id: 'w6', name: '문채원', roleType: 'junior' },
-        { id: 'w7', name: '송중기', roleType: 'senior' },
-        { id: 'w8', name: '김태리', roleType: 'junior' }
+        { id: 'w1', name: '지훈', roleType: 'senior' },
+        { id: 'w2', name: '선우', roleType: 'junior' },
+        { id: 'w3', name: '태양', roleType: 'senior' },
+        { id: 'w4', name: '하람', roleType: 'junior' },
+        { id: 'w5', name: '동현', roleType: 'senior' },
+        { id: 'w6', name: '나연', roleType: 'junior' },
+        { id: 'w7', name: '지호', roleType: 'senior' },
+        { id: 'w8', name: '소연', roleType: 'junior' }
       ]
     },
     military: {
@@ -3395,14 +3514,14 @@
         nightRestNextDay: false, limitMinRestDays: true, minRestDaysBetweenShifts: 1
       },
       sampleWorkers: [
-        { id: 'w1', name: '병장 김민수', roleType: 'senior' },
-        { id: 'w2', name: '상병 이준혁', roleType: 'senior' },
-        { id: 'w3', name: '상병 박지호', roleType: 'senior' },
-        { id: 'w4', name: '상병 강태현', roleType: 'senior' },
-        { id: 'w5', name: '일병 최도윤', roleType: 'junior' },
-        { id: 'w6', name: '일병 정승우', roleType: 'junior' },
-        { id: 'w7', name: '일병 조현우', roleType: 'junior' },
-        { id: 'w8', name: '이병 한동훈', roleType: 'junior' }
+        { id: 'w1', name: '병장 민수', roleType: 'senior' },
+        { id: 'w2', name: '상병 준혁', roleType: 'senior' },
+        { id: 'w3', name: '상병 지호', roleType: 'senior' },
+        { id: 'w4', name: '상병 태현', roleType: 'senior' },
+        { id: 'w5', name: '일병 도윤', roleType: 'junior' },
+        { id: 'w6', name: '일병 승우', roleType: 'junior' },
+        { id: 'w7', name: '일병 현우', roleType: 'junior' },
+        { id: 'w8', name: '이병 동훈', roleType: 'junior' }
       ]
     },
     club: {
@@ -3441,14 +3560,14 @@
         nightRestNextDay: false, limitMinRestDays: false, minRestDaysBetweenShifts: 1
       },
       sampleWorkers: [
-        { id: 'w1', name: '강하늘', roleType: 'senior' },
-        { id: 'w2', name: '서유나', roleType: 'junior' },
-        { id: 'w3', name: '남주혁', roleType: 'senior' },
-        { id: 'w4', name: '김태리', roleType: 'junior' },
-        { id: 'w5', name: '박보검', roleType: 'senior' },
-        { id: 'w6', name: '신세경', roleType: 'junior' },
-        { id: 'w7', name: '차은우', roleType: 'senior' },
-        { id: 'w8', name: '안유진', roleType: 'junior' }
+        { id: 'w1', name: '다온', roleType: 'senior' },
+        { id: 'w2', name: '서아', roleType: 'junior' },
+        { id: 'w3', name: '예준', roleType: 'senior' },
+        { id: 'w4', name: '윤우', roleType: 'junior' },
+        { id: 'w5', name: '하린', roleType: 'senior' },
+        { id: 'w6', name: '민혁', roleType: 'junior' },
+        { id: 'w7', name: '지원', roleType: 'senior' },
+        { id: 'w8', name: '하은', roleType: 'junior' }
       ]
     },
     volunteer: {
@@ -3482,14 +3601,14 @@
         nightRestNextDay: false, limitMinRestDays: false, minRestDaysBetweenShifts: 1
       },
       sampleWorkers: [
-        { id: 'w1', name: '정다은', roleType: 'senior' },
-        { id: 'w2', name: '오시은', roleType: 'junior' },
-        { id: 'w3', name: '유재석', roleType: 'senior' },
-        { id: 'w4', name: '송지효', roleType: 'junior' },
-        { id: 'w5', name: '이광수', roleType: 'junior' },
-        { id: 'w6', name: '지석진', roleType: 'junior' },
-        { id: 'w7', name: '하동훈', roleType: 'junior' },
-        { id: 'w8', name: '김종국', roleType: 'junior' }
+        { id: 'w1', name: '다은', roleType: 'senior' },
+        { id: 'w2', name: '시은', roleType: 'junior' },
+        { id: 'w3', name: '재호', roleType: 'senior' },
+        { id: 'w4', name: '서진', roleType: 'junior' },
+        { id: 'w5', name: '민서', roleType: 'junior' },
+        { id: 'w6', name: '지후', roleType: 'junior' },
+        { id: 'w7', name: '윤서', roleType: 'junior' },
+        { id: 'w8', name: '태린', roleType: 'junior' }
       ]
     }
   };
@@ -3845,13 +3964,280 @@
   }
 
   /* ==========================================================================
-     START / HOME FLOW & PRESETS
+     START / HOME FLOW, LANDING PREVIEW & PRESETS
      ========================================================================== */
+  const DEMO_PREVIEW_DATA = {
+    workerCount: 5,
+    tierLabels: { senior: '숙련', junior: '신입' },
+    group: {
+      id: 'g_wd',
+      name: '평일 (월~금)',
+      days: ['mon', 'tue', 'wed', 'thu', 'fri'],
+      shifts: [
+        { id: 's_cf_1', name: '오픈', start: '08:00', end: '14:00', isSeniorRequired: true },
+        { id: 's_cf_2', name: '미들', start: '12:00', end: '18:00', isSeniorRequired: false },
+        { id: 's_cf_3', name: '마감', start: '17:30', end: '22:30', isSeniorRequired: true }
+      ]
+    },
+    days: [
+      { id: 'mon', name: '월', isWeekend: false },
+      { id: 'tue', name: '화', isWeekend: false },
+      { id: 'wed', name: '수', isWeekend: false },
+      { id: 'thu', name: '목', isWeekend: false },
+      { id: 'fri', name: '금', isWeekend: false }
+    ],
+    workers: [
+      { id: 'w1', name: '민지', roleType: 'senior' },
+      { id: 'w2', name: '준호', roleType: 'senior' },
+      { id: 'w3', name: '서연', roleType: 'junior' },
+      { id: 'w4', name: '하늘', roleType: 'junior' },
+      { id: 'w5', name: '도윤', roleType: 'junior' }
+    ],
+    assignments: {
+      mon: { s_cf_1: ['w1'], s_cf_2: ['w3'], s_cf_3: ['w2'] },
+      tue: { s_cf_1: ['w2'], s_cf_2: ['w4'], s_cf_3: ['w1'] },
+      wed: { s_cf_1: ['w1'], s_cf_2: ['w5'], s_cf_3: ['w2'] },
+      thu: { s_cf_1: ['w2'], s_cf_2: ['w3'], s_cf_3: ['w5'] },
+      fri: { s_cf_1: ['w1'], s_cf_2: ['w4'], s_cf_3: ['w3'] }
+    }
+  };
+
+  function getShiftThemeClass(shiftName, shiftIndex, totalShifts) {
+    const name = (shiftName || '').trim();
+    if (name.includes('오픈') || name.includes('오전') || name.includes('아침') || name.includes('전반')) {
+      return 'theme-orange';
+    }
+    if (name.includes('미들') || name.includes('오후') || name.includes('주간') || name.includes('중간')) {
+      return 'theme-green';
+    }
+    if (name.includes('마감') || name.includes('야간') || name.includes('저녁') || name.includes('심야') || name.includes('후반')) {
+      return 'theme-purple';
+    }
+    if (shiftIndex === 0) return 'theme-orange';
+    if (shiftIndex === 1 && totalShifts > 2) return 'theme-green';
+    if (shiftIndex >= 2 || (shiftIndex === 1 && totalShifts <= 2)) return 'theme-purple';
+    return 'theme-blue';
+  }
+
+  function buildScheduleTableCardHtml(group, days, shifts, assignments, workers, tierLabels, isReadOnly = false, showHeader = true, diagnostics = {}) {
+    const isWeekendGroup = days.every(d => d.isWeekend);
+    const daysSummary = days.map(d => d.name + '요일').join(', ');
+    const seniorLabel = (tierLabels && tierLabels.senior) || '숙련';
+    const juniorLabel = (tierLabels && tierLabels.junior) || '신입';
+
+    let tableHtml = `
+      <div class="daygroup-table-card"${isReadOnly ? ' style="border: none; box-shadow: none; border-radius: 0;"' : ''}>
+    `;
+
+    if (showHeader) {
+      tableHtml += `
+        <div class="daygroup-header-bar ${isWeekendGroup ? 'weekend' : ''}">
+          <div class="daygroup-header-title">
+            <span>📅 ${escapeHtml(group.name)}</span>
+            <span class="daygroup-days-summary">(${daysSummary})</span>
+          </div>
+          <span style="font-size: 11.5px; font-weight: normal; opacity: 0.85;">타임 ${(shifts||[]).length}개</span>
+        </div>
+      `;
+    }
+
+    tableHtml += `
+      <div style="overflow-x: auto; -webkit-overflow-scrolling: touch;">
+        <table class="schedule-table">
+          <thead>
+            <tr>
+              <th class="time-axis-header"${isReadOnly ? '' : ' style="width: 125px; min-width: 125px;"'}>시간대 / 구분</th>
+              ${days.map(d => `<th class="${d.isWeekend ? 'weekend-col' : ''}">${d.name}요일</th>`).join('')}
+            </tr>
+          </thead>
+          <tbody>
+    `;
+
+    (shifts || []).forEach((shift, sIdx) => {
+      const duration = getShiftDurationHours(shift.start, shift.end);
+      const themeClass = getShiftThemeClass(shift.name, sIdx, shifts.length);
+
+      tableHtml += `
+        <tr>
+          <th class="time-axis-cell ${themeClass}">
+            <div class="time-axis-name">
+              ${escapeHtml(shift.name)}
+              ${shift.isNight ? '<span class="night-shift-badge" style="font-size:9px; padding:0 3px;">🌙</span>' : ''}
+            </div>
+            <div class="time-axis-time">${shift.start}~${shift.end}</div>
+            <div class="time-axis-dur">(${duration}h)</div>
+            ${shift.isSeniorRequired ? `<div style="margin-top: 3px;"><span class="cell-role-badge senior" style="font-size: 9px; padding: 0 3px;">⭐️${seniorLabel}필수</span></div>` : ''}
+          </th>
+      `;
+
+      days.forEach(d => {
+        const assignedIds = (assignments && assignments[d.id] && assignments[d.id][shift.id]) || [];
+        tableHtml += `<td class="schedule-grid-cell ${themeClass}">`;
+        tableHtml += `<div class="cell-worker-list">`;
+        if (assignedIds.length === 0) {
+          tableHtml += isReadOnly
+            ? `<div class="badge-shortage" style="cursor: default;"><span>미배정</span></div>`
+            : `<div class="badge-shortage" onclick="openSwapWorkerModal('${d.id}', '${shift.id}', 0)" title="클릭하여 배정"><span>미배정</span> <span style="font-size:10px;">▾</span></div>`;
+        } else {
+          assignedIds.forEach((wId, slotIdx) => {
+            if (wId && wId.isExtra) {
+              tableHtml += isReadOnly
+                ? `<div class="slot-extra-unfilled" style="cursor: default;"><span>[추가]</span></div>`
+                : `<div class="slot-extra-unfilled" onclick="openSwapWorkerModal('${d.id}', '${shift.id}', ${slotIdx})" title="공통 횟수 균등 배정 후 남은 슬롯 (클릭하여 추가 배정)"><span>[추가 배정]</span> <span style="font-size:10px;">▾</span></div>`;
+            } else if (wId === null) {
+              const slotKey = `${d.id}_${shift.id}_${slotIdx}`;
+              const diagList = (diagnostics && diagnostics[slotKey]) || [];
+              let tooltipText = '<strong>[제외 및 미배정 사유]</strong><br>';
+              if (diagList.length === 0) {
+                tooltipText += '지원 가능한 근무자 없음 (클릭하여 대타 배정)';
+              } else {
+                diagList.forEach(diag => {
+                  tooltipText += `• <strong>${escapeHtml(diag.workerName)}</strong>: ${escapeHtml(diag.reason)}<br>`;
+                });
+              }
+              tableHtml += isReadOnly
+                ? `<div class="badge-shortage" style="cursor: default;"><span>인원 부족</span></div>`
+                : `<div class="badge-shortage" onclick="openSwapWorkerModal('${d.id}', '${shift.id}', ${slotIdx})" title="클릭하여 대타 배정"><span>인원 부족</span> <span style="font-size:10px;">▾</span><div class="tooltip-box">${tooltipText}</div></div>`;
+            } else {
+              const worker = (workers || []).find(w => w.id === wId);
+              const role = (worker && worker.roleType) ? worker.roleType : 'junior';
+              const roleText = role === 'senior' ? seniorLabel : juniorLabel;
+              const name = worker ? escapeHtml(worker.name) : '알 수 없음';
+              if (isReadOnly) {
+                tableHtml += `
+                  <div class="assigned-badge" style="cursor: default;">
+                    <div class="worker-badge-content">
+                      <span class="cell-role-badge ${role}">${roleText}</span>
+                      <strong class="worker-badge-name">${name}</strong>
+                    </div>
+                  </div>
+                `;
+              } else {
+                tableHtml += `
+                  <div class="assigned-badge" onclick="openSwapWorkerModal('${d.id}', '${shift.id}', ${slotIdx})" title="클릭하여 대타 교체">
+                    <div class="worker-badge-content">
+                      <span class="cell-role-badge ${role}">${roleText}</span>
+                      <strong class="worker-badge-name">${name}</strong>
+                    </div>
+                    <span class="worker-badge-arrow">▾</span>
+                  </div>
+                `;
+              }
+            }
+          });
+        }
+        tableHtml += `</div></td>`;
+      });
+
+      tableHtml += `</tr>`;
+    });
+
+    tableHtml += `
+            </tbody>
+          </table>
+        </div>
+      </div>
+    `;
+    return tableHtml;
+  }
+
+  function isReturningVisitor() {
+    try {
+      const saved = localStorage.getItem(MAIN_STORAGE_KEY);
+      if (!saved) return false;
+      const parsed = JSON.parse(saved);
+      if (!parsed || typeof parsed !== 'object') return false;
+      // Demo session does not count as returning visitor
+      if (parsed.isDemo) return false;
+      const hasWorkers = Array.isArray(parsed.workers) && parsed.workers.length > 0;
+      const hasSchedule = !!parsed.lastSchedule;
+      return hasWorkers || hasSchedule;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  function renderHomeScreen() {
+    const isReturning = isReturningVisitor();
+    const firstTimeView = document.getElementById('firstTimeVisitorView');
+    const returningView = document.getElementById('returningVisitorView');
+    if (!firstTimeView || !returningView) return;
+
+    if (isReturning) {
+      firstTimeView.style.display = 'none';
+      returningView.style.display = 'block';
+
+      const retTitleEl = document.getElementById('returningPreviewTitle');
+      const retDateEl = document.getElementById('returningPreviewDate');
+      const retContainer = document.getElementById('returningPreviewContainer');
+      const btnNextWeek = document.getElementById('btnMakeNextWeek');
+
+      const storeName = state.storeName || (USE_CASE_VOCABULARY[state.useCase] ? `${USE_CASE_VOCABULARY[state.useCase].label} 근무표` : '내 매장 근무표');
+      const workerCount = (state.workers || []).length;
+      if (retTitleEl) {
+        retTitleEl.textContent = `${storeName} (${workerCount}명)`;
+      }
+      if (retDateEl) {
+        if (state.lastSavedAt) {
+          retDateEl.textContent = state.lastSavedAt;
+          retDateEl.style.display = 'inline';
+        } else {
+          retDateEl.style.display = 'none';
+        }
+      }
+
+      if (retContainer) {
+        if (state.lastSchedule && state.dayGroups && state.dayGroups.length > 0) {
+          const firstGrp = state.dayGroups[0];
+          const days = (firstGrp.days || []).map(dId => ALL_DAYS.find(ad => ad.id === dId)).filter(Boolean);
+          retContainer.innerHTML = buildScheduleTableCardHtml(
+            firstGrp,
+            days,
+            firstGrp.shifts || [],
+            state.lastSchedule.assignments,
+            state.workers,
+            state.tierLabels,
+            true,  // isReadOnly
+            false  // showHeader = false
+          );
+          if (btnNextWeek) btnNextWeek.style.display = 'flex';
+        } else {
+          retContainer.innerHTML = `<div class="landing-preview-empty">입력 중인 작업이 있어요 · 알바 ${workerCount}명</div>`;
+          if (btnNextWeek) btnNextWeek.style.display = 'none';
+        }
+      }
+    } else {
+      returningView.style.display = 'none';
+      firstTimeView.style.display = 'block';
+
+      const ftContainer = document.getElementById('firstTimePreviewContainer');
+      if (ftContainer) {
+        ftContainer.innerHTML = buildScheduleTableCardHtml(
+          DEMO_PREVIEW_DATA.group,
+          DEMO_PREVIEW_DATA.days,
+          DEMO_PREVIEW_DATA.group.shifts,
+          DEMO_PREVIEW_DATA.assignments,
+          DEMO_PREVIEW_DATA.workers,
+          DEMO_PREVIEW_DATA.tierLabels,
+          true,  // isReadOnly
+          false  // showHeader = false
+        );
+      }
+    }
+  }
+
+  function clearDemoFlag() {
+    if (state.isDemo) {
+      delete state.isDemo;
+      saveState();
+    }
+  }
+
   function goToHome() {
     currentStep = 0;
     const demoBanner = document.getElementById('demoExperienceBanner');
     if (demoBanner) demoBanner.style.display = 'none';
-    checkAndRenderSavedData();
+    renderHomeScreen();
     document.getElementById('homeScreen').style.display = 'block';
     document.getElementById('mainStepNav').style.display = 'none';
     for (let i = 1; i <= 5; i++) {
@@ -3864,6 +4250,7 @@
   }
 
   function resumePreviousSession() {
+    clearDemoFlag();
     showToast('지난번 작업 상태를 이어갑니다.');
     if (state.lastSchedule) {
       renderScheduleResult(state.lastSchedule);
@@ -3874,16 +4261,18 @@
   }
 
   function startNewSession() {
+    clearDemoFlag();
     const demoBanner = document.getElementById('demoExperienceBanner');
     if (demoBanner) demoBanner.style.display = 'none';
     goToStep(1);
   }
 
   function runDemoExperience() {
+    state.isDemo = true;
     state.useCase = 'cafe';
     state.showWageInfo = true;
 
-    // 1. Setup realistic 15-worker Large Cafe store sample
+    // 1. Setup realistic 15-worker Large Cafe store sample (Common Korean first names, zero celebrity names)
     state.dayGroups = [
       {
         id: 'g_wd',
@@ -3908,21 +4297,21 @@
     ];
 
     state.workers = [
-      { id: 'w1', name: '김민수', roleType: 'senior' },
-      { id: 'w2', name: '이지은', roleType: 'senior' },
-      { id: 'w3', name: '박서준', roleType: 'senior' },
-      { id: 'w4', name: '최유진', roleType: 'senior' },
-      { id: 'w5', name: '정다운', roleType: 'senior' },
-      { id: 'w6', name: '강태오', roleType: 'senior' },
-      { id: 'w7', name: '한소희', roleType: 'junior' },
-      { id: 'w8', name: '윤도현', roleType: 'junior' },
-      { id: 'w9', name: '송중기', roleType: 'junior' },
-      { id: 'w10', name: '배수지', roleType: 'junior' },
-      { id: 'w11', name: '임윤아', roleType: 'junior' },
-      { id: 'w12', name: '남주혁', roleType: 'junior' },
-      { id: 'w13', name: '안효섭', roleType: 'junior' },
-      { id: 'w14', name: '신세경', roleType: 'junior' },
-      { id: 'w15', name: '조보아', roleType: 'junior' }
+      { id: 'w1', name: '민지', roleType: 'senior' },
+      { id: 'w2', name: '준호', roleType: 'senior' },
+      { id: 'w3', name: '서연', roleType: 'senior' },
+      { id: 'w4', name: '하늘', roleType: 'senior' },
+      { id: 'w5', name: '도윤', roleType: 'senior' },
+      { id: 'w6', name: '수아', roleType: 'senior' },
+      { id: 'w7', name: '지훈', roleType: 'junior' },
+      { id: 'w8', name: '예은', roleType: 'junior' },
+      { id: 'w9', name: '현우', roleType: 'junior' },
+      { id: 'w10', name: '유나', roleType: 'junior' },
+      { id: 'w11', name: '시우', roleType: 'junior' },
+      { id: 'w12', name: '다은', roleType: 'junior' },
+      { id: 'w13', name: '건우', roleType: 'junior' },
+      { id: 'w14', name: '채원', roleType: 'junior' },
+      { id: 'w15', name: '우진', roleType: 'junior' }
     ];
 
     state.rules = {
@@ -4047,7 +4436,8 @@
       goToStep(1);
       showToast(`✨ 예시 데이터가 초기화되었습니다. 내 ${getTerm('orgName', '매장')} 정보를 입력해 보세요!`);
     } else if (choice === 'keep') {
-      // Keep sample as editable template
+      // Keep sample as editable template: clear demo flag so user's work is preserved
+      clearDemoFlag();
       goToStep(1);
       showToast('✏️ 예시 설정을 1단계부터 원하는 대로 수정해 보세요.');
     }
@@ -4061,6 +4451,7 @@
   }
 
   function applyPresetData(presetType) {
+    clearDemoFlag();
     const vocab = USE_CASE_VOCABULARY[presetType] || USE_CASE_VOCABULARY['cafe'];
     state.useCase = presetType;
     state.showWageInfo = vocab.showWageInfo;
@@ -4749,6 +5140,7 @@
   }
 
   function addWorker() {
+    clearDemoFlag();
     const input = document.getElementById('workerNameInput');
     const roleSelect = document.getElementById('workerRoleSelect');
     const name = input.value.trim();
@@ -4771,6 +5163,7 @@
   }
 
   function deleteWorker(workerId) {
+    clearDemoFlag();
     const w = state.workers.find(item => item.id === workerId);
     state.workers = state.workers.filter(item => item.id !== workerId);
     delete state.availability[workerId];
@@ -6179,24 +6572,7 @@
       return;
     }
 
-  function getShiftThemeClass(shiftName, shiftIndex, totalShifts) {
-    const name = (shiftName || '').trim();
-    if (name.includes('오픈') || name.includes('오전') || name.includes('아침') || name.includes('전반')) {
-      return 'theme-orange';
-    }
-    if (name.includes('미들') || name.includes('오후') || name.includes('주간') || name.includes('중간')) {
-      return 'theme-green';
-    }
-    if (name.includes('마감') || name.includes('야간') || name.includes('저녁') || name.includes('심야') || name.includes('후반')) {
-      return 'theme-purple';
-    }
-    if (shiftIndex === 0) return 'theme-orange';
-    if (shiftIndex === 1 && totalShifts > 2) return 'theme-green';
-    if (shiftIndex >= 2 || (shiftIndex === 1 && totalShifts <= 2)) return 'theme-purple';
-    return 'theme-blue';
-  }
-
-  // Helper to render assigned cell
+  // Helper to render assigned cell for mobile cards
   function renderSlotHtml(wId, dayId, shiftId, slotIdx) {
     if (wId && wId.isExtra) {
       return `
@@ -6238,7 +6614,7 @@
     }
   }
 
-  // 1. Render Desktop/Tablet Grid Tables (Group-by-Group Y-Axis)
+  // 1. Render Desktop/Tablet Grid Tables (Group-by-Group Y-Axis via buildScheduleTableCardHtml)
   const tableContainer = document.getElementById('scheduleTableContainer');
   if (tableContainer) {
     const activeGroups = [];
@@ -6253,70 +6629,17 @@
       tableContainer.innerHTML = '<div style="padding: 20px; text-align: center; color: var(--gray-500);">영업 요일이 없습니다.</div>';
     } else {
       tableContainer.innerHTML = activeGroups.map(({ group, days }) => {
-        const isWeekendGroup = days.every(d => d.isWeekend);
-        const daysSummary = days.map(d => d.name + '요일').join(', ');
-
-        let tableHtml = `
-          <div class="daygroup-table-card">
-            <div class="daygroup-header-bar ${isWeekendGroup ? 'weekend' : ''}">
-              <div class="daygroup-header-title">
-                <span>📅 ${escapeHtml(group.name)}</span>
-                <span class="daygroup-days-summary">(${daysSummary})</span>
-              </div>
-              <span style="font-size: 11.5px; font-weight: normal; opacity: 0.85;">타임 ${group.shifts.length}개</span>
-            </div>
-            <div style="overflow-x: auto; -webkit-overflow-scrolling: touch;">
-              <table class="schedule-table">
-                <thead>
-                  <tr>
-                    <th class="time-axis-header" style="width: 125px; min-width: 125px;">시간대 / 구분</th>
-                    ${days.map(d => `<th class="${d.isWeekend ? 'weekend-col' : ''}">${d.name}요일</th>`).join('')}
-                  </tr>
-                </thead>
-                <tbody>
-        `;
-
-        group.shifts.forEach((shift, sIdx) => {
-          const duration = getShiftDurationHours(shift.start, shift.end);
-          const themeClass = getShiftThemeClass(shift.name, sIdx, group.shifts.length);
-
-          tableHtml += `
-            <tr>
-              <th class="time-axis-cell ${themeClass}">
-                <div class="time-axis-name">
-                  ${escapeHtml(shift.name)}
-                  ${shift.isNight ? '<span class="night-shift-badge" style="font-size:9px; padding:0 3px;">🌙</span>' : ''}
-                </div>
-                <div class="time-axis-time">${shift.start}~${shift.end}</div>
-                <div class="time-axis-dur">(${duration}h)</div>
-                ${shift.isSeniorRequired ? `<div style="margin-top: 3px;"><span class="cell-role-badge senior" style="font-size: 9px; padding: 0 3px;">⭐️${getTierLabel('senior')}필수</span></div>` : ''}
-              </th>
-          `;
-
-          days.forEach(d => {
-            const assignedIds = (schedule.assignments[d.id] && schedule.assignments[d.id][shift.id]) || [];
-            tableHtml += `<td class="schedule-grid-cell ${themeClass}">`;
-            tableHtml += `<div class="cell-worker-list">`;
-            if (assignedIds.length === 0) {
-              tableHtml += `<div class="badge-shortage" onclick="openSwapWorkerModal('${d.id}', '${shift.id}', 0)" title="클릭하여 배정"><span>미배정</span> <span style="font-size:10px;">▾</span></div>`;
-            } else {
-              assignedIds.forEach((wId, slotIdx) => {
-                tableHtml += renderSlotHtml(wId, d.id, shift.id, slotIdx);
-              });
-            }
-            tableHtml += `</div></td>`;
-          });
-
-          tableHtml += `</tr>`;
-        });
-
-        tableHtml += `
-                </tbody>
-              </table>
-            </div>
-          </div>
-        `;
-        return tableHtml;
+        return buildScheduleTableCardHtml(
+          group,
+          days,
+          group.shifts,
+          schedule.assignments,
+          state.workers,
+          state.tierLabels,
+          false, // interactive
+          true,  // showHeader
+          schedule.diagnostics
+        );
       }).join('');
     }
   }
