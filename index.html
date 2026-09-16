@@ -303,52 +303,90 @@
     }
     .landing-preview-wrapper {
       overflow-x: auto;
-      overflow-y: hidden;
       -webkit-overflow-scrolling: touch;
-      max-height: 230px;
       background: white;
     }
     .landing-preview-wrapper .schedule-table {
       min-width: 480px;
-      font-size: 11.5px;
+      font-size: 11px;
       border-collapse: collapse;
       width: 100%;
       border: none;
     }
-    .landing-preview-wrapper .time-axis-header {
-      font-size: 11px;
-      padding: 5px 4px;
-      width: 95px;
-      min-width: 95px;
-    }
-    .landing-preview-wrapper .time-axis-cell {
-      padding: 4px 6px;
-      font-size: 11px;
-    }
-    .landing-preview-wrapper .time-axis-name {
-      font-size: 11.5px;
-      font-weight: 700;
-    }
-    .landing-preview-wrapper .time-axis-time {
-      font-size: 10px;
-    }
-    .landing-preview-wrapper .time-axis-dur {
-      font-size: 9.5px;
-    }
     .landing-preview-wrapper .schedule-table th,
     .landing-preview-wrapper .schedule-table td {
-      padding: 5px 6px;
+      padding: 3px 4px !important;
+      height: 1%;
+    }
+    .landing-preview-wrapper .schedule-table thead th {
+      padding: 5px 4px !important;
+      font-size: 11px;
+    }
+    .landing-preview-wrapper .time-axis-header {
+      font-size: 10.5px;
+      padding: 5px 4px !important;
+      width: 88px;
+      min-width: 88px;
+    }
+    .landing-preview-wrapper .time-axis-cell {
+      padding: 3px 4px !important;
+      text-align: center;
+      vertical-align: middle;
+    }
+    .landing-preview-wrapper .time-axis-name {
+      font-size: 11px;
+      font-weight: 800;
+      line-height: 1.15;
+      margin-bottom: 1px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 2px;
+    }
+    .landing-preview-wrapper .time-axis-time {
+      display: inline-block;
+      font-size: 9px;
+      font-weight: 600;
+      line-height: 1.1;
+      color: var(--gray-600);
+    }
+    .landing-preview-wrapper .time-axis-dur {
+      display: inline-block;
+      font-size: 8.5px;
+      line-height: 1.1;
+      color: var(--gray-400);
+      margin-left: 2px;
+    }
+    .landing-preview-wrapper .time-axis-cell div[style*="margin-top"] {
+      margin-top: 1px !important;
+    }
+    .landing-preview-wrapper .time-axis-cell .cell-role-badge {
+      font-size: 8px !important;
+      padding: 0 3px !important;
+      line-height: 1.1;
+      display: inline-block;
     }
     .landing-preview-wrapper .schedule-grid-cell {
-      padding: 4px 5px;
+      padding: 3px 4px !important;
+      min-width: 68px;
+      vertical-align: middle;
+    }
+    .landing-preview-wrapper .cell-worker-list {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      width: 100%;
     }
     .landing-preview-wrapper .assigned-badge {
       cursor: default;
-      padding: 3px 6px;
-      font-size: 11px;
+      padding: 1.5px 4px;
+      font-size: 10.5px;
       border-color: #cbd5e1;
       background: #f8fafc;
       box-shadow: none;
+      border-radius: 3px;
+      min-height: 0;
+      gap: 4px;
     }
     .landing-preview-wrapper .assigned-badge:hover {
       border-color: #cbd5e1;
@@ -358,13 +396,28 @@
     .landing-preview-wrapper .worker-badge-arrow {
       display: none;
     }
+    .landing-preview-wrapper .worker-badge-content {
+      gap: 3px;
+      min-width: 0;
+    }
     .landing-preview-wrapper .worker-badge-name {
-      font-size: 11.5px;
+      font-size: 10.5px;
       font-weight: 800;
+      line-height: 1.15;
     }
     .landing-preview-wrapper .cell-role-badge {
-      font-size: 9px;
-      padding: 1px 4px;
+      font-size: 8.5px;
+      padding: 0 3px;
+      line-height: 1.1;
+    }
+    .landing-preview-more-shifts {
+      text-align: center;
+      padding: 5px 10px;
+      background: #f8fafc;
+      color: var(--gray-600);
+      font-size: 11px;
+      font-weight: 700;
+      border-top: 1px dashed var(--gray-300);
     }
     .landing-preview-empty {
       padding: 30px 16px;
@@ -2469,7 +2522,7 @@
       <!-- Preview Card -->
       <div class="landing-preview-card">
         <div class="landing-preview-header">
-          <span class="landing-preview-label">예시 · 동네 카페 (알바 5명, 1주)</span>
+          <span class="landing-preview-label">예시 · 카페 (알바 15명, 1주)</span>
           <span class="landing-preview-badge">미리보기</span>
         </div>
         <div class="landing-preview-wrapper" id="firstTimePreviewContainer">
@@ -3349,7 +3402,7 @@
         { id: 'w2', name: '이영희', roleType: 'junior' },
         { id: 'w3', name: '박민수', roleType: 'junior' },
         { id: 'w4', name: '최지은', roleType: 'junior' },
-        { id: 'w5', name: '정우성', roleType: 'senior' }
+        { id: 'w5', name: '강도윤', roleType: 'senior' }
       ]
     },
     cafe: {
@@ -3967,7 +4020,7 @@
      START / HOME FLOW, LANDING PREVIEW & PRESETS
      ========================================================================== */
   const DEMO_PREVIEW_DATA = {
-    workerCount: 5,
+    workerCount: 15,
     tierLabels: { senior: '숙련', junior: '신입' },
     group: {
       id: 'g_wd',
@@ -3989,16 +4042,46 @@
     workers: [
       { id: 'w1', name: '민지', roleType: 'senior' },
       { id: 'w2', name: '준호', roleType: 'senior' },
-      { id: 'w3', name: '서연', roleType: 'junior' },
-      { id: 'w4', name: '하늘', roleType: 'junior' },
-      { id: 'w5', name: '도윤', roleType: 'junior' }
+      { id: 'w3', name: '서연', roleType: 'senior' },
+      { id: 'w4', name: '하늘', roleType: 'senior' },
+      { id: 'w5', name: '도윤', roleType: 'senior' },
+      { id: 'w6', name: '수아', roleType: 'senior' },
+      { id: 'w7', name: '지훈', roleType: 'junior' },
+      { id: 'w8', name: '예은', roleType: 'junior' },
+      { id: 'w9', name: '현우', roleType: 'junior' },
+      { id: 'w10', name: '유나', roleType: 'junior' },
+      { id: 'w11', name: '시우', roleType: 'junior' },
+      { id: 'w12', name: '다은', roleType: 'junior' },
+      { id: 'w13', name: '건우', roleType: 'junior' },
+      { id: 'w14', name: '채원', roleType: 'junior' },
+      { id: 'w15', name: '우진', roleType: 'junior' }
     ],
     assignments: {
-      mon: { s_cf_1: ['w1'], s_cf_2: ['w3'], s_cf_3: ['w2'] },
-      tue: { s_cf_1: ['w2'], s_cf_2: ['w4'], s_cf_3: ['w1'] },
-      wed: { s_cf_1: ['w1'], s_cf_2: ['w5'], s_cf_3: ['w2'] },
-      thu: { s_cf_1: ['w2'], s_cf_2: ['w3'], s_cf_3: ['w5'] },
-      fri: { s_cf_1: ['w1'], s_cf_2: ['w4'], s_cf_3: ['w3'] }
+      mon: {
+        s_cf_1: ['w1', 'w3', 'w7', 'w8'],
+        s_cf_2: ['w2', 'w9', 'w10', 'w11'],
+        s_cf_3: ['w4', 'w5', 'w14', 'w15']
+      },
+      tue: {
+        s_cf_1: ['w2', 'w4', 'w9', 'w10'],
+        s_cf_2: ['w1', 'w12', 'w13', 'w14'],
+        s_cf_3: ['w3', 'w6', 'w7', 'w8']
+      },
+      wed: {
+        s_cf_1: ['w5', 'w6', 'w11', 'w12'],
+        s_cf_2: ['w3', 'w7', 'w8', 'w15'],
+        s_cf_3: ['w1', 'w13', 'w9', 'w10']
+      },
+      thu: {
+        s_cf_1: ['w1', 'w6', 'w13', 'w14'],
+        s_cf_2: ['w4', 'w2', 'w9', 'w10'],
+        s_cf_3: ['w5', 'w11', 'w12', 'w15']
+      },
+      fri: {
+        s_cf_1: ['w3', 'w5', 'w7', 'w15'],
+        s_cf_2: ['w4', 'w8', 'w12', 'w13'],
+        s_cf_3: ['w2', 'w6', 'w11', 'w14']
+      }
     }
   };
 
@@ -4019,11 +4102,16 @@
     return 'theme-blue';
   }
 
-  function buildScheduleTableCardHtml(group, days, shifts, assignments, workers, tierLabels, isReadOnly = false, showHeader = true, diagnostics = {}) {
+  function buildScheduleTableCardHtml(group, days, shifts, assignments, workers, tierLabels, isReadOnly = false, showHeader = true, diagnostics = {}, maxShifts = null) {
     const isWeekendGroup = days.every(d => d.isWeekend);
     const daysSummary = days.map(d => d.name + '요일').join(', ');
     const seniorLabel = (tierLabels && tierLabels.senior) || '숙련';
     const juniorLabel = (tierLabels && tierLabels.junior) || '신입';
+
+    const allShifts = shifts || [];
+    const shouldLimit = Number.isInteger(maxShifts) && maxShifts > 0 && allShifts.length > maxShifts;
+    const visibleShifts = shouldLimit ? allShifts.slice(0, maxShifts) : allShifts;
+    const hiddenShiftCount = shouldLimit ? (allShifts.length - maxShifts) : 0;
 
     let tableHtml = `
       <div class="daygroup-table-card"${isReadOnly ? ' style="border: none; box-shadow: none; border-radius: 0;"' : ''}>
@@ -4036,7 +4124,7 @@
             <span>📅 ${escapeHtml(group.name)}</span>
             <span class="daygroup-days-summary">(${daysSummary})</span>
           </div>
-          <span style="font-size: 11.5px; font-weight: normal; opacity: 0.85;">타임 ${(shifts||[]).length}개</span>
+          <span style="font-size: 11.5px; font-weight: normal; opacity: 0.85;">타임 ${allShifts.length}개</span>
         </div>
       `;
     }
@@ -4053,9 +4141,9 @@
           <tbody>
     `;
 
-    (shifts || []).forEach((shift, sIdx) => {
+    visibleShifts.forEach((shift, sIdx) => {
       const duration = getShiftDurationHours(shift.start, shift.end);
-      const themeClass = getShiftThemeClass(shift.name, sIdx, shifts.length);
+      const themeClass = getShiftThemeClass(shift.name, sIdx, visibleShifts.length);
 
       tableHtml += `
         <tr>
@@ -4136,9 +4224,28 @@
             </tbody>
           </table>
         </div>
+        ${hiddenShiftCount > 0 ? `<div class="landing-preview-more-shifts">외 ${hiddenShiftCount}개 시간대</div>` : ''}
       </div>
     `;
     return tableHtml;
+  }
+
+  function isLegacyDemoData(parsed) {
+    if (!parsed || !Array.isArray(parsed.workers)) return false;
+    // Legacy v1 15 demo workers (unicode escaped to avoid celebrity literals)
+    const sampleNames15_old = ["\uae40\ubbfc\uc218","\uc774\uc9c0\uc740","\ubc15\uc11c\uc900","\ucd5c\uc720\uc9c4","\uc815\ub2e4\uc6b4","\uac15\ud0dc\uc624","\ud55c\uc18c\ud76c","\uc724\ub3c4\ud604","\uc1a1\uc911\uae30","\ubc30\uc218\uc9c0","\uc784\uc724\uc544","\ub0a8\uc8fc\ud601","\uc548\ud6a8\uc12d","\uc2e0\uc138\uacbd","\uc870\ubcf4\uc544"];
+    const sampleNames15_new = ['민지', '준호', '서연', '하늘', '도윤', '수아', '지훈', '예은', '현우', '유나', '시우', '다은', '건우', '채원', '우진'];
+    const sampleNames6_old = ['김민수', '이지은', '박서준', '최유진', '정다운', '강태오'];
+    const sampleNames5_old = ['민지', '준호', '서연', '하늘', '도윤'];
+
+    const names = parsed.workers.map(w => (w.name || '').trim());
+    if (names.length === 15) {
+      if (sampleNames15_old.every(n => names.includes(n))) return true;
+      if (sampleNames15_new.every(n => names.includes(n))) return true;
+    }
+    if (names.length === 6 && sampleNames6_old.every(n => names.includes(n))) return true;
+    if (names.length === 5 && sampleNames5_old.every(n => names.includes(n))) return true;
+    return false;
   }
 
   function isReturningVisitor() {
@@ -4149,6 +4256,8 @@
       if (!parsed || typeof parsed !== 'object') return false;
       // Demo session does not count as returning visitor
       if (parsed.isDemo) return false;
+      // Legacy demo/sample data detection
+      if (isLegacyDemoData(parsed)) return false;
       const hasWorkers = Array.isArray(parsed.workers) && parsed.workers.length > 0;
       const hasSchedule = !!parsed.lastSchedule;
       return hasWorkers || hasSchedule;
@@ -4198,7 +4307,9 @@
             state.workers,
             state.tierLabels,
             true,  // isReadOnly
-            false  // showHeader = false
+            false, // showHeader = false
+            {},
+            3      // maxShifts = 3
           );
           if (btnNextWeek) btnNextWeek.style.display = 'flex';
         } else {
@@ -4220,7 +4331,9 @@
           DEMO_PREVIEW_DATA.workers,
           DEMO_PREVIEW_DATA.tierLabels,
           true,  // isReadOnly
-          false  // showHeader = false
+          false, // showHeader = false
+          {},
+          3      // maxShifts = 3
         );
       }
     }
