@@ -74,10 +74,11 @@
     }
   }
   </script>
+  <link rel="stylesheet" href="assets/css/tokens.css">
   <style>
     :root {
-      --primary: #2563eb;
-      --primary-hover: #1d4ed8;
+      --primary: var(--ab-boss, #2150D8);
+      --primary-hover: var(--ab-boss-hover, #1A40B0);
       --primary-light: #eff6ff;
       --primary-border: #bfdbfe;
       --success: #10b981;
@@ -116,13 +117,12 @@
       background-color: #f8fafc;
       color: var(--gray-800);
       line-height: 1.5;
-      padding: 16px;
-      padding-bottom: 80px;
+      padding: 0 16px 80px 16px;
     }
 
     .container {
       max-width: 960px;
-      margin: 0 auto;
+      margin: 16px auto 0 auto;
     }
 
     /* Common Card Styles */
@@ -179,6 +179,7 @@
     .step-btn {
       flex: 1;
       min-width: 100px;
+      min-height: 40px;
       padding: 10px 8px;
       border: none;
       background: transparent;
@@ -209,7 +210,7 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      font-size: 11px;
+      font-size: 12px;
       font-weight: 700;
     }
 
@@ -232,9 +233,9 @@
       display: inline-block;
       background: var(--primary-light);
       color: var(--primary);
-      font-size: 11px;
+      font-size: 12px;
       font-weight: 700;
-      padding: 3px 12px;
+      padding: 4px 12px;
       border-radius: 20px;
       margin-bottom: 8px;
       letter-spacing: 0.5px;
@@ -289,7 +290,7 @@
       gap: 6px;
     }
     .landing-preview-badge {
-      font-size: 10.5px;
+      font-size: 12px;
       font-weight: 600;
       color: #64748b;
       background: #e2e8f0;
@@ -297,7 +298,7 @@
       border-radius: 4px;
     }
     .landing-preview-date {
-      font-size: 11px;
+      font-size: 12px;
       font-weight: normal;
       color: var(--gray-500);
     }
@@ -308,7 +309,7 @@
     }
     .landing-preview-wrapper .schedule-table {
       min-width: 480px;
-      font-size: 11px;
+      font-size: 12px;
       border-collapse: collapse;
       width: 100%;
       border: none;
@@ -320,10 +321,10 @@
     }
     .landing-preview-wrapper .schedule-table thead th {
       padding: 5px 4px !important;
-      font-size: 11px;
+      font-size: 12px;
     }
     .landing-preview-wrapper .time-axis-header {
-      font-size: 10.5px;
+      font-size: 12px;
       padding: 5px 4px !important;
       width: 88px;
       min-width: 88px;
@@ -334,7 +335,7 @@
       vertical-align: middle;
     }
     .landing-preview-wrapper .time-axis-name {
-      font-size: 11px;
+      font-size: 12px;
       font-weight: 800;
       line-height: 1.15;
       margin-bottom: 1px;
@@ -342,17 +343,23 @@
       align-items: center;
       justify-content: center;
       gap: 2px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
     .landing-preview-wrapper .time-axis-time {
       display: inline-block;
-      font-size: 9px;
+      font-size: 12px;
       font-weight: 600;
       line-height: 1.1;
       color: var(--gray-600);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
     .landing-preview-wrapper .time-axis-dur {
       display: inline-block;
-      font-size: 8.5px;
+      font-size: 12px;
       line-height: 1.1;
       color: var(--gray-400);
       margin-left: 2px;
@@ -361,7 +368,7 @@
       margin-top: 1px !important;
     }
     .landing-preview-wrapper .time-axis-cell .cell-role-badge {
-      font-size: 8px !important;
+      font-size: 12px !important;
       padding: 0 3px !important;
       line-height: 1.1;
       display: inline-block;
@@ -379,14 +386,17 @@
     }
     .landing-preview-wrapper .assigned-badge {
       cursor: default;
-      padding: 1.5px 4px;
-      font-size: 10.5px;
+      padding: 2px 6px;
+      font-size: 12px;
       border-color: #cbd5e1;
       background: #f8fafc;
       box-shadow: none;
       border-radius: 3px;
-      min-height: 0;
+      min-height: 28px;
       gap: 4px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
     .landing-preview-wrapper .assigned-badge:hover {
       border-color: #cbd5e1;
@@ -399,14 +409,20 @@
     .landing-preview-wrapper .worker-badge-content {
       gap: 3px;
       min-width: 0;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
     .landing-preview-wrapper .worker-badge-name {
-      font-size: 10.5px;
+      font-size: 12px;
       font-weight: 800;
       line-height: 1.15;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
     .landing-preview-wrapper .cell-role-badge {
-      font-size: 8.5px;
+      font-size: 12px;
       padding: 0 3px;
       line-height: 1.1;
     }
@@ -415,7 +431,7 @@
       padding: 5px 10px;
       background: #f8fafc;
       color: var(--gray-600);
-      font-size: 11px;
+      font-size: 12px;
       font-weight: 700;
       border-top: 1px dashed var(--gray-300);
     }
@@ -443,21 +459,21 @@
       padding: 15px 24px;
       font-size: 16px;
       font-weight: 800;
-      background: #1e40af;
+      background: var(--ab-boss, #2150D8);
       color: white;
-      border-radius: var(--radius-lg);
+      border-radius: var(--ab-r-md, 12px);
       border: none;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 8px;
-      box-shadow: 0 4px 12px rgba(30, 64, 175, 0.35);
+      box-shadow: 0 4px 12px rgba(33, 80, 216, 0.35);
       transition: all 0.2s;
       touch-action: manipulation;
     }
     .btn-start-new:hover {
-      background: #1d4ed8;
+      background: var(--ab-boss-hover, #1A40B0);
       transform: translateY(-1px);
     }
     .btn-start-new:active {
@@ -469,10 +485,10 @@
       padding: 12px 20px;
       font-size: 14.5px;
       font-weight: 700;
-      background: white;
-      color: var(--gray-700);
-      border: 1.5px solid var(--gray-300);
-      border-radius: var(--radius-lg);
+      background: #ffffff;
+      color: var(--ab-text, #1A2233);
+      border: 1px solid var(--ab-line-strong, #C3CCD9);
+      border-radius: var(--ab-r-md, 12px);
       cursor: pointer;
       display: flex;
       align-items: center;
@@ -482,9 +498,9 @@
       touch-action: manipulation;
     }
     .btn-demo-secondary:hover {
-      background: var(--gray-50);
-      border-color: var(--gray-400);
-      color: var(--gray-900);
+      background: var(--ab-bg, #F5F7FA);
+      border-color: var(--ab-line-strong, #C3CCD9);
+      color: var(--ab-text, #1A2233);
     }
     .btn-demo-secondary:active {
       transform: scale(0.98);
@@ -704,7 +720,8 @@
 
     .day-toggle-btn {
       padding: 6px 10px;
-      min-width: 34px;
+      min-width: 40px;
+      min-height: 40px;
       text-align: center;
       border-radius: 8px;
       font-size: 13px;
@@ -850,15 +867,15 @@
       border: 1.5px solid var(--gray-300);
       border-radius: 4px;
       color: var(--gray-600);
-      font-size: 11px;
+      font-size: 12px;
       font-weight: 700;
       cursor: pointer;
-      padding: 0 5px;
-      height: 26px;
+      padding: 6px 10px;
+      min-height: 40px;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 1px;
+      gap: 2px;
       touch-action: manipulation;
       transition: all 0.15s ease;
     }
@@ -874,8 +891,8 @@
       border-radius: 4px;
       color: var(--gray-400);
       cursor: pointer;
-      padding: 0 5px;
-      height: 26px;
+      padding: 0 8px;
+      min-height: 40px;
       display: inline-flex;
       align-items: center;
       justify-content: center;
@@ -911,7 +928,7 @@
 
     .time-select-24h {
       width: 68px;
-      height: 26px;
+      height: 32px;
       padding: 0 4px;
       font-size: 12.5px;
       font-weight: 700;
@@ -937,15 +954,15 @@
       background: #eff6ff;
       color: #1e40af;
       font-weight: 700;
-      font-size: 10.5px;
-      padding: 1px 4px;
+      font-size: 12px;
+      padding: 2px 6px;
       border-radius: 3px;
       white-space: nowrap;
-      height: 20px;
+      height: 22px;
     }
 
     .shift-break-subtext {
-      font-size: 10.5px;
+      font-size: 12px;
       color: var(--gray-500);
       font-weight: 600;
       white-space: nowrap;
@@ -964,12 +981,13 @@
     .shift-attr-label {
       display: inline-flex;
       align-items: center;
-      gap: 3px;
-      font-size: 11px;
+      gap: 4px;
+      font-size: 12px;
       font-weight: 600;
       color: var(--gray-600);
       cursor: pointer;
       user-select: none;
+      min-height: 40px;
     }
     .shift-attr-label input[type="checkbox"] {
       cursor: pointer;
@@ -991,7 +1009,7 @@
     .worker-role-badge {
       display: inline-flex;
       align-items: center;
-      font-size: 11px;
+      font-size: 12px;
       font-weight: 700;
       padding: 2px 6px;
       border-radius: 4px;
@@ -1013,14 +1031,14 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      font-size: 10px;
+      font-size: 12px;
       font-weight: 500;
-      padding: 1px 4px;
+      padding: 1px 5px;
       border-radius: 3px;
       margin-right: 4px;
       line-height: 1.2;
       flex-shrink: 0;
-      opacity: 0.85;
+      opacity: 0.9;
     }
     .cell-role-badge.senior {
       background: #e0f2fe;
@@ -1040,7 +1058,7 @@
       gap: 2px;
       background: #312e81;
       color: #e0e7ff;
-      font-size: 10px;
+      font-size: 12px;
       font-weight: 700;
       padding: 1px 5px;
       border-radius: 3px;
@@ -1427,10 +1445,17 @@
       font-size: 13px;
       font-weight: 700;
       color: var(--gray-800);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
     .mobile-shift-time {
-      font-size: 11px;
+      font-size: 12px;
       color: var(--gray-500);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      flex-shrink: 0;
     }
     .mobile-assigned-workers {
       display: flex;
@@ -1464,14 +1489,14 @@
       position: fixed;
       bottom: 20px;
       right: 20px;
-      background: white;
-      color: var(--gray-700);
-      border: 1.5px solid var(--gray-300);
-      border-radius: 30px;
-      padding: 9px 16px;
+      background: var(--ab-navy, #16213A);
+      color: #ffffff;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: var(--ab-r-pill, 999px);
+      padding: 10px 18px;
       font-size: 13px;
       font-weight: 700;
-      box-shadow: var(--shadow-md);
+      box-shadow: 0 4px 12px rgba(22, 33, 58, 0.35);
       display: flex;
       align-items: center;
       gap: 6px;
@@ -1482,11 +1507,10 @@
       touch-action: manipulation;
     }
     .floating-feedback-btn:hover {
-      background: var(--gray-50);
-      border-color: var(--primary);
-      color: var(--primary);
+      background: #233458;
+      color: #ffffff;
       transform: translateY(-2px);
-      box-shadow: var(--shadow-lg);
+      box-shadow: 0 6px 16px rgba(22, 33, 58, 0.45);
     }
 
     /* ==========================================================================
@@ -1562,6 +1586,10 @@
 
     .worker-tab {
       padding: 8px 16px;
+      min-height: 40px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
       border: 1.5px solid var(--gray-300);
       background: white;
       border-radius: 20px;
@@ -1573,10 +1601,10 @@
       transition: all 0.2s;
     }
     .worker-tab.active {
-      background: #1e40af;
+      background: var(--ab-boss, #2150D8);
       color: white;
-      border-color: #1e40af;
-      box-shadow: 0 2px 4px rgba(30, 64, 175, 0.25);
+      border-color: var(--ab-boss, #2150D8);
+      box-shadow: 0 2px 4px rgba(33, 80, 216, 0.25);
     }
 
     .quick-toggle-bar {
@@ -1600,7 +1628,11 @@
       background: white;
       border: 1px solid var(--gray-300);
       border-radius: 20px;
-      padding: 6px 12px;
+      padding: 6px 14px;
+      min-height: 40px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
       font-size: 12px;
       font-weight: 700;
       color: var(--gray-700);
@@ -1631,6 +1663,10 @@
     .avail-day-header {
       background: white;
       padding: 8px 6px;
+      min-height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       font-size: 12px;
       font-weight: 700;
       text-align: center;
@@ -1645,6 +1681,8 @@
 
     .avail-shift-cell {
       padding: 8px 6px;
+      min-height: 40px;
+      justify-content: center;
       border-bottom: 1px solid var(--gray-200);
       text-align: center;
       cursor: pointer;
@@ -1674,14 +1712,14 @@
       font-weight: 700;
     }
     .avail-shift-time {
-      font-size: 11px;
+      font-size: 12px;
       opacity: 0.8;
     }
     .avail-shift-status {
-      font-size: 11px;
+      font-size: 12px;
       font-weight: 700;
       margin-top: 2px;
-      padding: 1px 6px;
+      padding: 2px 6px;
       border-radius: 4px;
     }
     .avail-shift-cell.available .avail-shift-status {
@@ -1927,13 +1965,16 @@
       margin-bottom: 2px;
     }
     .time-axis-time {
-      font-size: 11.5px;
+      font-size: 12px;
       font-weight: 600;
       color: var(--gray-600);
       line-height: 1.3;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
     .time-axis-dur {
-      font-size: 11px;
+      font-size: 12px;
       color: var(--gray-400);
     }
 
@@ -1980,6 +2021,7 @@
       justify-content: space-between;
       gap: 6px;
       padding: 5px 8px;
+      min-height: 40px;
       background: #ffffff;
       color: #0f172a;
       border: 1.5px solid #cbd5e1;
@@ -2017,7 +2059,7 @@
       text-overflow: ellipsis;
     }
     .worker-badge-arrow {
-      font-size: 10px;
+      font-size: 12px;
       color: #94a3b8;
       flex-shrink: 0;
       margin-left: auto;
@@ -2244,10 +2286,10 @@
       filter: brightness(0.92);
     }
     .btn-primary { background: var(--primary); color: white; }
-    .btn-primary:hover { background: var(--primary-hover); box-shadow: 0 4px 10px rgba(37, 99, 235, 0.3); }
+    .btn-primary:hover { background: var(--primary-hover); box-shadow: 0 4px 10px rgba(33, 80, 216, 0.3); }
 
-    .btn-secondary { background: var(--gray-100); color: var(--gray-700); border: 1px solid var(--gray-200); }
-    .btn-secondary:hover { background: var(--gray-200); }
+    .btn-secondary { background: #ffffff; color: var(--ab-text, #1A2233); border: 1px solid var(--ab-line-strong, #C3CCD9); }
+    .btn-secondary:hover { background: var(--ab-bg, #F5F7FA); border-color: var(--ab-line-strong, #C3CCD9); color: var(--ab-text, #1A2233); }
 
     .btn-success { background: var(--success); color: white; }
     .btn-success:hover { background: #059669; box-shadow: 0 4px 10px rgba(16, 185, 129, 0.3); }
@@ -2255,17 +2297,17 @@
     .btn-outline-primary { background: white; color: var(--primary); border: 1.5px solid var(--primary); }
     .btn-outline-primary:hover { background: var(--primary-light); }
 
-    .btn-outline-secondary { background: white; color: var(--gray-700); border: 1.5px solid var(--gray-300); }
-    .btn-outline-secondary:hover { background: var(--gray-100); border-color: var(--gray-400); color: var(--gray-900); }
+    .btn-outline-secondary { background: white; color: var(--ab-text, #1A2233); border: 1px solid var(--ab-line-strong, #C3CCD9); }
+    .btn-outline-secondary:hover { background: var(--ab-bg, #F5F7FA); border-color: var(--ab-line-strong, #C3CCD9); color: var(--ab-text, #1A2233); }
 
     .btn-danger-outline { background: white; color: var(--danger); border: 1px solid #fecaca; }
     .btn-danger-outline:hover { background: var(--danger-light); }
 
-    .btn-outline-del { background: white; color: var(--gray-400); border: 1px solid var(--gray-200); border-radius: var(--radius-sm); padding: 4px 8px; font-size: 12px; cursor: pointer; transition: all 0.15s ease; }
+    .btn-outline-del { background: white; color: var(--gray-400); border: 1px solid var(--gray-200); border-radius: var(--radius-sm); padding: 4px 8px; font-size: 12px; cursor: pointer; min-height: 40px; display: inline-flex; align-items: center; justify-content: center; transition: all 0.15s ease; }
     .btn-outline-del:hover { color: var(--danger); border-color: #fecaca; background: #fef2f2; }
 
     .btn-large { padding: 14px 28px; font-size: 16px; font-weight: 700; border-radius: var(--radius-lg); min-height: 50px; }
-    .btn-sm { padding: 8px 12px; font-size: 13px; border-radius: var(--radius-sm); min-height: 38px; }
+    .btn-sm { padding: 8px 12px; font-size: 13px; border-radius: var(--radius-sm); min-height: 40px; }
 
     .input-text {
       padding: 8px 12px;
@@ -2461,30 +2503,38 @@
       /* Floating feedback button repositioned above sticky bar without covering content */
       .floating-feedback-btn {
         bottom: 74px;
-        right: 10px;
-        padding: 5px 10px;
-        font-size: 11px;
-        border-radius: 20px;
-        background: rgba(255, 255, 255, 0.92);
-        border: 1px solid var(--gray-300);
-        color: var(--gray-600);
-        backdrop-filter: blur(4px);
-        -webkit-backdrop-filter: blur(4px);
-        box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+        right: 12px;
+        padding: 8px 14px;
+        font-size: 12px;
+        border-radius: var(--ab-r-pill, 999px);
+        background: var(--ab-navy, #16213A);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        color: #ffffff;
+        box-shadow: 0 4px 10px rgba(22, 33, 58, 0.3);
         z-index: 850;
-        opacity: 0.75;
+        opacity: 0.95;
         transition: opacity 0.2s ease, transform 0.2s ease;
       }
       .floating-feedback-btn:hover, .floating-feedback-btn:active {
         opacity: 1;
-        background: white;
-        color: var(--primary);
-        border-color: var(--primary);
+        background: #233458;
+        color: #ffffff;
       }
     }
   </style>
 </head>
 <body>
+
+<header class="ab-header" style="height: 56px; border-bottom: 1px solid var(--ab-line, #DDE3EC); background: #ffffff; position: sticky; top: 0; z-index: 1000; box-shadow: var(--ab-shadow, 0 1px 2px rgba(22,33,58,.06)); width: 100%;">
+  <div style="max-width: 960px; margin: 0 auto; padding: 0 16px; height: 56px; display: flex; align-items: center; justify-content: space-between;">
+    <a href="https://albanboss.moow-ui.workers.dev/" class="ab-logo" aria-label="ALBA&BOSS 메인으로 이동" style="text-decoration: none; font-weight: 800; font-size: 18px; letter-spacing: -0.02em; display: inline-flex; align-items: center;">
+      <span style="color: var(--ab-alba, #E8590C);">ALBA</span><span style="color: var(--ab-text-3, #5F6B7C); margin: 0 1px;">&</span><span style="color: var(--ab-boss, #2150D8);">BOSS</span>
+    </a>
+    <a href="https://albanboss.moow-ui.workers.dev/" style="font-size: 14px; font-weight: 600; color: var(--ab-text-2, #4A5568); text-decoration: none; padding: 6px 10px; border-radius: 6px; transition: background 0.2s, color 0.2s;" onmouseover="this.style.color='var(--ab-boss, #2150D8)'; this.style.background='var(--ab-bg, #F5F7FA)'" onmouseout="this.style.color='var(--ab-text-2, #4A5568)'; this.style.background='transparent'">
+      계산기 대시보드
+    </a>
+  </div>
+</header>
 
 <div class="container">
 
@@ -4150,11 +4200,11 @@
           <th class="time-axis-cell ${themeClass}">
             <div class="time-axis-name">
               ${escapeHtml(shift.name)}
-              ${shift.isNight ? '<span class="night-shift-badge" style="font-size:9px; padding:0 3px;">🌙</span>' : ''}
+              ${shift.isNight ? '<span class="night-shift-badge" style="font-size:12px; padding:0 3px;">🌙</span>' : ''}
             </div>
             <div class="time-axis-time">${shift.start}~${shift.end}</div>
             <div class="time-axis-dur">(${duration}h)</div>
-            ${shift.isSeniorRequired ? `<div style="margin-top: 3px;"><span class="cell-role-badge senior" style="font-size: 9px; padding: 0 3px;">⭐️${seniorLabel}필수</span></div>` : ''}
+            ${shift.isSeniorRequired ? `<div style="margin-top: 3px;"><span class="cell-role-badge senior" style="font-size: 12px; padding: 0 3px;">⭐️${seniorLabel}필수</span></div>` : ''}
           </th>
       `;
 
@@ -4165,13 +4215,13 @@
         if (assignedIds.length === 0) {
           tableHtml += isReadOnly
             ? `<div class="badge-shortage" style="cursor: default;"><span>미배정</span></div>`
-            : `<div class="badge-shortage" onclick="openSwapWorkerModal('${d.id}', '${shift.id}', 0)" title="클릭하여 배정"><span>미배정</span> <span style="font-size:10px;">▾</span></div>`;
+            : `<div class="badge-shortage" onclick="openSwapWorkerModal('${d.id}', '${shift.id}', 0)" title="클릭하여 배정"><span>미배정</span> <span style="font-size:12px;">▾</span></div>`;
         } else {
           assignedIds.forEach((wId, slotIdx) => {
             if (wId && wId.isExtra) {
               tableHtml += isReadOnly
                 ? `<div class="slot-extra-unfilled" style="cursor: default;"><span>[추가]</span></div>`
-                : `<div class="slot-extra-unfilled" onclick="openSwapWorkerModal('${d.id}', '${shift.id}', ${slotIdx})" title="공통 횟수 균등 배정 후 남은 슬롯 (클릭하여 추가 배정)"><span>[추가 배정]</span> <span style="font-size:10px;">▾</span></div>`;
+                : `<div class="slot-extra-unfilled" onclick="openSwapWorkerModal('${d.id}', '${shift.id}', ${slotIdx})" title="공통 횟수 균등 배정 후 남은 슬롯 (클릭하여 추가 배정)"><span>[추가 배정]</span> <span style="font-size:12px;">▾</span></div>`;
             } else if (wId === null) {
               const slotKey = `${d.id}_${shift.id}_${slotIdx}`;
               const diagList = (diagnostics && diagnostics[slotKey]) || [];
@@ -4185,7 +4235,7 @@
               }
               tableHtml += isReadOnly
                 ? `<div class="badge-shortage" style="cursor: default;"><span>인원 부족</span></div>`
-                : `<div class="badge-shortage" onclick="openSwapWorkerModal('${d.id}', '${shift.id}', ${slotIdx})" title="클릭하여 대타 배정"><span>인원 부족</span> <span style="font-size:10px;">▾</span><div class="tooltip-box">${tooltipText}</div></div>`;
+                : `<div class="badge-shortage" onclick="openSwapWorkerModal('${d.id}', '${shift.id}', ${slotIdx})" title="클릭하여 대타 배정"><span>인원 부족</span> <span style="font-size:12px;">▾</span><div class="tooltip-box">${tooltipText}</div></div>`;
             } else {
               const worker = (workers || []).find(w => w.id === wId);
               const role = (worker && worker.roleType) ? worker.roleType : 'junior';
@@ -6690,7 +6740,7 @@
     if (wId && wId.isExtra) {
       return `
         <div class="slot-extra-unfilled" onclick="openSwapWorkerModal('${dayId}', '${shiftId}', ${slotIdx})" title="공통 횟수 균등 배정 후 남은 슬롯 (클릭하여 추가 배정)">
-          <span>[추가 배정]</span> <span style="font-size:10px;">▾</span>
+          <span>[추가 배정]</span> <span style="font-size:12px;">▾</span>
         </div>
       `;
     } else if (wId === null) {
@@ -6706,7 +6756,7 @@
       }
       return `
         <div class="badge-shortage" onclick="openSwapWorkerModal('${dayId}', '${shiftId}', ${slotIdx})" title="클릭하여 대타 배정">
-          <span>인원 부족</span> <span style="font-size:10px;">▾</span>
+          <span>인원 부족</span> <span style="font-size:12px;">▾</span>
           <div class="tooltip-box">${tooltipText}</div>
         </div>
       `;
@@ -6767,7 +6817,7 @@
 
         let assignedHtml = '';
         if (assignedIds.length === 0) {
-          assignedHtml = `<div class="badge-shortage" onclick="openSwapWorkerModal('${day.id}', '${shift.id}', 0)" title="클릭하여 배정"><span>미배정</span> <span style="font-size:10px;">▾</span></div>`;
+          assignedHtml = `<div class="badge-shortage" onclick="openSwapWorkerModal('${day.id}', '${shift.id}', 0)" title="클릭하여 배정"><span>미배정</span> <span style="font-size:12px;">▾</span></div>`;
         } else {
           assignedHtml = assignedIds.map((wId, slotIdx) => {
             return renderSlotHtml(wId, day.id, shift.id, slotIdx);
@@ -6780,7 +6830,7 @@
               <span class="mobile-shift-name" style="display: inline-flex; align-items: center; gap: 3px;">
                 ${escapeHtml(shift.name)}
                 ${shift.isNight ? '<span class="night-shift-badge">🌙 야간</span>' : ''}
-                ${shift.isSeniorRequired ? `<span class="cell-role-badge senior" style="font-size: 9.5px; padding: 0 3px;">⭐️${getTierLabel('senior')}필수</span>` : ''}
+                ${shift.isSeniorRequired ? `<span class="cell-role-badge senior" style="font-size: 12px; padding: 0 3px;">⭐️${getTierLabel('senior')}필수</span>` : ''}
               </span>
               <span class="mobile-shift-time">${shift.start}~${shift.end} (${duration}h)</span>
             </div>
