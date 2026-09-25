@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## 2026-09-25
+- [기능] 개발 도구 Claude Code 연결(규칙·명령어 연결, 사이트 변화 없음) — CLAUDE.md, 명령 허락 설정, 배포 제외 목록(.assetsignore)에 CLAUDE.md·.claude/ 추가 (원본 워크플로가 없어 명령어 없음)
+
 ## 2026-09-22
 - [디자인] ALBA&BOSS 통합 디자인 토큰(tokens.css) 적용 및 상단 56px 공통 헤더 추가 (포털 메인 및 계산기 대시보드 바로가기)
 - [디자인] 메인 버튼 색상을 포털 대표 블루(var(--ab-boss)) 및 보조 버튼 스타일(.ab-btn--secondary)로 통일

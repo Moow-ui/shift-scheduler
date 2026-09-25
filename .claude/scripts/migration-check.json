@@ -1,0 +1,8 @@
+{
+  "repo": "Moow-ui/shift-scheduler",
+  "siteUrl": "https://shift-scheduler.moow-ui.workers.dev",
+  "paths": ["/", "/robots.txt", "/sitemap.xml", "/assets/css/tokens.css", "/og-image.png"],
+  "protected": ["index.html"],
+  "workflowsDir": null,
+  "deployIgnoreFile": ".assetsignore"
+}

@@ -1,0 +1,4 @@
+# Cloudflare 배포 제외 목록 (.assetsignore)
+# Claude Code 규칙·설정은 사이트에 올리지 않는다
+CLAUDE.md
+.claude/

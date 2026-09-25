@@ -13,3 +13,8 @@ desktop.ini
 *.log
 *.tmp
 .cache/
+
+# Claude Code 개인 설정·임시 파일
+.claude/settings.local.json
+.claude/tmp/
+CLAUDE.local.md
