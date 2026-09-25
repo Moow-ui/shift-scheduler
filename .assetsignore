@@ -2,3 +2,6 @@
 # Claude Code 규칙·설정은 사이트에 올리지 않는다
 CLAUDE.md
 .claude/
+.git
+README.md
+CHANGELOG.md
